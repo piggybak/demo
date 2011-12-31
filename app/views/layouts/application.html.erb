@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shop Stock</title>
+  <%= stylesheet_link_tag    "application" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+
+<body>
+
+<div id="wrapper">
+	<div id="wrapper-top">
+		<div class="container">
+			<div id="top">
+				<div id="logo" class="four columns">
+					<%= link_to image_tag("logo.png"), root_path %>
+				</div><!--#logo-->
+				<div id="nav" class="eight columns">
+					<ul id="topnav" class="sf-menu">
+						<li class="current"><a href="#">Shop</a>
+							<ul>
+								<li><a href="#">Category 1</a></li>
+								<li><a href="#">Category 2</a></li>
+								<li><a href="#">Category 3</a></li>
+								<li><a href="#">Category 4</a></li>
+							</ul>
+						</li>
+						<li><a href="#">About</a></li>
+						<% if current_user -%>
+						<% if current_user.roles.size > 0 -%>
+						<li>
+							<%= link_to 'ADMIN', "/admin" %>
+						</li>
+						<% end -%>
+						<li>
+							<%= link_to 'LOGOUT', destroy_user_session_path, :method => :delete, :class => "last" %>
+						</li>
+						<% else -%>
+						<li>
+							<%= link_to 'LOG IN', new_user_session_path %>
+						</li>
+						<% end -%>
+					</ul><!-- #topnav -->
+				</div><!--#nav-->
+				<div class="clearfix"></div>
+			</div><!--#top-->
+		</div><!--container-->
+	</div><!--#wrapper-top-->
+	
+	<div id="wrapper-beforeheader">
+		<div class="container">
+			<div id="sn" class="six columns">
+				<ul>
+					<li><a href="#">Cart</a></li>
+				</ul>
+			</div><!--#sn-->
+			<div id="toptext" class="six columns">
+				<% if false -%>
+				<div id="breadcrumb"><a href="index.html">Home</a>  &raquo; <a href="#">Portfolio</a> &raquo; Portfolio Four Column</div>
+				<% end -%>
+			</div><!--#toptext-->
+			<div class="clearfix"></div>
+		</div><!--container-->
+	</div><!--#wrapper-beforeheader-->
+	
+	<div id="wrapper-header" class="inner">
+		<div class="container">
+			<div id="header" class="twelve columns">
+				<div id="header-text">
+					<h1>Pellentesque volutpat tempor imperdiet. Duis sit amet purus vel est auctor dignissim.</h1>
+					<p>Suspendisse ullamcorper volutpat luctus. Nunc eget purus lectus. Duis fringilla luctus ipsum id molestie. Aliquam erat volutpat. Sed luctus congue auctor. Integer tempus mi eu ipsum pellentesque non eleifend odio tincidunt. Vivamus aliquam tincidunt ornare. Curabitur condimentum augue et risus tincidunt vel.</p>
+				</div><!-- #header-text -->
+			</div><!--#header-->
+		</div><!--container-->
+	</div><!--#wrapper-header-->
+	
+	
+	<div id="wrapper-content">
+		<div class="container">
+			<div id="content" class="twelve columns">
+				<%= yield %>
+			</div><!--#content-->
+		</div><!--container-->
+	</div><!--#wrapper-content-->
+	
+	<div id="wrapper-beforefooter">
+		<div class="container">
+			<div id="slogantext" class="twelve columns">
+				“Fusce id purus purus, commodo accumsan arcu. <span class="colortext">Maecenas mattis massa</span> in elit imperdiet interdum. Aenean ultricies augue sit amet sapien posuere sodales. Sed et nunc id nulla pretium orci.”
+			</div><!--#slogantext-->
+		</div><!--container-->
+	</div><!--#wrapper-beforefooter-->
+	
+	<div id="wrapper-footer">
+		<div class="container">
+		<div id="footer" class="twelve columns">
+			<span id="copyright">Copyright &copy;2011 Seven Wonders.  All Rights Reserved.</span>
+			<ul id="footnav">
+				<li><a href="#" >Link 1</a></li>
+				<li><a href="#" >Link 2</a></li>
+				<li><a href="#" >Link 3</a></li>
+				<li><a href="#" >Link 4</a></li>
+			</ul><!-- #footnav -->
+		</div><!--#footer-->
+		</div><!--container-->
+	</div><!--#wrapper-footer-->
+</div><!--#wrapper-->
+</body>
+</html>
+
+<% if false -%>
+<script type="text/javascript">
+jQuery(document).ready(function(){
+
+	//Menu
+	jQuery("ul.sf-menu").supersubs({ 
+	minWidth		: 12,		// requires em unit.
+	maxWidth		: 27,		// requires em unit.
+	extraWidth		: 1	// extra width can ensure lines don't sometimes turn over due to slight browser differences in how they round-off values
+						   // due to slight rounding differences and font-family 
+	}).superfish();  // call supersubs first, then superfish, so that subs are 
+					 // not display:none when measuring. Call before initialising 
+					 // containing tabs for same reason. 
+					 
+
+	// Create the dropdown base
+	jQuery("<select />").appendTo("#nav");
+	
+	// Create default option "Go to..."
+	jQuery("<option />", {
+	   "selected": "selected",
+	   "value"   : "",
+	   "text"    : "Go to..."
+	}).appendTo("nav select");
+	
+	// Populate dropdown with menu items
+	jQuery("#nav a").each(function() {
+	 var el = jQuery(this);
+	 jQuery("<option />", {
+		 "value"   : el.attr("href"),
+		 "text"    : el.text()
+	 }).appendTo("#nav select");
+	});
+	
+	jQuery("#nav select").change(function() {
+	  window.location = jQuery(this).find("option:selected").val();
+	});
+	
+	/* portfolio gallery */
+	jQuery("a[rel^='prettyPhoto']").prettyPhoto({animationSpeed:'slow',theme:'facebook',slideshow:2000});	
+});
+</script>
+</head>
+
+<script type="text/javascript">jQuery('#noscript').remove();</script><!-- if javascript disable -->
+<% end -%>

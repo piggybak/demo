@@ -1,0 +1,11 @@
+development:
+  adapter: postgresql
+  database: test_database
+  username: steph
+  password:
+
+production:
+  adapter: postgresql
+  database: test_database
+  username: steph
+  password:
