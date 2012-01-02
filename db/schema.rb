@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111231162701) do
+ActiveRecord::Schema.define(:version => 20120102164229) do
 
   create_table "addresses", :force => true do |t|
     t.string   "firstname",  :null => false
@@ -72,6 +72,7 @@ ActiveRecord::Schema.define(:version => 20111231162701) do
     t.string   "status",              :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.float    "tax_charge"
   end
 
   create_table "pages", :force => true do |t|
@@ -163,6 +164,11 @@ ActiveRecord::Schema.define(:version => 20111231162701) do
     t.boolean "active",      :default => false, :null => false
   end
 
+  create_table "states", :force => true do |t|
+    t.string "name"
+    t.string "abbr"
+  end
+
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id"
     t.integer  "taggable_id"
@@ -178,6 +184,18 @@ ActiveRecord::Schema.define(:version => 20111231162701) do
 
   create_table "tags", :force => true do |t|
     t.string "name"
+  end
+
+  create_table "tax_charge_values", :force => true do |t|
+    t.integer "tax_charge_id"
+    t.string  "key"
+    t.string  "value"
+  end
+
+  create_table "tax_charges", :force => true do |t|
+    t.string  "description",                    :null => false
+    t.string  "klass",                          :null => false
+    t.boolean "active",      :default => false, :null => false
   end
 
   create_table "users", :force => true do |t|
