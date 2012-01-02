@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111231061026) do
+ActiveRecord::Schema.define(:version => 20111231162701) do
 
   create_table "addresses", :force => true do |t|
     t.string   "firstname",  :null => false
@@ -25,6 +25,9 @@ ActiveRecord::Schema.define(:version => 20111231061026) do
   end
 
   create_table "categories", :force => true do |t|
+    t.string   "title"
+    t.string   "slug"
+    t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -35,10 +38,14 @@ ActiveRecord::Schema.define(:version => 20111231061026) do
   end
 
   create_table "images", :force => true do |t|
-    t.string   "title"
-    t.string   "slug"
+    t.string   "title",                :null => false
+    t.string   "slug",                 :null => false
     t.text     "description"
-    t.integer  "user_id"
+    t.integer  "user_id",              :null => false
+    t.string   "gallery_file_name"
+    t.string   "gallery_content_type"
+    t.string   "gallery_file_size"
+    t.datetime "gallery_updated_at"
     t.string   "main_file_name"
     t.string   "main_content_type"
     t.string   "main_file_size"
@@ -75,6 +82,12 @@ ActiveRecord::Schema.define(:version => 20111231061026) do
     t.datetime "updated_at"
   end
 
+  create_table "payment_method_values", :force => true do |t|
+    t.integer "payment_method_id"
+    t.string  "key"
+    t.string  "value"
+  end
+
   create_table "payment_methods", :force => true do |t|
     t.string   "description",                    :null => false
     t.string   "klass",                          :null => false
@@ -86,13 +99,17 @@ ActiveRecord::Schema.define(:version => 20111231061026) do
   create_table "payments", :force => true do |t|
     t.integer  "order_id"
     t.integer  "payment_method_id"
-    t.string   "status",            :default => "paid", :null => false
-    t.float    "total",             :default => 0.0,    :null => false
+    t.string   "status",             :default => "paid", :null => false
+    t.float    "total",              :default => 0.0,    :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "number"
+    t.integer  "month"
+    t.integer  "year"
+    t.string   "verification_value"
   end
 
-  create_table "piggybak_products", :force => true do |t|
+  create_table "products", :force => true do |t|
     t.string  "sku",                                    :null => false
     t.string  "description",                            :null => false
     t.float   "price",                                  :null => false

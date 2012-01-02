@@ -2,9 +2,7 @@
 # See github.com/sferik/rails_admin for more informations
 
 RailsAdmin.config do |config|
-  config.authorize_with do
-    redirect_to "/" unless current_user && current_user.roles.include?(Role.find_by_name("admin"))
-  end
+  config.authorize_with :cancan
 
   # If your default_local is different from :en, uncomment the following 2 lines and set your default locale here:
   # require 'i18n'
@@ -77,7 +75,14 @@ RailsAdmin.config do |config|
   # All fields marked as 'hidden' won't be shown anywhere in the rails_admin unless you mark them as visible. (visible(true))
 
   config.model Page do
+    list do
+      field :title
+      field :slug
+      field :updated_at
+    end
     edit do
+      field :title
+      field :slug
       field :content, :text do
         ckeditor true
       end
@@ -90,13 +95,24 @@ RailsAdmin.config do |config|
       field :description
       field :main
       field :categories
-      field :user do 
-        read_only true
-      end
+      field :user 
       field :breed_list
       field :color_list
       field :style_list
       include_all_fields
+    end
+  end
+  config.model Category do
+    list do
+      field :title
+      field :slug
+    end
+    edit do
+      field :title
+      field :slug
+      field :description, :text do
+        ckeditor true
+      end
     end
   end
 end

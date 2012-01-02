@@ -6,6 +6,11 @@ class CreateImages < ActiveRecord::Migration
       t.text :description
       t.references :user, :null => false
 
+      t.string :gallery_file_name
+      t.string :gallery_content_type
+      t.string :gallery_file_size
+      t.datetime :gallery_updated_at
+
       t.string :main_file_name
       t.string :main_content_type
       t.string :main_file_size

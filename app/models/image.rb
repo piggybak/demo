@@ -1,7 +1,6 @@
 class Image < ActiveRecord::Base
-  has_attached_file :main, :styles => { :mini => '80x80x', 
-                                        :thumb => "208x208>",
-                                        :large => "608x608>" }
+  has_attached_file :gallery, :styles => { :thumb => '288x140' }
+  has_attached_file :main, :styles => { :large => "608x408>" }
 
   validates_presence_of :title
   validates_presence_of :slug

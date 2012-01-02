@@ -7,6 +7,8 @@ Shopstock::Application.routes.draw do
   root :to => 'home#index'
   
   match 'image/:id' => 'image#show', :as => :image
+  match 'cat/:id' => 'category#show', :as => :category
+  match ':slug' => 'page#show'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

@@ -74,6 +74,7 @@ GEM
     braintree (2.13.1)
       builder (>= 2.0.0)
     builder (3.0.0)
+    cancan (1.6.7)
     ckeditor (3.6.3)
       mime-types (~> 1.16)
       orm_adapter (~> 0.0.5)
@@ -185,6 +186,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts-as-taggable-on
+  cancan
   ckeditor
   coffee-rails (~> 3.1.1)
   devise

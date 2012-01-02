@@ -18,15 +18,14 @@
 				</div><!--#logo-->
 				<div id="nav" class="eight columns">
 					<ul id="topnav" class="sf-menu">
-						<li class="current"><a href="#">Shop</a>
+						<li class="current"><a href="/">Shop</a>
 							<ul>
+								<%= Category.all.each do |category| %>
 								<li><a href="#">Category 1</a></li>
-								<li><a href="#">Category 2</a></li>
-								<li><a href="#">Category 3</a></li>
-								<li><a href="#">Category 4</a></li>
+								<% end -%>
 							</ul>
 						</li>
-						<li><a href="#">About</a></li>
+						<li><a href="/about/">About</a></li>
 						<% if current_user -%>
 						<% if current_user.roles.size > 0 -%>
 						<li>
@@ -64,18 +63,6 @@
 		</div><!--container-->
 	</div><!--#wrapper-beforeheader-->
 	
-	<div id="wrapper-header" class="inner">
-		<div class="container">
-			<div id="header" class="twelve columns">
-				<div id="header-text">
-					<h1>Pellentesque volutpat tempor imperdiet. Duis sit amet purus vel est auctor dignissim.</h1>
-					<p>Suspendisse ullamcorper volutpat luctus. Nunc eget purus lectus. Duis fringilla luctus ipsum id molestie. Aliquam erat volutpat. Sed luctus congue auctor. Integer tempus mi eu ipsum pellentesque non eleifend odio tincidunt. Vivamus aliquam tincidunt ornare. Curabitur condimentum augue et risus tincidunt vel.</p>
-				</div><!-- #header-text -->
-			</div><!--#header-->
-		</div><!--container-->
-	</div><!--#wrapper-header-->
-	
-	
 	<div id="wrapper-content">
 		<div class="container">
 			<div id="content" class="twelve columns">
@@ -87,7 +74,7 @@
 	<div id="wrapper-beforefooter">
 		<div class="container">
 			<div id="slogantext" class="twelve columns">
-				“Fusce id purus purus, commodo accumsan arcu. <span class="colortext">Maecenas mattis massa</span> in elit imperdiet interdum. Aenean ultricies augue sit amet sapien posuere sodales. Sed et nunc id nulla pretium orci.”
+				We sell photos.
 			</div><!--#slogantext-->
 		</div><!--container-->
 	</div><!--#wrapper-beforefooter-->
@@ -95,12 +82,11 @@
 	<div id="wrapper-footer">
 		<div class="container">
 		<div id="footer" class="twelve columns">
-			<span id="copyright">Copyright &copy;2011 Seven Wonders.  All Rights Reserved.</span>
+			<span id="copyright">Copyright &copy;<%= Time.now.year.to_s %> Steph Skardal.  All Rights Reserved.</span>
 			<ul id="footnav">
-				<li><a href="#" >Link 1</a></li>
-				<li><a href="#" >Link 2</a></li>
-				<li><a href="#" >Link 3</a></li>
-				<li><a href="#" >Link 4</a></li>
+				<% Page.all.each do |page| -%>
+				<li><%= link_to page.title, "/#{page.slug}/" %></li>
+				<% end -%>
 			</ul><!-- #footnav -->
 		</div><!--#footer-->
 		</div><!--container-->

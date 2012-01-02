@@ -12,6 +12,7 @@ gem 'therubyracer'
 gem 'paperclip'
 gem 'devise'
 gem 'acts-as-taggable-on'
+gem 'cancan'
 
 group :assets do
   gem 'sass-rails',   '~> 3.1.5'

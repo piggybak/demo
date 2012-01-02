@@ -1,4 +1,3 @@
-<h1 class="pagetitle"><%= @image.title %></h1>
 <div id="portfolio-gallery" class="eight columns alpha">
 	<div id="frame-slider-portfolio" >
 		<ul id="sliderportfolio">
@@ -13,6 +12,7 @@
 </div> 
 
 <div class="four columns omega">
+	<h1 class="pagetitle"><%= @image.title %></h1>
 	<p><%= @image.description %></p>
 	<p>
 		<strong>Photographer</strong><br />
@@ -20,6 +20,7 @@
 	</p>
 	<div class="clienturl">
 		<strong>Options</strong><br />
+		<%= cart_form(@image) %>
 	</div>							 
 </div>
 
