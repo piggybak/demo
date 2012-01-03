@@ -337,6 +337,8 @@ code {
 
 /* form & button */
 form{margin:0; padding:0;}
+input[type="email"],
+input[type="password"],
 input[type="text"],
 textarea {
 	padding: 6px;
@@ -616,3 +618,25 @@ h2.active {background-position: left bottom;}
 #footnav li a, #footnav li a:visited {color:#8c8c8c;}
 #footnav li.current a{color:#8e8e8e;}
 
+.item {
+  margin: 0px; 
+  padding: 0px 0px 3px 0px;
+  label { display: inline-block; width: 120px; } 
+  input, select { 
+	display: inline-block;
+	color: #999;
+	width: 200px;
+	background: #FFF;
+	border: 1px solid #E6E6E6;  
+	padding: 4px;
+	font-size: 11px;
+  }  
+  .readonly { background: #E6E6E6; }
+  .field_with_errors {
+	display: inline-block; 
+	label { display: inline-block; width: 120px; } 
+    input, select {
+      background-color: #d3f4f4;
+    }
+  } 
+}
