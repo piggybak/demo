@@ -21,4 +21,4 @@ user_steph.roles << role_admin
 
 puts "Generating sample products"
 image_sample = Image.create! :title => "Sample Image", :slug => "sample-image", :user => user_steph
-product_sample = Piggybak::Product.create! :sku => "1", :description => "Sample Product", :price => 19.99, :item => image_sample
+product_sample = Piggybak::Product.create! :sku => "1", :description => "Sample Product", :price => 19.99, :item => image_sample, :quantity => 9, :active => true
