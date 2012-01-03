@@ -20,6 +20,4 @@ group :assets do
 end
 
 gem 'jquery-rails'
-
-source "http://rubygems.org"
-gem "piggybak", :path => "./piggybak/"
+gem "piggybak", :git => "git://github.com/stephskardal/piggybak.git"

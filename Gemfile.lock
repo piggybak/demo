@@ -14,8 +14,9 @@ GIT
       rails (~> 3.1)
       remotipart (~> 1.0)
 
-PATH
-  remote: ./piggybak/
+GIT
+  remote: git://github.com/stephskardal/piggybak.git
+  revision: 89f54780af77ac9c1df7999653d14f7c6bf83202
   specs:
     piggybak (0.1.0)
       activemerchant
@@ -23,7 +24,6 @@ PATH
       rails_admin
 
 GEM
-  remote: http://rubygems.org/
   remote: http://rubygems.org/
   specs:
     actionmailer (3.1.3)
