@@ -14,11 +14,10 @@ GIT
       rails (~> 3.1)
       remotipart (~> 1.0)
 
-GIT
-  remote: git://github.com/stephskardal/piggybak.git
-  revision: c20a9bf223e6a1e1f24f3d72e34e5fc5e26c2ac1
+PATH
+  remote: ../piggybak
   specs:
-    piggybak (0.1.0)
+    piggybak (0.1.1)
       activemerchant
       devise
       rails_admin

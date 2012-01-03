@@ -16,3 +16,7 @@
 sevenwonders-html/
 *.swp
 public/system/
+pgsql/
+rails_admin/
+httpd/
+config/database.yml
