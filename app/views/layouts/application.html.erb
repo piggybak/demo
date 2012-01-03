@@ -27,6 +27,11 @@
 						</li>
 						<li><a href="/about/">About</a></li>
 						<% if current_user -%>
+						<% if current_user.piggybak_orders.any? -%>
+						<li>
+							<%= orders_link("Order History") %>
+						</li>
+						<% end -%>
 						<% if current_user.roles.size > 0 -%>
 						<li>
 							<%= link_to 'ADMIN', "/admin" %>

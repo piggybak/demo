@@ -34,10 +34,10 @@
     float: right;
     small { display: block; font-weight: normal; }
   }
-  p {
+  .item {
     margin: 0px; 
     padding: 0px 0px 3px 0px;
-    label { display: inline-block; width: 40%; } 
+    label { display: inline-block; width: 100px; } 
     input, select { 
       display: inline-block;
       color: #999;
@@ -48,6 +48,10 @@
       font-size: 11px;
     } 
     .readonly { background: #E6E6E6; }
+    .field_with_errors {
+      display: inline-block; 
+      label { display: inline-block; width: 100px; } 
+    }
   }
   #billing_address, #shipping_address,
   #totals_section, #add_details {
@@ -77,9 +81,10 @@
   }
 }
 
-#receipt {
+#receipt, #list_orders {
   h3 { margin: 20px 0px 0px 0px; }
   #items { float: right; width: 400px; }
+  h2 { clear: both; margin-top: 30px; }
 }
 
 #single_image .title { margin-top: 50px; }
