@@ -13,6 +13,6 @@ Image.delete_all
 puts "Generating roles"
 Role.create([{ :name => "admin" }])
 
-User.create([{ :email => 'steph@endpoint.com', :password => 'foobar', :password_confirmation => 'foobar'}])
+User.create([{ :email => 'steph@endpoint.com', :password => 'foobar', :password_confirmation => 'foobar', :display_name => "Steph Skardal"}])
 
 User.first.roles << Role.first
