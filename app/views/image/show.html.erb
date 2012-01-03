@@ -16,12 +16,14 @@
 	<p><%= @image.description %></p>
 	<p>
 		<strong>Photographer</strong><br />
-		<%#= @image.user %>
+		<%= @image.user.display_name %>
 	</p>
-	<div class="clienturl">
-		<strong>Options</strong><br />
+	<div id="cart_form">
+		<strong>Buy a Print!</strong>
 		<%= cart_form(@image) %>
 	</div>							 
 </div>
 
 <div class="clear"></div>
+
+<%= debug(@related_products) %>

@@ -18,10 +18,10 @@ ActiveRecord::Schema.define(:version => 20120102164229) do
     t.string   "address1",   :null => false
     t.string   "address2"
     t.string   "city",       :null => false
-    t.string   "state",      :null => false
     t.string   "zip",        :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "state_id"
   end
 
   create_table "categories", :force => true do |t|
@@ -69,10 +69,10 @@ ActiveRecord::Schema.define(:version => 20120102164229) do
     t.string   "phone",               :null => false
     t.float    "total",               :null => false
     t.float    "total_due",           :null => false
+    t.float    "tax_charge",          :null => false
     t.string   "status",              :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.float    "tax_charge"
   end
 
   create_table "pages", :force => true do |t|
@@ -186,13 +186,13 @@ ActiveRecord::Schema.define(:version => 20120102164229) do
     t.string "name"
   end
 
-  create_table "tax_charge_values", :force => true do |t|
-    t.integer "tax_charge_id"
+  create_table "tax_method_values", :force => true do |t|
+    t.integer "tax_method_id"
     t.string  "key"
     t.string  "value"
   end
 
-  create_table "tax_charges", :force => true do |t|
+  create_table "tax_methods", :force => true do |t|
     t.string  "description",                    :null => false
     t.string  "klass",                          :null => false
     t.boolean "active",      :default => false, :null => false

@@ -89,6 +89,12 @@ RailsAdmin.config do |config|
     end
   end
   config.model Image do
+    list do
+      field :title
+      field :slug
+      field :gallery
+      field :user
+    end
     edit do
       field :title
       field :slug
@@ -113,6 +119,13 @@ RailsAdmin.config do |config|
       field :description, :text do
         ckeditor true
       end
+      field :images
+    end
+  end
+  config.model User do
+    list do
+      field :email
+      field :display_name
     end
   end
 end

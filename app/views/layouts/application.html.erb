@@ -20,8 +20,8 @@
 					<ul id="topnav" class="sf-menu">
 						<li class="current"><a href="/">Shop</a>
 							<ul>
-								<%= Category.all.each do |category| %>
-								<li><a href="#">Category 1</a></li>
+								<% Category.all.each do |category| %>
+								<li><%= link_to category.title, category_url(category.slug) %></li>
 								<% end -%>
 							</ul>
 						</li>
@@ -51,7 +51,9 @@
 		<div class="container">
 			<div id="sn" class="six columns">
 				<ul>
-					<li><a href="#">Cart</a></li>
+					<li id="cart_link">
+						<%= cart_link %>
+					</li>
 				</ul>
 			</div><!--#sn-->
 			<div id="toptext" class="six columns">
