@@ -6,7 +6,6 @@ gem 'rails_admin', :git => 'git://github.com/sferik/rails_admin.git'
 gem 'pg'
 gem 'json'
 gem 'ckeditor'
-gem 'piggybak', :path => "./piggybak"
 gem 'execjs'
 gem 'therubyracer'
 gem 'paperclip'
@@ -21,3 +20,6 @@ group :assets do
 end
 
 gem 'jquery-rails'
+
+source "http://rubygems.org"
+gem "piggybak", :path => "./piggybak/"
