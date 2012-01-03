@@ -59,7 +59,7 @@ ActiveRecord::Schema.define(:version => 20120103020930) do
     t.integer "order_id",   :null => false
     t.integer "quantity",   :null => false
     t.integer "product_id", :null => false
-    t.float   "total"
+    t.decimal "total"
   end
 
   create_table "orders", :force => true do |t|
@@ -68,9 +68,9 @@ ActiveRecord::Schema.define(:version => 20120103020930) do
     t.integer  "user_id"
     t.string   "email",               :null => false
     t.string   "phone",               :null => false
-    t.float    "total",               :null => false
-    t.float    "total_due",           :null => false
-    t.float    "tax_charge",          :null => false
+    t.decimal  "total",               :null => false
+    t.decimal  "total_due",           :null => false
+    t.decimal  "tax_charge",          :null => false
     t.string   "status",              :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -102,7 +102,7 @@ ActiveRecord::Schema.define(:version => 20120103020930) do
     t.integer  "order_id"
     t.integer  "payment_method_id"
     t.string   "status",             :default => "paid", :null => false
-    t.float    "total",              :default => 0.0,    :null => false
+    t.decimal  "total",              :default => 0.0,    :null => false
     t.string   "number"
     t.integer  "month"
     t.integer  "year"
@@ -114,7 +114,7 @@ ActiveRecord::Schema.define(:version => 20120103020930) do
   create_table "products", :force => true do |t|
     t.string  "sku",                                    :null => false
     t.string  "description",                            :null => false
-    t.float   "price",                                  :null => false
+    t.decimal "price",                                  :null => false
     t.integer "quantity",            :default => 0,     :null => false
     t.integer "item_id",                                :null => false
     t.string  "item_type",                              :null => false
@@ -148,7 +148,7 @@ ActiveRecord::Schema.define(:version => 20120103020930) do
     t.integer  "order_id",                              :null => false
     t.integer  "shipping_method_id",                    :null => false
     t.string   "status",             :default => "new", :null => false
-    t.float    "total",              :default => 0.0,   :null => false
+    t.decimal  "total",              :default => 0.0,   :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

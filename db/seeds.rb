@@ -9,10 +9,16 @@
 User.delete_all
 Role.delete_all
 Image.delete_all
+Piggybak::Product.delete_all
 
 puts "Generating roles"
-Role.create([{ :name => "admin" }])
+role_admin = Role.create :name => "admin"
 
-User.create([{ :email => 'steph@endpoint.com', :password => 'foobar', :password_confirmation => 'foobar', :display_name => "Steph Skardal"}])
+user_steph = User.create! :email => 'steph@endpoint.com', :password => 'foobar', :password_confirmation => 'foobar', :display_name => "Steph Skardal"
+user_steph.roles << role_admin
 
-User.first.roles << Role.first
+
+
+puts "Generating sample products"
+image_sample = Image.create! :title => "Sample Image", :slug => "sample-image", :user => user_steph
+product_sample = Piggybak::Product.create! :sku => "1", :description => "Sample Product", :price => 19.99, :item => image_sample
