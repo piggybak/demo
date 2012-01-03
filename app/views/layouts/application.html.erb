@@ -14,11 +14,11 @@
 		<div class="container">
 			<div id="top">
 				<div id="logo" class="four columns">
-					<%= link_to image_tag("logo.png"), root_path %>
+					<%= link_to image_tag("logo2.png"), root_path %>
 				</div><!--#logo-->
 				<div id="nav" class="eight columns">
 					<ul id="topnav" class="sf-menu">
-						<li class="current"><a href="/">Shop</a>
+						<li><a href="/">Shop</a>
 							<ul>
 								<% Category.all.each do |category| %>
 								<li><%= link_to category.title, category_url(category.slug) %></li>
@@ -76,7 +76,7 @@
 	<div id="wrapper-beforefooter">
 		<div class="container">
 			<div id="slogantext" class="twelve columns">
-				We sell photos.
+				This is a demo website. The photos here are not for sale and they are property of Steph Skardal.
 			</div><!--#slogantext-->
 		</div><!--container-->
 	</div><!--#wrapper-beforefooter-->
