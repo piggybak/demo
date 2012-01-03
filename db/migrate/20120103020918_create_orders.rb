@@ -8,12 +8,14 @@ class CreateOrders < ActiveRecord::Migration
       t.string :email, :null => false
       t.string :phone, :null => false
 
-      t.float :total, :null => false, :scale => 2
-      t.float :total_due, :null => false, :scale => 2
-      t.float :tax_charge, :null => false, :scale => 2
+      t.float :total, :null => false
+      t.float :total_due, :null => false
+      t.float :tax_charge, :null => false
       t.string :status, :null => false
 
       t.timestamps
     end
   end
 end
+
+# Note: To force precision, alter column type in database console
