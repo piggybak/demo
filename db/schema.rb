@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120103020930) do
+ActiveRecord::Schema.define(:version => 20120104101509) do
 
   create_table "addresses", :force => true do |t|
     t.string   "firstname",  :null => false
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(:version => 20120103020930) do
     t.string   "address2"
     t.string   "city",       :null => false
     t.integer  "state_id",   :null => false
+    t.integer  "country_id", :null => false
     t.string   "zip",        :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -38,11 +39,16 @@ ActiveRecord::Schema.define(:version => 20120103020930) do
     t.integer "image_id"
   end
 
+  create_table "countries", :force => true do |t|
+    t.string "name"
+    t.string "abbr"
+  end
+
   create_table "images", :force => true do |t|
-    t.string   "title",                :null => false
-    t.string   "slug",                 :null => false
+    t.string   "title",                                   :null => false
+    t.string   "slug",                                    :null => false
     t.text     "description"
-    t.integer  "user_id",              :null => false
+    t.integer  "user_id",                                 :null => false
     t.string   "gallery_file_name"
     t.string   "gallery_content_type"
     t.string   "gallery_file_size"
@@ -51,6 +57,7 @@ ActiveRecord::Schema.define(:version => 20120103020930) do
     t.string   "main_content_type"
     t.string   "main_file_size"
     t.datetime "main_updated_at"
+    t.boolean  "is_featured",          :default => false, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
