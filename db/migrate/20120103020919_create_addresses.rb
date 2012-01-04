@@ -9,7 +9,6 @@ class CreateAddresses < ActiveRecord::Migration
       t.references :state, :null => false
       t.references :country, :null => false
       t.string :zip, :null => false
-
       t.timestamps
     end
   end

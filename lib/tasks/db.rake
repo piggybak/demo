@@ -4,12 +4,13 @@ namespace :db do
   task :rebuild => [
     'environment',
     'db:no_production_check',
-    'resque:kill',
+    'camps:restart',
     'db:drop',
     'db:create',
     'db:migrate',
     'db:seed',
     'tmp:clear',
+    'camps:restart'
   ]
 
   task :no_production_check do

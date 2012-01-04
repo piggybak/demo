@@ -12,7 +12,8 @@ class Ability
                     ::Piggybak::ShippingMethod,
                     ::Piggybak::PaymentMethod,
                     ::Piggybak::TaxMethod,
-                    ::Piggybak::State]
+                    ::Piggybak::State,
+                    ::Piggybak::Country]
 
       # can't delete orders
       can [:read, :create, :update, :history, :export], ::Piggybak::Order
