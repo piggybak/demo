@@ -1,4 +1,4 @@
-Shopstock::Application.routes.draw do
+Demo::Application.routes.draw do
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
   mount Piggybak::Engine => '/checkout', :as => 'piggybak'
 

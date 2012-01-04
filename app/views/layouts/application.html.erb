@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Shop Stock</title>
+  <title><%= @title || "Piggybak Demo" %></title>
   <%= stylesheet_link_tag    "application" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
@@ -62,8 +62,18 @@
 				</ul>
 			</div><!--#sn-->
 			<div id="toptext" class="six columns">
+				<% if params[:controller] == "home" %>
+                <span>Hi There!  Welcome to the Piggybak demo</span>
+				<% elsif params[:controller] == "image" -%>
+				<div id="breadcrumb">
+					<%= link_to "Home", root_url %> &raquo;
+					<% if @image.categories.any? -%>
+					<%= link_to @image.categories.first.title, category_url(@image.categories.first.slug) %> &raquo;
+					<% end -%>
+					<%= @image.title %>
+					</div>
+				<% end -%>
 				<% if false -%>
-				<div id="breadcrumb"><a href="index.html">Home</a>  &raquo; <a href="#">Portfolio</a> &raquo; Portfolio Four Column</div>
 				<% end -%>
 			</div><!--#toptext-->
 			<div class="clearfix"></div>
@@ -81,7 +91,7 @@
 	<div id="wrapper-beforefooter">
 		<div class="container">
 			<div id="slogantext" class="twelve columns">
-				This is a demo website. The photos here are not for sale. All photos &copy; Steph Skardal.
+				This is a demo website. The photos here are not actually for sale. All photos &copy; Steph Skardal.
 			</div><!--#slogantext-->
 		</div><!--container-->
 	</div><!--#wrapper-beforefooter-->

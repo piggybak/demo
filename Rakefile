@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Shopstock::Application.load_tasks
+Demo::Application.load_tasks

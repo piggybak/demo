@@ -16,6 +16,8 @@ class CreateImages < ActiveRecord::Migration
       t.string :main_file_size
       t.datetime :main_updated_at
 
+      t.boolean :is_featured, :null => false, :default => false
+
       t.timestamps
     end
   end
