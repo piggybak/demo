@@ -94,7 +94,9 @@ RailsAdmin.config do |config|
     list do
       field :title
       field :slug
-      field :gallery
+      field :gallery do
+        thumb_method :cart
+      end
       field :user
     end
     edit do

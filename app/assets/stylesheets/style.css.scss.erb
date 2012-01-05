@@ -285,11 +285,22 @@ code {
 #header-text h1{font-size:24px; font-family:corbel; margin-bottom:0}
 #header-text p{margin:15px 0 0 0;}
 
-#slider-container{margin:40px 0 0 0; height:415px; position:relative; overflow:hidden;}
+#image-details { 
+  float: right;
+  width: 300px; 
+  a { 
+    font-weight: bold;
+    padding-bottom: 10px;
+    display: block;
+    font-size: 15px; 
+  }
+}
+
+#slider-container{ margin: 0px; height:395px; position:relative; overflow:hidden;}
 #slider-container.noslogantext{margin:0px 0 0 0 !important;}
 #slider-container.nonavigation{height:327px}
 
-#slider{height:327px; position:relative}
+#slider{height:327px; position:relative; width: 607px; }
 #slider img{display:none;}
 #slider .nivo-controlNav img {
 	display:inline; /* Unhide the thumbnails */
@@ -299,12 +310,14 @@ code {
 	border:solid 1px #e6e6e6;
 	padding:3px;
 }
-#slider .nivo-controlNav{position:absolute; bottom:-94px; width:786px; margin:0 auto; left:78px; overflow:hidden}
+#slider .nivo-controlNav{position:absolute; bottom:-39px; width:417px; margin:0 auto; left:78px; overflow:hidden;
+text-align: center; }
+#slider .nivo-controlNav a { margin: 0px 10px; }
 #slider .nivo-control img{width:70px; height:50px;}
 #slider .nivo-control.active img{border:solid 1px #a2a2a2;}
 
 .opacity-top{position:absolute; top:0; background:url(<%= image_path "opacity_frame_slider.png" %>) repeat; width:940px; height:10px; z-index:10}
-.opacity-bottom{ position:absolute; bottom:88px !important; background:url(<%= image_path "opacity_frame_slider.png" %>) repeat; width:940px; height:10px; z-index:10}
+.opacity-bottom{ position:absolute; bottom:68px !important; background:url(<%= image_path "opacity_frame_slider.png" %>) repeat; width:940px; height:10px; z-index:10}
 #slider-container.nonavigation .opacity-bottom{bottom:0px !important; }
 
 #slogantext{font-size:17px; font-family:Georgia, "Times New Roman", Times, serif; font-style:italic; text-align:center; }

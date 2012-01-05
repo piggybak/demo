@@ -2,23 +2,20 @@
 <h1><span class="f-left"></span><span class="titletext">Featured Products</span><span class="f-right"></span></h1>
 </div>
 
-<div id="ts-display-portfolio">
-<ul id="ts-display-pf-col-3">
-	<% @images.each do |image| %>
-	<li class="four columns alpha">
-		<div class="ts-display-pf-img">
-			<%= link_to image_tag(image.gallery.url(:thumb)), image_url(image.slug) %>
-		</div>
-		<div class="ts-display-pf-text">
-			<h3 class="posttitle"><%= link_to image.title, image_url(image.slug) %></h3>
-			<% if false -%><p>Additional Details here</p><% end -%>
-		</div>
-		<div class="ts-display-clear"></div>
-	</li>
-	<% end -%>
-</ul>
-<div class="clearfix"></div>
-</div><!-- end #ts-display-portfolio -->
+<div id="image-details">
+	<%= link_to @images.first.title, image_url(@images.first.slug) %>
+	<p><%= @images.first.description %></p>
+</div>
+
+<div id="slider-container">
+	<span class="opacity-top"></span>
+	<div id="slider">
+		<% @images.each do |image| %>
+		<a data-title="<%= image.title %>" data-desc="<%= image.description %>" href="<%= image_url(image.slug) %>"><%= image_tag(image.main.url) %></a>
+		<% end -%>
+	</div><!-- #slider -->
+	<span class="opacity-bottom"></span>
+</div><!-- #slider-container -->
 
 <div class="clearfix"></div>
 
