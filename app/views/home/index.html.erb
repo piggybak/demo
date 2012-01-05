@@ -8,13 +8,13 @@
 </div>
 
 <div id="slider-container">
-	<span class="opacity-top"></span>
+	<div id="slider-wrapper">
 	<div id="slider">
 		<% @images.each do |image| %>
 		<a data-title="<%= image.title %>" data-desc="<%= image.description %>" href="<%= image_url(image.slug) %>"><%= image_tag(image.main.url) %></a>
 		<% end -%>
 	</div><!-- #slider -->
-	<span class="opacity-bottom"></span>
+	</div>
 </div><!-- #slider-container -->
 
 <div class="clearfix"></div>
@@ -42,4 +42,3 @@
 </div><!-- end #ts-display-portfolio -->
 
 <div class="clearfix"></div>
-
