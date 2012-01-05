@@ -75,6 +75,7 @@ RailsAdmin.config do |config|
   # All fields marked as 'hidden' won't be shown anywhere in the rails_admin unless you mark them as visible. (visible(true))
 
   config.model Page do
+    parent Image
     list do
       field :title
       field :slug
@@ -89,6 +90,7 @@ RailsAdmin.config do |config|
     end
   end
   config.model Image do
+    navigation_label "Demo Application"
     list do
       field :title
       field :slug
@@ -109,6 +111,7 @@ RailsAdmin.config do |config|
     end
   end
   config.model Category do
+    parent Image
     list do
       field :title
       field :slug
@@ -123,9 +126,13 @@ RailsAdmin.config do |config|
     end
   end
   config.model User do
+    parent Image
     list do
       field :email
       field :display_name
     end
+  end
+  config.model Role do
+    parent Image
   end
 end

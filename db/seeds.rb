@@ -9,7 +9,7 @@
 User.delete_all
 Role.delete_all
 Image.delete_all
-Piggybak::Product.delete_all
+Piggybak::Variant.delete_all
 
 puts "Generating roles"
 role_admin = Role.create :name => "admin"
@@ -19,6 +19,6 @@ user_steph.roles << role_admin
 
 
 
-puts "Generating sample products"
+puts "Generating sample variants"
 image_sample = Image.create! :title => "Sample Image", :slug => "sample-image", :user => user_steph
-product_sample = Piggybak::Product.create! :sku => "1", :description => "Sample Product", :price => 19.99, :item => image_sample, :quantity => 9, :active => true
+product_sample = Piggybak::Variant.create! :sku => "1", :description => "Sample Variant", :price => 19.99, :item => image_sample, :quantity => 9, :active => true

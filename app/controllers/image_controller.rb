@@ -11,9 +11,9 @@ class ImageController < ApplicationController
       end
     else
       if @image.categories.any?
-        @related_products = @image.categories.first.images.select { |p| p != @image }[0..2]
+        @related_images = @image.categories.first.images.select { |p| p != @image }[0..2]
       else
-        @related_products = []
+        @related_images = []
       end
     end
   end

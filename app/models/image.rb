@@ -12,5 +12,5 @@ class Image < ActiveRecord::Base
 
   acts_as_taggable_on :breeds, :colors, :styles
 
-  acts_as_product
+  acts_as_variant
 end

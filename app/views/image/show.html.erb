@@ -27,14 +27,14 @@
 	
 	<div class="clear"></div>
 
-	<% if @related_products.any? -%>	
+	<% if @related_images.any? -%>	
 	<div class="title">
-	<h1><span class="f-left"></span><span class="titletext">Related Products</span><span class="f-right"></span></h1>
+	<h1><span class="f-left"></span><span class="titletext">Related images</span><span class="f-right"></span></h1>
 	</div>
 	
 	<div id="ts-display-portfolio">
 	<ul id="ts-display-pf-col-3">
-		<% @related_products.each do |image| %>
+		<% @related_images.each do |image| %>
 		<li class="four columns alpha">
 			<div class="ts-display-pf-img">
 				<%= link_to image_tag(image.gallery.url(:thumb)), image_url(image.slug) %>

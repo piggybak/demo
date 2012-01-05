@@ -8,7 +8,7 @@ class Ability
                     Page,
                     Role,
                     User,
-                    ::Piggybak::Product,
+                    ::Piggybak::Variant,
                     ::Piggybak::ShippingMethod,
                     ::Piggybak::PaymentMethod,
                     ::Piggybak::TaxMethod,
@@ -16,7 +16,7 @@ class Ability
                     ::Piggybak::Country]
 
       # can't delete orders
-      can [:read, :create, :update, :history, :export], ::Piggybak::Order
+      can [:email, :download, :read, :create, :update, :history, :export], ::Piggybak::Order
     end
   end
 end

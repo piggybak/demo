@@ -20,7 +20,6 @@ ActiveRecord::Schema.define(:version => 20120104020930) do
     t.string   "address2"
     t.string   "city",       :null => false
     t.integer  "state_id",   :null => false
-    t.integer  "country_id", :null => false
     t.string   "zip",        :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -57,9 +56,9 @@ ActiveRecord::Schema.define(:version => 20120104020930) do
     t.string   "main_content_type"
     t.string   "main_file_size"
     t.datetime "main_updated_at"
-    t.boolean  "is_featured",          :default => false, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "is_featured",          :default => false, :null => false
   end
 
   create_table "line_items", :force => true do |t|
