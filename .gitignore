@@ -15,7 +15,7 @@
 /tmp
 sevenwonders-html/
 *.swp
-public/system/
+# public/system/
 pgsql/
 rails_admin/
 httpd/
