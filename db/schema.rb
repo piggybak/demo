@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120104020930) do
+ActiveRecord::Schema.define(:version => 20120106010846) do
 
   create_table "addresses", :force => true do |t|
     t.string   "firstname",  :null => false
@@ -19,10 +19,11 @@ ActiveRecord::Schema.define(:version => 20120104020930) do
     t.string   "address1",   :null => false
     t.string   "address2"
     t.string   "city",       :null => false
-    t.integer  "state_id",   :null => false
+    t.string   "state_id",   :null => false
     t.string   "zip",        :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "country_id"
   end
 
   create_table "categories", :force => true do |t|
@@ -41,6 +42,15 @@ ActiveRecord::Schema.define(:version => 20120104020930) do
   create_table "countries", :force => true do |t|
     t.string "name"
     t.string "abbr"
+  end
+
+  create_table "credits", :force => true do |t|
+    t.integer  "order_id"
+    t.string   "source_type"
+    t.integer  "source_id"
+    t.decimal  "total"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "images", :force => true do |t|
@@ -64,7 +74,7 @@ ActiveRecord::Schema.define(:version => 20120104020930) do
   create_table "line_items", :force => true do |t|
     t.integer "order_id",   :null => false
     t.integer "quantity",   :null => false
-    t.integer "product_id", :null => false
+    t.integer "variant_id", :null => false
     t.decimal "total"
   end
 
@@ -115,17 +125,7 @@ ActiveRecord::Schema.define(:version => 20120104020930) do
     t.string   "verification_value"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "products", :force => true do |t|
-    t.string  "sku",                                    :null => false
-    t.string  "description",                            :null => false
-    t.decimal "price",                                  :null => false
-    t.integer "quantity",            :default => 0,     :null => false
-    t.integer "item_id",                                :null => false
-    t.string  "item_type",                              :null => false
-    t.boolean "active",              :default => false, :null => false
-    t.boolean "unlimited_inventory", :default => false, :null => false
+    t.string   "transaction_id"
   end
 
   create_table "rails_admin_histories", :force => true do |t|
@@ -172,8 +172,8 @@ ActiveRecord::Schema.define(:version => 20120104020930) do
   end
 
   create_table "states", :force => true do |t|
-    t.string  "name"
     t.string  "abbr"
+    t.string  "name"
     t.integer "country_id"
   end
 
@@ -224,5 +224,16 @@ ActiveRecord::Schema.define(:version => 20120104020930) do
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+
+  create_table "variants", :force => true do |t|
+    t.string  "sku",                                    :null => false
+    t.string  "description",                            :null => false
+    t.decimal "price",                                  :null => false
+    t.integer "quantity",            :default => 0,     :null => false
+    t.integer "item_id",                                :null => false
+    t.string  "item_type",                              :null => false
+    t.boolean "active",              :default => false, :null => false
+    t.boolean "unlimited_inventory", :default => false, :null => false
+  end
 
 end
