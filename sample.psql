@@ -1,0 +1,6408 @@
+--
+-- PostgreSQL database dump
+--
+
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = off;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET escape_string_warning = off;
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: addresses; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE TABLE addresses (
+    id integer NOT NULL,
+    firstname character varying(255) NOT NULL,
+    lastname character varying(255) NOT NULL,
+    address1 character varying(255) NOT NULL,
+    address2 character varying(255),
+    city character varying(255) NOT NULL,
+    state_id character varying(255) NOT NULL,
+    zip character varying(255) NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    country_id integer
+);
+
+
+ALTER TABLE public.addresses OWNER TO zone;
+
+--
+-- Name: addresses_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+--
+
+CREATE SEQUENCE addresses_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.addresses_id_seq OWNER TO zone;
+
+--
+-- Name: addresses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+--
+
+ALTER SEQUENCE addresses_id_seq OWNED BY addresses.id;
+
+
+--
+-- Name: addresses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+--
+
+SELECT pg_catalog.setval('addresses_id_seq', 40, true);
+
+
+--
+-- Name: categories; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE TABLE categories (
+    id integer NOT NULL,
+    title character varying(255),
+    slug character varying(255),
+    description text,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.categories OWNER TO zone;
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+--
+
+CREATE SEQUENCE categories_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.categories_id_seq OWNER TO zone;
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+--
+
+ALTER SEQUENCE categories_id_seq OWNED BY categories.id;
+
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+--
+
+SELECT pg_catalog.setval('categories_id_seq', 3, true);
+
+
+--
+-- Name: categories_images; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE TABLE categories_images (
+    category_id integer,
+    image_id integer
+);
+
+
+ALTER TABLE public.categories_images OWNER TO zone;
+
+--
+-- Name: countries; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE TABLE countries (
+    id integer NOT NULL,
+    name character varying(255),
+    abbr character varying(255)
+);
+
+
+ALTER TABLE public.countries OWNER TO zone;
+
+--
+-- Name: countries_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+--
+
+CREATE SEQUENCE countries_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.countries_id_seq OWNER TO zone;
+
+--
+-- Name: countries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+--
+
+ALTER SEQUENCE countries_id_seq OWNED BY countries.id;
+
+
+--
+-- Name: countries_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+--
+
+SELECT pg_catalog.setval('countries_id_seq', 421, true);
+
+
+--
+-- Name: credits; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE TABLE credits (
+    id integer NOT NULL,
+    order_id integer,
+    source_type character varying(255),
+    source_id integer,
+    total numeric,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.credits OWNER TO zone;
+
+--
+-- Name: credits_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+--
+
+CREATE SEQUENCE credits_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.credits_id_seq OWNER TO zone;
+
+--
+-- Name: credits_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+--
+
+ALTER SEQUENCE credits_id_seq OWNED BY credits.id;
+
+
+--
+-- Name: credits_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+--
+
+SELECT pg_catalog.setval('credits_id_seq', 2, true);
+
+
+--
+-- Name: images; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE TABLE images (
+    id integer NOT NULL,
+    title character varying(255) NOT NULL,
+    slug character varying(255) NOT NULL,
+    description text,
+    user_id integer NOT NULL,
+    gallery_file_name character varying(255),
+    gallery_content_type character varying(255),
+    gallery_file_size character varying(255),
+    gallery_updated_at timestamp without time zone,
+    main_file_name character varying(255),
+    main_content_type character varying(255),
+    main_file_size character varying(255),
+    main_updated_at timestamp without time zone,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    is_featured boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE public.images OWNER TO zone;
+
+--
+-- Name: images_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+--
+
+CREATE SEQUENCE images_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.images_id_seq OWNER TO zone;
+
+--
+-- Name: images_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+--
+
+ALTER SEQUENCE images_id_seq OWNED BY images.id;
+
+
+--
+-- Name: images_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+--
+
+SELECT pg_catalog.setval('images_id_seq', 45, true);
+
+
+--
+-- Name: line_items; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE TABLE line_items (
+    id integer NOT NULL,
+    order_id integer NOT NULL,
+    quantity integer NOT NULL,
+    variant_id integer NOT NULL,
+    total numeric
+);
+
+
+ALTER TABLE public.line_items OWNER TO zone;
+
+--
+-- Name: line_items_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+--
+
+CREATE SEQUENCE line_items_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.line_items_id_seq OWNER TO zone;
+
+--
+-- Name: line_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+--
+
+ALTER SEQUENCE line_items_id_seq OWNED BY line_items.id;
+
+
+--
+-- Name: line_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+--
+
+SELECT pg_catalog.setval('line_items_id_seq', 18, true);
+
+
+--
+-- Name: orders; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE TABLE orders (
+    id integer NOT NULL,
+    billing_address_id integer NOT NULL,
+    shipping_address_id integer NOT NULL,
+    user_id integer,
+    email character varying(255) NOT NULL,
+    phone character varying(255) NOT NULL,
+    total numeric NOT NULL,
+    total_due numeric NOT NULL,
+    tax_charge numeric NOT NULL,
+    status character varying(255) NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.orders OWNER TO zone;
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+--
+
+CREATE SEQUENCE orders_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.orders_id_seq OWNER TO zone;
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+--
+
+ALTER SEQUENCE orders_id_seq OWNED BY orders.id;
+
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+--
+
+SELECT pg_catalog.setval('orders_id_seq', 15, true);
+
+
+--
+-- Name: pages; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE TABLE pages (
+    id integer NOT NULL,
+    title character varying(255),
+    slug character varying(255),
+    content text,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.pages OWNER TO zone;
+
+--
+-- Name: pages_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+--
+
+CREATE SEQUENCE pages_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.pages_id_seq OWNER TO zone;
+
+--
+-- Name: pages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+--
+
+ALTER SEQUENCE pages_id_seq OWNED BY pages.id;
+
+
+--
+-- Name: pages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+--
+
+SELECT pg_catalog.setval('pages_id_seq', 2, true);
+
+
+--
+-- Name: payment_method_values; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE TABLE payment_method_values (
+    id integer NOT NULL,
+    payment_method_id integer,
+    key character varying(255),
+    value character varying(255)
+);
+
+
+ALTER TABLE public.payment_method_values OWNER TO zone;
+
+--
+-- Name: payment_method_values_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+--
+
+CREATE SEQUENCE payment_method_values_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.payment_method_values_id_seq OWNER TO zone;
+
+--
+-- Name: payment_method_values_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+--
+
+ALTER SEQUENCE payment_method_values_id_seq OWNED BY payment_method_values.id;
+
+
+--
+-- Name: payment_method_values_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+--
+
+SELECT pg_catalog.setval('payment_method_values_id_seq', 2, true);
+
+
+--
+-- Name: payment_methods; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE TABLE payment_methods (
+    id integer NOT NULL,
+    description character varying(255) NOT NULL,
+    klass character varying(255) NOT NULL,
+    active boolean DEFAULT false NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.payment_methods OWNER TO zone;
+
+--
+-- Name: payment_methods_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+--
+
+CREATE SEQUENCE payment_methods_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.payment_methods_id_seq OWNER TO zone;
+
+--
+-- Name: payment_methods_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+--
+
+ALTER SEQUENCE payment_methods_id_seq OWNED BY payment_methods.id;
+
+
+--
+-- Name: payment_methods_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+--
+
+SELECT pg_catalog.setval('payment_methods_id_seq', 2, true);
+
+
+--
+-- Name: payments; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE TABLE payments (
+    id integer NOT NULL,
+    order_id integer,
+    payment_method_id integer,
+    status character varying(255) DEFAULT 'paid'::character varying NOT NULL,
+    total numeric DEFAULT 0.0 NOT NULL,
+    number character varying(255),
+    month integer,
+    year integer,
+    verification_value character varying(255),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    transaction_id character varying(255)
+);
+
+
+ALTER TABLE public.payments OWNER TO zone;
+
+--
+-- Name: payments_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+--
+
+CREATE SEQUENCE payments_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.payments_id_seq OWNER TO zone;
+
+--
+-- Name: payments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+--
+
+ALTER SEQUENCE payments_id_seq OWNED BY payments.id;
+
+
+--
+-- Name: payments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+--
+
+SELECT pg_catalog.setval('payments_id_seq', 14, true);
+
+
+--
+-- Name: posts; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE TABLE posts (
+    id integer NOT NULL,
+    title character varying(255) NOT NULL,
+    slug character varying(255) NOT NULL,
+    user_id integer,
+    content text,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.posts OWNER TO zone;
+
+--
+-- Name: posts_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+--
+
+CREATE SEQUENCE posts_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.posts_id_seq OWNER TO zone;
+
+--
+-- Name: posts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+--
+
+ALTER SEQUENCE posts_id_seq OWNED BY posts.id;
+
+
+--
+-- Name: posts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+--
+
+SELECT pg_catalog.setval('posts_id_seq', 4, true);
+
+
+--
+-- Name: variants; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE TABLE variants (
+    id integer NOT NULL,
+    sku character varying(255) NOT NULL,
+    description character varying(255) NOT NULL,
+    price numeric NOT NULL,
+    quantity integer DEFAULT 0 NOT NULL,
+    item_id integer NOT NULL,
+    item_type character varying(255) NOT NULL,
+    active boolean DEFAULT false NOT NULL,
+    unlimited_inventory boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE public.variants OWNER TO zone;
+
+--
+-- Name: products_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+--
+
+CREATE SEQUENCE products_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.products_id_seq OWNER TO zone;
+
+--
+-- Name: products_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+--
+
+ALTER SEQUENCE products_id_seq OWNED BY variants.id;
+
+
+--
+-- Name: products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+--
+
+SELECT pg_catalog.setval('products_id_seq', 44, true);
+
+
+--
+-- Name: rails_admin_histories; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE TABLE rails_admin_histories (
+    id integer NOT NULL,
+    message text,
+    username character varying(255),
+    item integer,
+    "table" character varying(255),
+    month smallint,
+    year bigint,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.rails_admin_histories OWNER TO zone;
+
+--
+-- Name: rails_admin_histories_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+--
+
+CREATE SEQUENCE rails_admin_histories_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.rails_admin_histories_id_seq OWNER TO zone;
+
+--
+-- Name: rails_admin_histories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+--
+
+ALTER SEQUENCE rails_admin_histories_id_seq OWNED BY rails_admin_histories.id;
+
+
+--
+-- Name: rails_admin_histories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+--
+
+SELECT pg_catalog.setval('rails_admin_histories_id_seq', 179, true);
+
+
+--
+-- Name: roles; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE TABLE roles (
+    id integer NOT NULL,
+    name character varying(255)
+);
+
+
+ALTER TABLE public.roles OWNER TO zone;
+
+--
+-- Name: roles_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+--
+
+CREATE SEQUENCE roles_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.roles_id_seq OWNER TO zone;
+
+--
+-- Name: roles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+--
+
+ALTER SEQUENCE roles_id_seq OWNED BY roles.id;
+
+
+--
+-- Name: roles_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+--
+
+SELECT pg_catalog.setval('roles_id_seq', 10, true);
+
+
+--
+-- Name: roles_users; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE TABLE roles_users (
+    role_id integer,
+    user_id integer
+);
+
+
+ALTER TABLE public.roles_users OWNER TO zone;
+
+--
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE TABLE schema_migrations (
+    version character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.schema_migrations OWNER TO zone;
+
+--
+-- Name: shipments; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE TABLE shipments (
+    id integer NOT NULL,
+    order_id integer NOT NULL,
+    shipping_method_id integer NOT NULL,
+    status character varying(255) DEFAULT 'new'::character varying NOT NULL,
+    total numeric DEFAULT 0.0 NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.shipments OWNER TO zone;
+
+--
+-- Name: shipments_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+--
+
+CREATE SEQUENCE shipments_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.shipments_id_seq OWNER TO zone;
+
+--
+-- Name: shipments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+--
+
+ALTER SEQUENCE shipments_id_seq OWNED BY shipments.id;
+
+
+--
+-- Name: shipments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+--
+
+SELECT pg_catalog.setval('shipments_id_seq', 14, true);
+
+
+--
+-- Name: shipping_method_values; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE TABLE shipping_method_values (
+    id integer NOT NULL,
+    shipping_method_id integer,
+    key character varying(255),
+    value character varying(255)
+);
+
+
+ALTER TABLE public.shipping_method_values OWNER TO zone;
+
+--
+-- Name: shipping_method_values_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+--
+
+CREATE SEQUENCE shipping_method_values_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.shipping_method_values_id_seq OWNER TO zone;
+
+--
+-- Name: shipping_method_values_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+--
+
+ALTER SEQUENCE shipping_method_values_id_seq OWNED BY shipping_method_values.id;
+
+
+--
+-- Name: shipping_method_values_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+--
+
+SELECT pg_catalog.setval('shipping_method_values_id_seq', 7, true);
+
+
+--
+-- Name: shipping_methods; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE TABLE shipping_methods (
+    id integer NOT NULL,
+    description character varying(255) NOT NULL,
+    klass character varying(255) NOT NULL,
+    active boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE public.shipping_methods OWNER TO zone;
+
+--
+-- Name: shipping_methods_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+--
+
+CREATE SEQUENCE shipping_methods_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.shipping_methods_id_seq OWNER TO zone;
+
+--
+-- Name: shipping_methods_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+--
+
+ALTER SEQUENCE shipping_methods_id_seq OWNED BY shipping_methods.id;
+
+
+--
+-- Name: shipping_methods_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+--
+
+SELECT pg_catalog.setval('shipping_methods_id_seq', 6, true);
+
+
+--
+-- Name: states; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE TABLE states (
+    id integer NOT NULL,
+    abbr character varying(255),
+    name character varying(255),
+    country_id integer
+);
+
+
+ALTER TABLE public.states OWNER TO zone;
+
+--
+-- Name: states_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+--
+
+CREATE SEQUENCE states_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.states_id_seq OWNER TO zone;
+
+--
+-- Name: states_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+--
+
+ALTER SEQUENCE states_id_seq OWNED BY states.id;
+
+
+--
+-- Name: states_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+--
+
+SELECT pg_catalog.setval('states_id_seq', 7125, true);
+
+
+--
+-- Name: taggings; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE TABLE taggings (
+    id integer NOT NULL,
+    tag_id integer,
+    taggable_id integer,
+    taggable_type character varying(255),
+    tagger_id integer,
+    tagger_type character varying(255),
+    context character varying(128),
+    created_at timestamp without time zone
+);
+
+
+ALTER TABLE public.taggings OWNER TO zone;
+
+--
+-- Name: taggings_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+--
+
+CREATE SEQUENCE taggings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.taggings_id_seq OWNER TO zone;
+
+--
+-- Name: taggings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+--
+
+ALTER SEQUENCE taggings_id_seq OWNED BY taggings.id;
+
+
+--
+-- Name: taggings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+--
+
+SELECT pg_catalog.setval('taggings_id_seq', 1, false);
+
+
+--
+-- Name: tags; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE TABLE tags (
+    id integer NOT NULL,
+    name character varying(255)
+);
+
+
+ALTER TABLE public.tags OWNER TO zone;
+
+--
+-- Name: tags_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+--
+
+CREATE SEQUENCE tags_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tags_id_seq OWNER TO zone;
+
+--
+-- Name: tags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+--
+
+ALTER SEQUENCE tags_id_seq OWNED BY tags.id;
+
+
+--
+-- Name: tags_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+--
+
+SELECT pg_catalog.setval('tags_id_seq', 1, false);
+
+
+--
+-- Name: tax_method_values; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE TABLE tax_method_values (
+    id integer NOT NULL,
+    tax_method_id integer,
+    key character varying(255),
+    value character varying(255)
+);
+
+
+ALTER TABLE public.tax_method_values OWNER TO zone;
+
+--
+-- Name: tax_method_values_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+--
+
+CREATE SEQUENCE tax_method_values_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tax_method_values_id_seq OWNER TO zone;
+
+--
+-- Name: tax_method_values_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+--
+
+ALTER SEQUENCE tax_method_values_id_seq OWNED BY tax_method_values.id;
+
+
+--
+-- Name: tax_method_values_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+--
+
+SELECT pg_catalog.setval('tax_method_values_id_seq', 2, true);
+
+
+--
+-- Name: tax_methods; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE TABLE tax_methods (
+    id integer NOT NULL,
+    description character varying(255) NOT NULL,
+    klass character varying(255) NOT NULL,
+    active boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE public.tax_methods OWNER TO zone;
+
+--
+-- Name: tax_methods_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+--
+
+CREATE SEQUENCE tax_methods_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tax_methods_id_seq OWNER TO zone;
+
+--
+-- Name: tax_methods_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+--
+
+ALTER SEQUENCE tax_methods_id_seq OWNED BY tax_methods.id;
+
+
+--
+-- Name: tax_methods_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+--
+
+SELECT pg_catalog.setval('tax_methods_id_seq', 1, true);
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE TABLE users (
+    id integer NOT NULL,
+    email character varying(255) DEFAULT ''::character varying NOT NULL,
+    encrypted_password character varying(128) DEFAULT ''::character varying NOT NULL,
+    reset_password_token character varying(255),
+    reset_password_sent_at timestamp without time zone,
+    remember_created_at timestamp without time zone,
+    sign_in_count integer DEFAULT 0,
+    current_sign_in_at timestamp without time zone,
+    last_sign_in_at timestamp without time zone,
+    current_sign_in_ip character varying(255),
+    last_sign_in_ip character varying(255),
+    display_name character varying(255) NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.users OWNER TO zone;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+--
+
+CREATE SEQUENCE users_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO zone;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+--
+
+ALTER SEQUENCE users_id_seq OWNED BY users.id;
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+--
+
+SELECT pg_catalog.setval('users_id_seq', 10, true);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+--
+
+ALTER TABLE addresses ALTER COLUMN id SET DEFAULT nextval('addresses_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+--
+
+ALTER TABLE categories ALTER COLUMN id SET DEFAULT nextval('categories_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+--
+
+ALTER TABLE countries ALTER COLUMN id SET DEFAULT nextval('countries_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+--
+
+ALTER TABLE credits ALTER COLUMN id SET DEFAULT nextval('credits_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+--
+
+ALTER TABLE images ALTER COLUMN id SET DEFAULT nextval('images_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+--
+
+ALTER TABLE line_items ALTER COLUMN id SET DEFAULT nextval('line_items_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+--
+
+ALTER TABLE orders ALTER COLUMN id SET DEFAULT nextval('orders_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+--
+
+ALTER TABLE pages ALTER COLUMN id SET DEFAULT nextval('pages_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+--
+
+ALTER TABLE payment_method_values ALTER COLUMN id SET DEFAULT nextval('payment_method_values_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+--
+
+ALTER TABLE payment_methods ALTER COLUMN id SET DEFAULT nextval('payment_methods_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+--
+
+ALTER TABLE payments ALTER COLUMN id SET DEFAULT nextval('payments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+--
+
+ALTER TABLE posts ALTER COLUMN id SET DEFAULT nextval('posts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+--
+
+ALTER TABLE rails_admin_histories ALTER COLUMN id SET DEFAULT nextval('rails_admin_histories_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+--
+
+ALTER TABLE roles ALTER COLUMN id SET DEFAULT nextval('roles_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+--
+
+ALTER TABLE shipments ALTER COLUMN id SET DEFAULT nextval('shipments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+--
+
+ALTER TABLE shipping_method_values ALTER COLUMN id SET DEFAULT nextval('shipping_method_values_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+--
+
+ALTER TABLE shipping_methods ALTER COLUMN id SET DEFAULT nextval('shipping_methods_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+--
+
+ALTER TABLE states ALTER COLUMN id SET DEFAULT nextval('states_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+--
+
+ALTER TABLE taggings ALTER COLUMN id SET DEFAULT nextval('taggings_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+--
+
+ALTER TABLE tags ALTER COLUMN id SET DEFAULT nextval('tags_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+--
+
+ALTER TABLE tax_method_values ALTER COLUMN id SET DEFAULT nextval('tax_method_values_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+--
+
+ALTER TABLE tax_methods ALTER COLUMN id SET DEFAULT nextval('tax_methods_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+--
+
+ALTER TABLE users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+--
+
+ALTER TABLE variants ALTER COLUMN id SET DEFAULT nextval('products_id_seq'::regclass);
+
+
+--
+-- Data for Name: addresses; Type: TABLE DATA; Schema: public; Owner: zone
+--
+
+COPY addresses (id, firstname, lastname, address1, address2, city, state_id, zip, created_at, updated_at, country_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: zone
+--
+
+COPY categories (id, title, slug, description, created_at, updated_at) FROM stdin;
+2	Nature	nature		2012-01-04 01:24:05.986606	2012-01-04 01:24:05.986606
+3	Insects	insects		2012-01-04 01:24:30.753077	2012-01-04 01:24:30.753077
+1	Cats & Dogs	cats-dogs		2012-01-03 21:32:06.552804	2012-01-04 02:12:31.858957
+\.
+
+
+--
+-- Data for Name: categories_images; Type: TABLE DATA; Schema: public; Owner: zone
+--
+
+COPY categories_images (category_id, image_id) FROM stdin;
+2	11
+1	12
+1	13
+1	14
+1	15
+2	16
+2	17
+3	18
+2	19
+2	20
+1	21
+1	22
+3	23
+3	24
+1	25
+1	27
+1	28
+2	29
+3	30
+2	30
+3	31
+2	31
+1	32
+2	33
+1	34
+2	35
+2	36
+1	37
+2	38
+2	39
+1	40
+1	41
+2	42
+3	43
+2	44
+1	45
+\.
+
+
+--
+-- Data for Name: countries; Type: TABLE DATA; Schema: public; Owner: zone
+--
+
+COPY countries (id, name, abbr) FROM stdin;
+176	Andorra	AD
+177	United Arab Emirates	AE
+178	Afghanistan	AF
+179	Antigua and Barbuda	AG
+180	Anguilla	AI
+181	Albania	AL
+182	Armenia	AM
+183	Netherlands Antilles	AN
+184	Angola	AO
+185	Antarctica	AQ
+186	Argentina	AR
+187	American Samoa	AS
+188	Austria	AT
+189	Australia	AU
+190	Aruba	AW
+191	Åland Islands	AX
+192	Azerbaijan	AZ
+193	Bosnia and Herzegovina	BA
+194	Barbados	BB
+195	Bangladesh	BD
+196	Belgium	BE
+197	Burkina Faso	BF
+198	Bulgaria	BG
+199	Bahrain	BH
+200	Burundi	BI
+201	Benin	BJ
+202	Saint Barthélemy	BL
+203	Bermuda	BM
+204	Brunei Darussalam	BN
+205	Bolivia	BO
+206	Brazil	BR
+207	Bahamas	BS
+208	Bhutan	BT
+209	Bouvet Island	BV
+210	Botswana	BW
+211	Belarus	BY
+212	Belize	BZ
+213	Canada	CA
+214	Cocos (Keeling) Islands	CC
+215	Congo, The Democratic Republic Of The	CD
+216	Central African Republic	CF
+217	Congo	CG
+218	Switzerland	CH
+219	Côte D'Ivoire	CI
+220	Cook Islands	CK
+221	Chile	CL
+222	Cameroon	CM
+223	China	CN
+224	Colombia	CO
+225	Costa Rica	CR
+226	Cuba	CU
+227	Cape Verde	CV
+228	Christmas Island	CX
+229	Cyprus	CY
+230	Czech Republic	CZ
+231	Germany	DE
+232	Djibouti	DJ
+233	Denmark	DK
+234	Dominica	DM
+235	Dominican Republic	DO
+236	Algeria	DZ
+237	Ecuador	EC
+238	Estonia	EE
+239	Egypt	EG
+240	Western Sahara	EH
+241	Eritrea	ER
+242	Spain	ES
+243	Ethiopia	ET
+244	Finland	FI
+245	Fiji	FJ
+246	Falkland Islands (Malvinas)	FK
+247	Micronesia, Federated States Of	FM
+248	Faroe Islands	FO
+249	France	FR
+250	Gabon	GA
+251	United Kingdom	GB
+252	Grenada	GD
+253	Georgia	GE
+254	French Guiana	GF
+255	Guernsey	GG
+256	Ghana	GH
+257	Gibraltar	GI
+258	Greenland	GL
+259	Gambia	GM
+260	Guinea	GN
+261	Guadeloupe	GP
+262	Equatorial Guinea	GQ
+263	Greece	GR
+264	South Georgia and the South Sandwich Islands	GS
+265	Guatemala	GT
+266	Guam	GU
+267	Guinea-Bissau	GW
+268	Guyana	GY
+269	Hong Kong	HK
+270	Heard and McDonald Islands	HM
+271	Honduras	HN
+272	Croatia	HR
+273	Haiti	HT
+274	Hungary	HU
+275	Indonesia	ID
+276	Ireland	IE
+277	Israel	IL
+278	Isle of Man	IM
+279	India	IN
+280	British Indian Ocean Territory	IO
+281	Iraq	IQ
+282	Iran, Islamic Republic Of	IR
+283	Iceland	IS
+284	Italy	IT
+285	Jersey	JE
+286	Jamaica	JM
+287	Jordan	JO
+288	Japan	JP
+289	Kenya	KE
+290	Kyrgyzstan	KG
+291	Cambodia	KH
+292	Kiribati	KI
+293	Comoros	KM
+294	Saint Kitts And Nevis	KN
+295	Korea, Democratic People's Republic Of	KP
+296	Korea, Republic of	KR
+297	Kuwait	KW
+298	Cayman Islands	KY
+299	Kazakhstan	KZ
+300	Lao People's Democratic Republic	LA
+301	Lebanon	LB
+302	Saint Lucia	LC
+303	Liechtenstein	LI
+304	Sri Lanka	LK
+305	Liberia	LR
+306	Lesotho	LS
+307	Lithuania	LT
+308	Luxembourg	LU
+309	Latvia	LV
+310	Libyan Arab Jamahiriya	LY
+311	Morocco	MA
+312	Monaco	MC
+313	Moldova, Republic of	MD
+314	Montenegro	ME
+315	Saint Martin	MF
+316	Madagascar	MG
+317	Marshall Islands	MH
+318	Macedonia, the Former Yugoslav Republic Of	MK
+319	Mali	ML
+320	Myanmar	MM
+321	Mongolia	MN
+322	Macao	MO
+323	Northern Mariana Islands	MP
+324	Martinique	MQ
+325	Mauritania	MR
+326	Montserrat	MS
+327	Malta	MT
+328	Mauritius	MU
+329	Maldives	MV
+330	Malawi	MW
+331	Mexico	MX
+332	Malaysia	MY
+333	Mozambique	MZ
+334	Namibia	NA
+335	New Caledonia	NC
+336	Niger	NE
+337	Norfolk Island	NF
+338	Nigeria	NG
+339	Nicaragua	NI
+340	Netherlands	NL
+341	Norway	NO
+342	Nepal	NP
+343	Nauru	NR
+344	Niue	NU
+345	New Zealand	NZ
+346	Oman	OM
+347	Panama	PA
+348	Peru	PE
+349	French Polynesia	PF
+350	Papua New Guinea	PG
+351	Philippines	PH
+352	Pakistan	PK
+353	Poland	PL
+354	Saint Pierre And Miquelon	PM
+355	Pitcairn	PN
+356	Puerto Rico	PR
+357	Palestinian Territory, Occupied	PS
+358	Portugal	PT
+359	Palau	PW
+360	Paraguay	PY
+361	Qatar	QA
+362	Réunion	RE
+363	Romania	RO
+364	Serbia	RS
+365	Russian Federation	RU
+366	Rwanda	RW
+367	Saudi Arabia	SA
+368	Solomon Islands	SB
+369	Seychelles	SC
+370	Sudan	SD
+371	Sweden	SE
+372	Singapore	SG
+373	Saint Helena	SH
+374	Slovenia	SI
+375	Svalbard And Jan Mayen	SJ
+376	Slovakia	SK
+377	Sierra Leone	SL
+378	San Marino	SM
+379	Senegal	SN
+380	Somalia	SO
+381	Suriname	SR
+382	Sao Tome and Principe	ST
+383	El Salvador	SV
+384	Syrian Arab Republic	SY
+385	Swaziland	SZ
+386	Turks and Caicos Islands	TC
+387	Chad	TD
+388	French Southern Territories	TF
+389	Togo	TG
+390	Thailand	TH
+391	Tajikistan	TJ
+392	Tokelau	TK
+393	Timor-Leste	TL
+394	Turkmenistan	TM
+395	Tunisia	TN
+396	Tonga	TO
+397	Turkey	TR
+398	Trinidad and Tobago	TT
+399	Tuvalu	TV
+400	Taiwan, Province Of China	TW
+401	Tanzania, United Republic of	TZ
+402	Ukraine	UA
+403	Uganda	UG
+404	United States Minor Outlying Islands	UM
+405	United States	US
+406	Uruguay	UY
+407	Uzbekistan	UZ
+408	Holy See (Vatican City State)	VA
+409	Saint Vincent And The Grenedines	VC
+410	Venezuela, Bolivarian Republic of	VE
+411	Virgin Islands, British	VG
+412	Virgin Islands, U.S.	VI
+413	Viet Nam	VN
+414	Vanuatu	VU
+415	Wallis and Futuna	WF
+416	Samoa	WS
+417	Yemen	YE
+418	Mayotte	YT
+419	South Africa	ZA
+420	Zambia	ZM
+421	Zimbabwe	ZW
+\.
+
+
+--
+-- Data for Name: credits; Type: TABLE DATA; Schema: public; Owner: zone
+--
+
+COPY credits (id, order_id, source_type, source_id, total, created_at, updated_at) FROM stdin;
+1	\N	\N	\N	5.0	2012-01-06 01:17:24.133173	2012-01-06 01:17:24.133173
+2	14	\N	\N	5.0	2012-01-06 01:17:37.748389	2012-01-06 01:17:37.748389
+\.
+
+
+--
+-- Data for Name: images; Type: TABLE DATA; Schema: public; Owner: zone
+--
+
+COPY images (id, title, slug, description, user_id, gallery_file_name, gallery_content_type, gallery_file_size, gallery_updated_at, main_file_name, main_content_type, main_file_size, main_updated_at, created_at, updated_at, is_featured) FROM stdin;
+19	Backlit Fall Leaves	backlit-fall-leaves	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_0988.jpg	image/jpeg	41431	2012-01-05 04:02:17.527388	IMG_0988 (2).jpg	image/jpeg	96516	2012-01-06 03:06:14.112479	2012-01-04 01:48:59.726619	2012-01-06 03:06:14.268086	f
+17	Murky Reflection	murky-reflection	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_0609.jpg	image/jpeg	45565	2012-01-05 04:02:09.769174	IMG_0609 (2).jpg	image/jpeg	140129	2012-01-06 03:03:39.315426	2012-01-04 01:46:37.840913	2012-01-06 03:03:39.474964	f
+23	Spider	spider	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_1536.jpg	image/jpeg	27710	2012-01-05 04:01:16.011062	IMG_1536 (2).jpg	image/jpeg	57358	2012-01-06 03:02:47.276154	2012-01-04 01:52:25.037344	2012-01-06 03:02:47.511552	f
+21	Car Window	car-window	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_1268.jpg	image/jpeg	44889	2012-01-05 04:00:07.543055	IMG_1268 (2).jpg	image/jpeg	106393	2012-01-06 03:03:12.78358	2012-01-04 01:50:49.530661	2012-01-06 03:03:12.936139	f
+20	Green Bokeh	green-bokeh	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_1028.jpg	image/jpeg	37003	2012-01-05 04:02:26.702469	IMG_1028 (2).jpg	image/jpeg	87977	2012-01-06 03:03:21.248613	2012-01-04 01:49:59.772243	2012-01-06 03:03:21.499063	f
+12	Dog in Sunglasses	dog-sunglasses	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_8294.jpg	image/jpeg	40478	2012-01-05 03:57:50.636307	IMG_8294 (2).jpg	image/jpeg	92476	2012-01-06 03:09:19.681559	2012-01-04 01:27:22.702599	2012-01-06 03:09:19.820237	f
+22	Dog Lookout	dog-lookout	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_1458.jpg	image/jpeg	33929	2012-01-05 03:59:52.267494	IMG_1458 (2).jpg	image/jpeg	75948	2012-01-06 03:03:00.661259	2012-01-04 01:51:44.08727	2012-01-06 03:03:00.812015	f
+16	Nature	nature	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_0980.jpg	image/jpeg	34911	2012-01-05 03:58:56.92517	IMG_0980.jpg	image/jpeg	77774	2012-01-06 03:03:47.696025	2012-01-04 01:41:41.914299	2012-01-06 03:03:47.846072	f
+15	Beach Dog	beach-dog	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_0262.jpg	image/jpeg	32280	2012-01-05 04:00:20.512985	IMG_0262 (2).jpg	image/jpeg	79680	2012-01-06 03:08:03.74322	2012-01-04 01:38:51.87074	2012-01-06 03:08:03.892608	f
+18	Butterfly	butterfly	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_0928.jpg	image/jpeg	34827	2012-01-05 03:58:44.497056	IMG_0928 (2).jpg	image/jpeg	72064	2012-01-06 03:03:29.916677	2012-01-04 01:47:45.592717	2012-01-06 03:03:30.066065	f
+14	Tired Puppy	tired-puppy	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_7785.jpg	image/jpeg	30221	2012-01-05 03:58:21.898289	IMG_7785.jpg	image/jpeg	61377	2012-01-06 03:04:18.222199	2012-01-04 01:37:55.347265	2012-01-06 03:04:18.37046	f
+35	Nature #2	nature-2	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_5662.jpg	image/jpeg	43548	2012-01-05 03:54:17.926043	IMG_5662 (2).jpg	image/jpeg	114621	2012-01-06 02:51:40.791842	2012-01-04 02:07:08.109208	2012-01-06 02:51:41.049886	f
+40	Best Friends	best-friends	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_8262.jpg	image/jpeg	40076	2012-01-05 03:51:32.488375	IMG_8262 (2).jpg	image/jpeg	104557	2012-01-06 02:50:37.365756	2012-01-04 02:11:23.269686	2012-01-06 02:50:37.50471	f
+28	Puppy Pile	puppy-pile	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_4575.jpg	image/jpeg	34836	2012-01-05 03:56:43.630299	IMG_4575 (2).jpg	image/jpeg	73476	2012-01-06 03:01:36.981517	2012-01-04 01:57:01.570171	2012-01-06 03:01:37.144175	f
+34	Tug Of War	tug-of-war	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_5488.jpg	image/jpeg	33189	2012-01-05 03:54:37.244278	IMG_5488 (2).jpg	image/jpeg	70391	2012-01-06 02:51:52.395457	2012-01-04 02:05:33.246414	2012-01-06 02:51:52.544557	f
+30	Pollination	pollination	This is a description for pollination. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_4991.jpg	image/jpeg	36220	2012-01-05 03:56:14.639197	IMG_4991 (2).jpg	image/jpeg	87487	2012-01-06 02:53:15.873413	2012-01-04 01:59:10.399855	2012-01-06 02:53:16.022288	t
+29	Purple Flowers	purple-flowers	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_4968.jpg	image/jpeg	40189	2012-01-05 03:56:29.725263	IMG_4968 (2).jpg	image/jpeg	85800	2012-01-06 02:53:27.422139	2012-01-04 01:58:19.376719	2012-01-06 02:53:27.57473	f
+27	Happy Beagle	happy-beagle	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_3880.jpg	image/jpeg	54633	2012-01-05 03:57:03.822005	IMG_3880 (2).jpg	image/jpeg	162972	2012-01-06 03:02:10.336384	2012-01-04 01:56:09.84998	2012-01-06 03:02:10.501727	f
+25	Puppy Pals	puppy-pals	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_3536.jpg	image/jpeg	38042	2012-01-05 03:57:16.770321	IMG_3536 (2).jpg	image/jpeg	84435	2012-01-06 03:02:22.057652	2012-01-04 01:54:44.063851	2012-01-06 03:02:22.223951	f
+24	Spider Duo	spider-duo	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_2739.jpg	image/jpeg	38569	2012-01-05 04:01:05.115159	IMG_2739 (2).jpg	image/jpeg	82394	2012-01-06 03:02:35.608226	2012-01-04 01:53:55.327604	2012-01-06 03:02:35.758069	f
+33	Spiderweb	spiderweb	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_5363.jpg	image/jpeg	33836	2012-01-05 03:55:02.365646	IMG_5363 (2).jpg	image/jpeg	78344	2012-01-06 03:05:51.562723	2012-01-04 02:04:19.266243	2012-01-06 03:05:51.806537	f
+41	Street Cat	street-cat	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_8604.jpg	image/jpeg	34090	2012-01-05 03:51:18.704083	IMG_8604 (2).jpg	image/jpeg	79893	2012-01-06 02:50:24.491587	2012-01-04 02:12:11.715957	2012-01-06 02:50:24.710716	t
+39	Make a Wish	make-a-wish	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_8003.jpg	image/jpeg	38606	2012-01-05 03:51:46.898428	IMG_8003 (2).jpg	image/jpeg	96062	2012-01-06 02:50:52.858552	2012-01-04 02:10:36.607113	2012-01-06 02:50:52.997194	f
+44	Japanese Maple	japanese-maple	Here is a description for Japanese Maple. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_9608.jpg	image/jpeg	35674	2012-01-05 03:49:58.302731	IMG_9608 (2).jpg	image/jpeg	77961	2012-01-06 02:49:34.261722	2012-01-04 02:15:29.245068	2012-01-06 02:49:34.510136	t
+43	Spider #2	spider-2	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_9205.jpg	image/jpeg	33984	2012-01-05 03:50:35.561096	IMG_9205 (2).jpg	image/jpeg	75189	2012-01-06 02:49:53.765752	2012-01-04 02:14:15.202401	2012-01-06 02:49:53.91309	f
+42	Fall Colors	fall-colors	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_8784.jpg	image/jpeg	53858	2012-01-05 03:50:51.722957	IMG_8784 (2).jpg	image/jpeg	162781	2012-01-06 02:50:12.277823	2012-01-04 02:13:29.236201	2012-01-06 02:50:12.443617	f
+38	Nature #4	nature-4	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_6262.jpg	image/jpeg	39719	2012-01-05 03:52:00.3107	IMG_6262 (2).jpg	image/jpeg	106741	2012-01-06 02:51:04.614477	2012-01-04 02:09:51.890184	2012-01-06 02:51:04.763192	f
+37	Floor Dog	floor-dog	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_5987.jpg	image/jpeg	33664	2012-01-05 03:52:14.736048	IMG_5987 (2).jpg	image/jpeg	71490	2012-01-06 02:51:17.040249	2012-01-04 02:08:46.4199	2012-01-06 02:51:17.176603	f
+36	Nature #3	nature-3	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_5668.jpg	image/jpeg	34040	2012-01-05 03:52:28.372689	IMG_5668 (2).jpg	image/jpeg	75551	2012-01-06 02:51:27.464653	2012-01-04 02:07:55.197138	2012-01-06 02:51:27.61041	f
+32	Beach Dog #2	beach-dog-2	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_5220.jpg	image/jpeg	51321	2012-01-05 03:55:31.299079	IMG_5220 (2).jpg	image/jpeg	132938	2012-01-06 02:52:51.561219	2012-01-04 02:03:05.963117	2012-01-06 02:52:51.712604	f
+31	Pollination #2	pollination-2	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_5078.jpg	image/jpeg	35775	2012-01-05 03:55:59.614872	IMG_5078 (2).jpg	image/jpeg	72021	2012-01-06 02:53:03.887999	2012-01-04 01:59:58.192968	2012-01-06 02:53:04.050902	f
+13	Havanese Smile	havanese-smile	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_0276.jpg	image/jpeg	47522	2012-01-05 03:58:03.825062	IMG_0276 (2).jpg	image/jpeg	87106	2012-01-06 03:04:08.348957	2012-01-04 01:28:34.72775	2012-01-06 03:04:08.598823	f
+11	Fall Leaves	fall-leaves	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_2836.jpg	image/jpeg	61986	2012-01-05 03:57:29.962346	IMG_2836.jpg	image/jpeg	206737	2012-01-06 03:04:35.133013	2012-01-04 01:26:18.728123	2012-01-06 03:04:35.30472	f
+45	Relaxing Puppy	relaxing-puppy	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_9892.jpg	image/jpeg	35612	2012-01-05 03:49:17.471811	IMG_9892 (2).jpg	image/jpeg	84226	2012-01-06 02:49:16.499131	2012-01-04 02:16:30.973072	2012-01-06 02:49:16.648919	f
+\.
+
+
+--
+-- Data for Name: line_items; Type: TABLE DATA; Schema: public; Owner: zone
+--
+
+COPY line_items (id, order_id, quantity, variant_id, total) FROM stdin;
+\.
+
+
+--
+-- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: zone
+--
+
+COPY orders (id, billing_address_id, shipping_address_id, user_id, email, phone, total, total_due, tax_charge, status, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: pages; Type: TABLE DATA; Schema: public; Owner: zone
+--
+
+COPY pages (id, title, slug, content, created_at, updated_at) FROM stdin;
+2	Terms	terms	<p>\r\n\tThe photos used on this site are Copyright Steph Skardal.</p>\r\n<p>\r\n\tThe design used on this site was purchased from ThemeForest.net. You may not reuse the design unless you purchase it for personal use.</p>\r\n	2012-01-04 00:01:29.190115	2012-01-04 00:01:29.190115
+1	About	about	<p>\r\n\tThis is a demo ecommerce application that runs on Ruby on Rails with PostgreSQL and on a Linux OS.</p>\r\n<h2>\r\n\tDependencies</h2>\r\n<p>\r\n\tThis demo is built using <a href="https://github.com/stephskardal/piggybak">Piggybak</a>, a Ruby on Rails engine. This engine leverages:</p>\r\n<ul>\r\n\t<li>\r\n\t\t<a href="http://rubyonrails.org/">Ruby on Rails 3.1</a>, which includes Engine and asset (CSS, JS, image) management</li>\r\n\t<li>\r\n\t\t<a href="https://github.com/sferik/rails_admin">RailsAdmin</a>, an admin interface gem</li>\r\n\t<li>\r\n\t\t<a href="https://github.com/plataformatec/devise">Devise</a>, a user authentication gem</li>\r\n\t<li>\r\n\t\t<a href="https://github.com/ryanb/cancan">CanCan</a>, a user authorization gem</li>\r\n</ul>\r\n<h2>\r\n\tFeatures</h2>\r\n<p>\r\n\tThe Piggybak gem includes the following features:</p>\r\n<ul>\r\n\t<li>\r\n\t\tBasic data architecture for ecommerce functionality</li>\r\n\t<li>\r\n\t\tConfigurable payment methods, shipping methods, and tax methods</li>\r\n\t<li>\r\n\t\tOne page checkout, with AJAX for shipping and tax lookup</li>\r\n\t<li>\r\n\t\tAn admin interface for managing orders, variants (sellable items), payment methods, shipping methods, tax methods, countries, and states, which is based on the RailsAdmin interface.</li>\r\n</ul>\r\n	2012-01-03 23:59:47.608532	2012-01-05 02:49:38.925032
+\.
+
+
+--
+-- Data for Name: payment_method_values; Type: TABLE DATA; Schema: public; Owner: zone
+--
+
+COPY payment_method_values (id, payment_method_id, key, value) FROM stdin;
+\.
+
+
+--
+-- Data for Name: payment_methods; Type: TABLE DATA; Schema: public; Owner: zone
+--
+
+COPY payment_methods (id, description, klass, active, created_at, updated_at) FROM stdin;
+1	Fake Credit Card	Piggybak::PaymentCalculator::Fake	t	2012-01-03 21:47:03.052088	2012-01-05 21:04:27.193433
+\.
+
+
+--
+-- Data for Name: payments; Type: TABLE DATA; Schema: public; Owner: zone
+--
+
+COPY payments (id, order_id, payment_method_id, status, total, number, month, year, verification_value, created_at, updated_at, transaction_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: posts; Type: TABLE DATA; Schema: public; Owner: zone
+--
+
+COPY posts (id, title, slug, user_id, content, created_at, updated_at) FROM stdin;
+1	Test Post	test-post	10	<p>\r\n\tLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n	2012-01-06 03:57:46.675949	2012-01-06 03:57:46.675949
+2	Test Post #2	test-post-2	10	<p>\r\n\tLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n	2012-01-06 03:58:04.81419	2012-01-06 03:58:04.81419
+3	Test Post #3	test-post-3	10	<p>\r\n\tLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n	2012-01-06 03:58:55.214296	2012-01-06 03:58:55.214296
+4	Test Post #4	test-post-	10	<p>\r\n\tLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n	2012-01-06 03:59:12.952935	2012-01-06 03:59:12.952935
+\.
+
+
+--
+-- Data for Name: rails_admin_histories; Type: TABLE DATA; Schema: public; Owner: zone
+--
+
+COPY rails_admin_histories (id, message, username, item, "table", month, year, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: zone
+--
+
+COPY roles (id, name) FROM stdin;
+10	admin
+\.
+
+
+--
+-- Data for Name: roles_users; Type: TABLE DATA; Schema: public; Owner: zone
+--
+
+COPY roles_users (role_id, user_id) FROM stdin;
+1	1
+3	3
+4	4
+5	5
+6	6
+7	7
+8	8
+9	9
+10	10
+\.
+
+
+--
+-- Data for Name: schema_migrations; Type: TABLE DATA; Schema: public; Owner: zone
+--
+
+COPY schema_migrations (version) FROM stdin;
+20111221175014
+20111231040339
+20111231040340
+20111231040354
+20111231041048
+20111231052811
+20111231055412
+20111231060335
+20111231060428
+20120103020918
+20120103020919
+20120103020920
+20120103020921
+20120103020922
+20120103020923
+20120103020924
+20120103020925
+20120103020926
+20120103020927
+20120103020928
+20120103020929
+20120103020930
+20120102162414
+20120102162415
+20120104020930
+20120106010846
+20120106034634
+\.
+
+
+--
+-- Data for Name: shipments; Type: TABLE DATA; Schema: public; Owner: zone
+--
+
+COPY shipments (id, order_id, shipping_method_id, status, total, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: shipping_method_values; Type: TABLE DATA; Schema: public; Owner: zone
+--
+
+COPY shipping_method_values (id, shipping_method_id, key, value) FROM stdin;
+4	4	rate	10.00
+5	5	rate	20.00
+6	6	state_abbr	NC
+7	6	rate	0.00
+\.
+
+
+--
+-- Data for Name: shipping_methods; Type: TABLE DATA; Schema: public; Owner: zone
+--
+
+COPY shipping_methods (id, description, klass, active) FROM stdin;
+4	Standard Shipping	Piggybak::ShippingCalculator::FlatRate	t
+5	Express Shipping	Piggybak::ShippingCalculator::FlatRate	t
+6	Pickup (NC Only)	Piggybak::ShippingCalculator::Pickup	t
+\.
+
+
+--
+-- Data for Name: states; Type: TABLE DATA; Schema: public; Owner: zone
+--
+
+COPY states (id, abbr, name, country_id) FROM stdin;
+2871	02	Canillo	176
+2872	03	Encamp	176
+2873	04	La Massana	176
+2874	05	Ordino	176
+2875	06	Sant Julià de Lòria	176
+2876	07	Andorra la Vella	176
+2877	08	Escaldes-Engordany	176
+2878	AJ	'Ajman	177
+2879	AZ	Abu Z¸aby [Abu Dhabi]	177
+2880	DU	Dubayy [Dubai]	177
+2881	FU	Al Fujayrah	177
+2882	RK	Ra’s al Khaymah	177
+2883	SH	Ash Shariqah [Sharjah]	177
+2884	UQ	Umm al Qaywayn	177
+2885	BAL	Balkh	178
+2886	BAM	Bamian	178
+2887	BDG	Badghis	178
+2888	BDS	Badakhshan	178
+2889	BGL	Baghlan	178
+2890	DAY	Daykondi	178
+2891	FRA	Farah	178
+2892	FYB	Faryab	178
+2893	GHA	Ghazni	178
+2894	GHO	Ghowr	178
+2895	HEL	Helmand	178
+2896	HER	Herat	178
+2897	JOW	Jowzjan	178
+2898	KAB	Kabul [Kabol]	178
+2899	KAN	Kandahar	178
+2900	KAP	Kapisa	178
+2901	KDZ	Kondoz [Kunduz]	178
+2902	KHO	Khowst	178
+2903	KNR	Konar [Kunar]	178
+2904	LAG	Laghman	178
+2905	LOW	Lowgar	178
+2906	NAN	Nangrahar [Nangarhar]	178
+2907	NIM	Nimruz	178
+2908	NUR	Nurestan	178
+2909	ORU	Oruzgan [Uruzgan]	178
+2910	PAN	Panjshir	178
+2911	PAR	Parwan	178
+2912	PIA	Paktia	178
+2913	PKA	Paktika	178
+2914	SAM	Samangan	178
+2915	SAR	Sar-e Pol	178
+2916	TAK	Takhar	178
+2917	WAR	Wardak [Wardag]	178
+2918	ZAB	Zabol [Zabul]	178
+2919	03	Saint George	179
+2920	04	Saint John’s	179
+2921	05	Saint Mary	179
+2922	06	Saint Paul	179
+2923	07	Saint Peter	179
+2924	08	Saint Philip	179
+2925	10	Barbuda	179
+2926	X2~	Redonda	179
+2927	BR	Berat	181
+2928	BU	Bulqizë	181
+2929	DI	Dibër	181
+2930	DL	Delvinë	181
+2931	DR	Durrës	181
+2932	DV	Devoll	181
+2933	EL	Elbasan	181
+2934	ER	Kolonjë	181
+2935	FR	Fier	181
+2936	GJ	Gjirokastër	181
+2937	GR	Gramsh	181
+2938	HA	Has	181
+2939	KA	Kavajë	181
+2940	KB	Kurbin	181
+2941	KC	Kuçovë	181
+2942	KO	Korçë	181
+2943	KR	Krujë	181
+2944	KU	Kukës	181
+2945	LB	Librazhd	181
+2946	LE	Lezhë	181
+2947	LU	Lushnjë	181
+2948	MK	Mallakastër	181
+2949	MM	Malësi e Madhe	181
+2950	MR	Mirditë	181
+2951	MT	Mat	181
+2952	PG	Pogradec	181
+2953	PQ	Peqin	181
+2954	PR	Përmet	181
+2955	PU	Pukë	181
+2956	SH	Shkodër	181
+2957	SK	Skrapar	181
+2958	SR	Sarandë	181
+2959	TE	Tepelenë	181
+2960	TP	Tropojë	181
+2961	TR	Tiranë	181
+2962	VL	Vlorë	181
+2963	AG	Aragac?otn	182
+2964	AR	Ararat	182
+2965	AV	Armavir	182
+2966	ER	Erevan	182
+2967	GR	Gegark'unik'	182
+2968	KT	Kotayk'	182
+2969	LO	Lo?y	182
+2970	SH	Širak	182
+2971	SU	Syunik'	182
+2972	TV	Tavuš	182
+2973	VD	Vayoc Jor	182
+2974	BGO	Bengo	184
+2975	BGU	Benguela	184
+2976	BIE	Bié	184
+2977	CAB	Cabinda	184
+2978	CCU	Cuando-Cubango	184
+2979	CNN	Cunene	184
+2980	CNO	Cuanza Norte	184
+2981	CUS	Cuanza Sul	184
+2982	HUA	Huambo	184
+2983	HUI	Huíla	184
+2984	LNO	Lunda Norte	184
+2985	LSU	Lunda Sul	184
+2986	LUA	Luanda	184
+2987	MAL	Malange	184
+2988	MOX	Moxico	184
+2989	NAM	Namibe	184
+2990	UIG	Uíge	184
+2991	ZAI	Zaire	184
+2992	A	Salta	186
+2993	B	Buenos Aires	186
+2994	C	Capital federal	186
+2995	D	San Luis	186
+2996	E	Entre Ríos	186
+2997	F	La Rioja	186
+2998	G	Santiago del Estero	186
+2999	H	Chaco	186
+3000	J	San Juan	186
+3001	K	Catamarca	186
+3002	L	La Pampa	186
+3003	M	Mendoza	186
+3004	N	Misiones	186
+3005	P	Formosa	186
+3006	Q	Neuquén	186
+3007	R	Río Negro	186
+3008	S	Santa Fe	186
+3009	T	Tucumán	186
+3010	U	Chubut	186
+3011	V	Tierra del Fuego	186
+3012	W	Corrientes	186
+3013	X	Córdoba	186
+3014	Y	Jujuy	186
+3015	Z	Santa Cruz	186
+3016	1	Burgenland	188
+3017	2	Kärnten	188
+3018	3	Niederösterreich	188
+3019	4	Oberösterreich	188
+3020	5	Salzburg	188
+3021	6	Steiermark	188
+3022	7	Tirol	188
+3023	8	Vorarlberg	188
+3024	9	Wien	188
+3025	ACT	Australian Capital Territory	189
+3026	NSW	New South Wales	189
+3027	NT	Northern Territory	189
+3028	QLD	Queensland	189
+3029	SA	South Australia	189
+3030	TAS	Tasmania	189
+3031	VIC	Victoria	189
+3032	WA	Western Australia	189
+3033	AB	Äli Bayramli	192
+3034	ABS	Abseron	192
+3035	AGA	Agstafa	192
+3036	AGC	Agcabädi	192
+3037	AGM	Agdam	192
+3038	AGS	Agdas	192
+3039	AGU	Agsu	192
+3040	AST	Astara	192
+3041	BA	Baki	192
+3042	BAB	Babäk	192
+3043	BAL	Balakän	192
+3044	BAR	Bärdä	192
+3045	BEY	Beyläqan	192
+3046	BIL	Biläsuvar	192
+3047	CAB	Cäbrayil	192
+3048	CAL	Cälilabab	192
+3049	CUL	Culfa	192
+3050	DAS	Daskäsän	192
+3051	DAV	Däväçi	192
+3052	FUZ	Füzuli	192
+3053	GA	Gäncä	192
+3054	GAD	Gädäbäy	192
+3055	GOR	Goranboy	192
+3056	GOY	Göyçay	192
+3057	HAC	Haciqabul	192
+3058	IMI	Imisli	192
+3059	ISM	Ismayilli	192
+3060	KAL	Kälbäcär	192
+3061	KUR	Kürdämir	192
+3062	LA	Länkäran City	192
+3063	LAC	Laçin	192
+3064	LAN	Länkäran	192
+3065	LER	Lerik	192
+3066	MAS	Masalli	192
+3067	MI	Mingäçevir	192
+3068	NA	Naftalan	192
+3069	NEF	Neftçala	192
+3070	NX	Naxçivan	192
+3071	OGU	Oguz	192
+3072	ORD	Ordubad	192
+3073	QAB	Qäbälä	192
+3074	QAX	Qax	192
+3075	QAZ	Qazax	192
+3076	QBA	Quba	192
+3077	QBI	Qubadli	192
+3078	QOB	Qobustan	192
+3079	QUS	Qusar	192
+3080	SA	Säki City	192
+3081	SAB	Sabirabad	192
+3082	SAD	Sädäräk	192
+3083	SAH	Sahbuz	192
+3084	SAK	Säki	192
+3085	SAL	Salyan	192
+3086	SAR	Särur	192
+3087	SAT	Saatli	192
+3088	SIY	Siyäzän	192
+3089	SKR	Sämkir	192
+3090	SM	Sumqayit	192
+3091	SMI	Samaxi	192
+3092	SMX	Samux	192
+3093	SS	Susa City	192
+3094	SUS	Susa	192
+3095	TAR	Tärtär	192
+3096	TOV	Tovuz	192
+3097	UCA	Ucar	192
+3098	XA	Xankändi	192
+3099	XAC	Xaçmaz	192
+3100	XAN	Xanlar	192
+3101	XCI	Xocali	192
+3102	XIZ	Xizi	192
+3103	XVD	Xocavänd	192
+3104	YAR	Yardimli	192
+3105	YE	Yevlax City	192
+3106	YEV	Yevlax	192
+3107	ZAN	Zängilan	192
+3108	ZAQ	Zaqatala	192
+3109	ZAR	Zärdab	192
+3110	BIH	Federacija Bosna i Hercegovina	193
+3111	SRP	Republika Srpska	193
+3112	01	Christ Church	194
+3113	02	Saint Andrew	194
+3114	03	Saint George	194
+3115	04	Saint James	194
+3116	05	Saint John	194
+3117	06	Saint Joseph	194
+3118	07	Saint Lucy	194
+3119	08	Saint Michael	194
+3120	09	Saint Peter	194
+3121	10	Saint Philip	194
+3122	11	Saint Thomas	194
+3123	01	Bandarban zila	195
+3124	02	Barguna zila	195
+3125	03	Bogra zila	195
+3126	04	Brahmanbaria zila	195
+3127	05	Bagerhat zila	195
+3128	06	Barisal zila	195
+3129	07	Bhola zila	195
+3130	08	Comilla zila	195
+3131	09	Chandpur zila	195
+3132	10	Chittagong zila	195
+3133	11	Cox's Bazar zila	195
+3134	12	Chuadanga zila	195
+3135	13	Dhaka zila	195
+3136	14	Dinajpur zila	195
+3137	15	Faridpur zila	195
+3138	16	Feni zila	195
+3139	17	Gopalganj zila	195
+3140	18	Gazipur zila	195
+3141	19	Gaibandha zila	195
+3142	20	Habiganj zila	195
+3143	21	Jamalpur zila	195
+3144	22	Jessore zila	195
+3145	23	Jhenaidah zila	195
+3146	24	Jaipurhat zila	195
+3147	25	Jhalakati zila	195
+3148	26	Kishoreganj zila	195
+3149	27	Khulna zila	195
+3150	28	Kurigram zila	195
+3151	29	Khagrachari zila	195
+3152	30	Kushtia zila	195
+3153	31	Lakshmipur zila	195
+3154	32	Lalmonirhat zila	195
+3155	33	Manikganj zila	195
+3156	34	Mymensingh zila	195
+3157	35	Munshiganj zila	195
+3158	36	Madaripur zila	195
+3159	37	Magura zila	195
+3160	38	Moulvibazar zila	195
+3161	39	Meherpur zila	195
+3162	40	Narayanganj zila	195
+3163	41	Netrakona zila	195
+3164	42	Narsingdi zila	195
+3165	43	Narail zila	195
+3166	44	Natore zila	195
+3167	45	Nawabganj zila	195
+3168	46	Nilphamari zila	195
+3169	47	Noakhali zila	195
+3170	48	Naogaon zila	195
+3171	49	Pabna zila	195
+3172	50	Pirojpur zila	195
+3173	51	Patuakhali zila	195
+3174	52	Panchagarh zila	195
+3175	53	Rajbari zila	195
+3176	54	Rajshahi zila	195
+3177	55	Rangpur zila	195
+3178	56	Rangamati zila	195
+3179	57	Sherpur zila	195
+3180	58	Satkhira zila	195
+3181	59	Sirajganj zila	195
+3182	60	Sylhet zila	195
+3183	61	Sunamganj zila	195
+3184	62	Shariatpur zila	195
+3185	63	Tangail zila	195
+3186	64	Thakurgaon zila	195
+3187	BRU	Brussels	196
+3188	VAN	Antwerpen (nl)	196
+3189	VBR	Vlaams Brabant (nl)	196
+3190	VLI	Limburg (nl)	196
+3191	VOV	Oost-Vlaanderen (nl)	196
+3192	VWV	West-Vlaanderen (nl)	196
+3193	WBR	Brabant Wallon (fr)	196
+3194	WHT	Hainaut (fr)	196
+3195	WLG	Liège (fr)	196
+3196	WLX	Luxembourg (fr)	196
+3197	WNA	Namur (fr)	196
+3198	BAL	Balé	197
+3199	BAM	Bam	197
+3200	BAN	Banwa	197
+3201	BAZ	Bazèga	197
+3202	BGR	Bougouriba	197
+3203	BLG	Boulgou	197
+3204	BLK	Boulkiemdé	197
+3205	COM	Comoé	197
+3206	GAN	Ganzourgou	197
+3207	GNA	Gnagna	197
+3208	GOU	Gourma	197
+3209	HOU	Houet	197
+3210	IOB	Ioba	197
+3211	KAD	Kadiogo	197
+3212	KEN	Kénédougou	197
+3213	KMD	Komondjari	197
+3214	KMP	Kompienga	197
+3215	KOP	Koulpélogo	197
+3216	KOS	Kossi	197
+3217	KOT	Kouritenga	197
+3218	KOW	Kourwéogo	197
+3219	LER	Léraba	197
+3220	LOR	Loroum	197
+3221	MOU	Mouhoun	197
+3222	NAM	Namentenga	197
+3223	NAO	Nahouri	197
+3224	NAY	Nayala	197
+3225	NOU	Noumbiel	197
+3226	OUB	Oubritenga	197
+3227	OUD	Oudalan	197
+3228	PAS	Passoré	197
+3229	PON	Poni	197
+3230	SEN	Séno	197
+3231	SIS	Sissili	197
+3232	SMT	Sanmatenga	197
+3233	SNG	Sanguié	197
+3234	SOM	Soum	197
+3235	SOR	Sourou	197
+3236	TAP	Tapoa	197
+3237	TUI	Tui	197
+3238	YAG	Yagha	197
+3239	YAT	Yatenga	197
+3240	ZIR	Ziro	197
+3241	ZON	Zondoma	197
+3242	ZOU	Zoundwéogo	197
+3243	01	Blagoevgrad	198
+3244	02	Burgas	198
+3245	03	Varna	198
+3246	04	Veliko Tarnovo	198
+3247	05	Vidin	198
+3248	06	Vratsa	198
+3249	07	Gabrovo	198
+3250	08	Dobrich	198
+3251	09	Kardzhali	198
+3252	10	Kjustendil	198
+3253	11	Lovech	198
+3254	12	Montana	198
+3255	13	Pazardzhik	198
+3256	14	Pernik	198
+3257	15	Pleven	198
+3258	16	Plovdiv	198
+3259	17	Razgrad	198
+3260	18	Ruse	198
+3261	19	Silistra	198
+3262	20	Sliven	198
+3263	21	Smolyan	198
+3264	22	Sofia-Grad	198
+3265	23	Sofia	198
+3266	24	Stara Zagora	198
+3267	25	Targovishte	198
+3268	26	Haskovo	198
+3269	27	Šumen	198
+3270	28	Yambol	198
+3271	13	Al Manamah (Al ‘Asimah)	199
+3272	14	Al Janubiyah	199
+3273	15	Al Muharraq	199
+3274	16	Al Wustá	199
+3275	17	Ash Shamaliyah	199
+3276	BB	Bubanza	200
+3277	BJ	Bujumbura	200
+3278	BR	Bururi	200
+3279	CA	Cankuzo	200
+3280	CI	Cibitoke	200
+3281	GI	Gitega	200
+3282	KI	Kirundo	200
+3283	KR	Karuzi	200
+3284	KY	Kayanza	200
+3285	MA	Makamba	200
+3286	MU	Muramvya	200
+3287	MW	Mwaro	200
+3288	MY	Muyinga	200
+3289	NG	Ngozi	200
+3290	RT	Rutana	200
+3291	RY	Ruyigi	200
+3292	AK	Atakora	201
+3293	AL	Alibori	201
+3294	AQ	Atlantique	201
+3295	BO	Borgou	201
+3296	CO	Collines	201
+3297	DO	Donga	201
+3298	KO	Kouffo	201
+3299	LI	Littoral	201
+3300	MO	Mono	201
+3301	OU	Ouémé	201
+3302	PL	Plateau	201
+3303	ZO	Zou	201
+3304	BE	Belait	204
+3305	BM	Brunei-Muara	204
+3306	TE	Temburong	204
+3307	TU	Tutong	204
+3308	B	El Beni	205
+3309	C	Cochabamba	205
+3310	H	Chuquisaca	205
+3311	L	La Paz	205
+3312	N	Pando	205
+3313	O	Oruro	205
+3314	P	Potosí	205
+3315	S	Santa Cruz	205
+3316	T	Tarija	205
+3317	AC	Acre	206
+3318	AL	Alagoas	206
+3319	AM	Amazonas	206
+3320	AP	Amapá	206
+3321	BA	Bahia	206
+3322	CE	Ceará	206
+3323	DF	Distrito Federal	206
+3324	ES	Espírito Santo	206
+3325	GO	Goiás	206
+3326	MA	Maranhão	206
+3327	MG	Minas Gerais	206
+3328	MS	Mato Grosso do Sul	206
+3329	MT	Mato Grosso	206
+3330	PA	Pará	206
+3331	PB	Paraíba	206
+3332	PE	Pernambuco	206
+3333	PI	Piauí	206
+3334	PR	Paraná	206
+3335	RJ	Rio de Janeiro	206
+3336	RN	Rio Grande do Norte	206
+3337	RO	Rondônia	206
+3338	RR	Roraima	206
+3339	RS	Rio Grande do Sul	206
+3340	SC	Santa Catarina	206
+3341	SE	Sergipe	206
+3342	SP	São Paulo	206
+3343	TO	Tocantins	206
+3344	AC	Acklins and Crooked Islands	207
+3345	BI	Bimini	207
+3346	CI	Cat Island	207
+3347	EX	Exuma	207
+3348	FC	Fresh Creek	207
+3349	FP	Freeport	207
+3350	GH	Governor's Harbour	207
+3351	GT	Green Turtle Cay	207
+3352	HI	Harbour Island	207
+3353	HR	High Rock	207
+3354	IN	Inagua	207
+3355	KB	Kemps Bay	207
+3356	LI	Long Island	207
+3357	MG	Mayaguana	207
+3358	MH	Marsh Harbour	207
+3359	NB	Nicholls Town and Berry Islands	207
+3360	NP	New Providence	207
+3361	RI	Ragged Island	207
+3362	RS	Rock Sound	207
+3363	SP	Sandy Point	207
+3364	SR	San Salvador and Rum Cay	207
+3365	11	Paro	208
+3366	12	Chhukha	208
+3367	13	Ha	208
+3368	14	Samtse	208
+3369	15	Thimphu	208
+3370	21	Tsirang	208
+3371	22	Dagana	208
+3372	23	Punakha	208
+3373	24	Wangdue Phodrang	208
+3374	31	Sarpang	208
+3375	32	Trongsa	208
+3376	33	Bumthang	208
+3377	34	Zhemgang	208
+3378	41	Trashigang	208
+3379	42	Monggar	208
+3380	43	Pemagatshel	208
+3381	44	Lhuentse	208
+3382	45	Samdrup Jongkha	208
+3383	GA	Gasa	208
+3384	TY	Trashi Yangtse	208
+3385	CE	Central	210
+3386	GH	Ghanzi	210
+3387	KG	Kgalagadi	210
+3388	KL	Kgatleng	210
+3389	KW	Kweneng	210
+3390	NE	North-East	210
+3391	NW	North-West	210
+3392	SE	South-East	210
+3393	SO	Southern	210
+3394	BR	Brestskaya voblasts' (be) Brestskaya oblast' (ru)	211
+3395	HO	Homyel'skaya voblasts' (be) Gomel'skaya oblast' (ru)	211
+3396	HR	Hrodzenskaya voblasts' (be) Grodnenskaya oblast' (ru)	211
+3397	MA	Mahilyowskaya voblasts' (be) Mogilevskaya oblast' (ru)	211
+3398	MI	Minskaya voblasts' (be) Minskaya oblast' (ru)	211
+3399	VI	Vitsyebskaya voblasts' (be) Vitebskaya oblast' (ru)	211
+3400	X1~	Horad Minsk	211
+3401	BZ	Belize	212
+3402	CY	Cayo	212
+3403	CZL	Corozal	212
+3404	OW	Orange Walk	212
+3405	SC	Stann Creek	212
+3406	TOL	Toledo	212
+3407	AB	Alberta	213
+3408	BC	British Columbia	213
+3409	MB	Manitoba	213
+3410	NB	New Brunswick	213
+3411	NL	Newfoundland and Labrador	213
+3412	NS	Nova Scotia	213
+3413	NT	Northwest Territories	213
+3414	NU	Nunavut	213
+3415	ON	Ontario	213
+3416	PE	Prince Edward Island	213
+3417	QC	Quebec	213
+3418	SK	Saskatchewan	213
+3419	YT	Yukon Territory	213
+3420	BC	Bas-Congo	215
+3421	BN	Bandundu	215
+3422	EQ	Équateur	215
+3423	KA	Katanga	215
+3424	KE	Kasai-Oriental	215
+3425	KN	Kinshasa	215
+3426	KW	Kasai-Occidental	215
+3427	MA	Maniema	215
+3428	NK	Nord-Kivu	215
+3429	OR	Orientale	215
+3430	SK	Sud-Kivu	215
+3431	AC	Ouham	216
+3432	BB	Bamingui-Bangoran	216
+3433	BGF	Bangui	216
+3434	BK	Basse-Kotto	216
+3435	HK	Haute-Kotto	216
+3436	HM	Haut-Mbomou	216
+3437	HS	Mambéré-Kadéï	216
+3438	KB	Nana-Grébizi	216
+3439	KG	Kémo	216
+3440	LB	Lobaye	216
+3441	MB	Mbomou	216
+3442	MP	Ombella-Mpoko	216
+3443	NM	Nana-Mambéré	216
+3444	OP	Ouham-Pendé	216
+3445	SE	Sangha-Mbaéré	216
+3446	UK	Ouaka	216
+3447	VK	Vakaga	216
+3448	11	Bouenza	217
+3449	12	Pool	217
+3450	13	Sangha	217
+3451	14	Plateaux	217
+3452	15	Cuvette-Ouest	217
+3453	2	Lékoumou	217
+3454	5	Kouilou	217
+3455	7	Likouala	217
+3456	8	Cuvette	217
+3457	9	Niari	217
+3458	BZV	Brazzaville	217
+3459	AG	Aargau (de)	218
+3460	AI	Appenzell Innerrhoden (de)	218
+3461	AR	Appenzell Ausserrhoden (de)	218
+3462	BE	Bern (de)	218
+3463	BL	Basel-Landschaft (de)	218
+3464	BS	Basel-Stadt (de)	218
+3465	FR	Fribourg (fr)	218
+3466	GE	Genève (fr)	218
+3467	GL	Glarus (de)	218
+3468	GR	Graubünden (de)	218
+3469	JU	Jura (fr)	218
+3470	LU	Luzern (de)	218
+3471	NE	Neuchâtel (fr)	218
+3472	NW	Nidwalden (de)	218
+3473	OW	Obwalden (de)	218
+3474	SG	Sankt Gallen (de)	218
+3475	SH	Schaffhausen (de)	218
+3476	SO	Solothurn (de)	218
+3477	SZ	Schwyz (de)	218
+3478	TG	Thurgau (de)	218
+3479	TI	Ticino (it)	218
+3480	UR	Uri (de)	218
+3481	VD	Vaud (fr)	218
+3482	VS	Valais (fr)	218
+3483	ZG	Zug (de)	218
+3484	ZH	Zürich (de)	218
+3485	01	Lagunes (Région des)	219
+3486	02	Haut-Sassandra (Région du)	219
+3487	03	Savanes (Région des)	219
+3488	04	Vallée du Bandama (Région de la)	219
+3489	05	Moyen-Comoé (Région du)	219
+3490	06	18 Montagnes (Région des)	219
+3491	07	Lacs (Région des)	219
+3492	08	Zanzan (Région du)	219
+3493	09	Bas-Sassandra (Région du)	219
+3494	10	Denguélé (Région du)	219
+3495	11	Nzi-Comoé (Région)	219
+3496	12	Marahoué (Région de la)	219
+3497	13	Sud-Comoé (Région du)	219
+3498	14	Worodougou (Région du)	219
+3499	15	Sud-Bandama (Région du)	219
+3500	16	Agnébi (Région de l')	219
+3501	17	Bafing (Région du)	219
+3502	18	Fromager (Région du)	219
+3503	19	Moyen-Cavally (Région du)	219
+3504	AI	Aisén del General Carlos Ibáñez del Campo	221
+3505	AN	Antofagasta	221
+3506	AR	Araucanía	221
+3507	AT	Atacama	221
+3508	BI	Bío-Bío	221
+3509	CO	Coquimbo	221
+3510	LI	Libertador General Bernardo O'Higgins	221
+3511	LL	Los Lagos	221
+3512	MA	Magallanes	221
+3513	ML	Maule	221
+3514	RM	Región Metropolitana de Santiago	221
+3515	TA	Tarapacá	221
+3516	VS	Valparaíso	221
+3517	AD	Adamaoua	222
+3518	CE	Centre	222
+3519	EN	Far North	222
+3520	ES	East	222
+3521	LT	Littoral	222
+3522	NO	North	222
+3523	NW	North-West	222
+3524	OU	West	222
+3525	SU	South	222
+3526	SW	South-West	222
+3527	11	Beijing	223
+3528	12	Tianjin	223
+3529	13	Hebei	223
+3530	14	Shanxi	223
+3531	15	Nei Mongol (mn)	223
+3532	21	Liaoning	223
+3533	22	Jilin	223
+3534	23	Heilongjiang	223
+3535	31	Shanghai	223
+3536	32	Jiangsu	223
+3537	33	Zhejiang	223
+3538	34	Anhui	223
+3539	35	Fujian	223
+3540	36	Jiangxi	223
+3541	37	Shandong	223
+3542	41	Henan	223
+3543	42	Hubei	223
+3544	43	Hunan	223
+3545	44	Guangdong	223
+3546	45	Guangxi	223
+3547	46	Hainan	223
+3548	50	Chongqing	223
+3549	51	Sichuan	223
+3550	52	Guizhou	223
+3551	53	Yunnan	223
+3552	54	Xizang	223
+3553	61	Shaanxi	223
+3554	62	Gansu	223
+3555	63	Qinghai	223
+3556	64	Ningxia	223
+3557	65	Xinjiang	223
+3558	71	Taiwan *	223
+3559	91	Xianggang (zh) **	223
+3560	92	Aomen (zh) ***	223
+3561	AMA	Amazonas	224
+3562	ANT	Antioquia	224
+3563	ARA	Arauca	224
+3564	ATL	Atlántico	224
+3565	BOL	Bolívar	224
+3566	BOY	Boyacá	224
+3567	CAL	Caldas	224
+3568	CAQ	Caquetá	224
+3569	CAS	Casanare	224
+3570	CAU	Cauca	224
+3571	CES	Cesar	224
+3572	CHO	Chocó	224
+3573	COR	Córdoba	224
+3574	CUN	Cundinamarca	224
+3575	DC	Distrito Capital de Bogotá	224
+3576	GUA	Guainía	224
+3577	GUV	Guaviare	224
+3578	HUI	Huila	224
+3579	LAG	La Guajira	224
+3580	MAG	Magdalena	224
+3581	MET	Meta	224
+3582	NAR	Nariño	224
+3583	NSA	Norte de Santander	224
+3584	PUT	Putumayo	224
+3585	QUI	Quindío	224
+3586	RIS	Risaralda	224
+3587	SAN	Santander	224
+3588	SAP	San Andrés, Providencia y Santa Catalina	224
+3589	SUC	Sucre	224
+3590	TOL	Tolima	224
+3591	VAC	Valle del Cauca	224
+3592	VAU	Vaupés	224
+3593	VID	Vichada	224
+3594	A	Alajuela	225
+3595	C	Cartago	225
+3596	G	Guanacaste	225
+3597	H	Heredia	225
+3598	L	Limón	225
+3599	P	Puntarenas	225
+3600	SJ	San José	225
+3601	01	Pinar del Río	226
+3602	02	La Habana	226
+3603	03	Ciudad de La Habana	226
+3604	04	Matanzas	226
+3605	05	Villa Clara	226
+3606	06	Cienfuegos	226
+3607	07	Sancti Spíritus	226
+3608	08	Ciego de Ávila	226
+3609	09	Camagüey	226
+3610	10	Las Tunas	226
+3611	11	Holguín	226
+3612	12	Granma	226
+3613	13	Santiago de Cuba	226
+3614	14	Guantánamo	226
+3615	99	Isla de la Juventud	226
+3616	BR	Brava	227
+3617	BV	Boa Vista	227
+3618	CA	Santa Catarina	227
+3619	CR	Santa Cruz	227
+3620	CS	Calheta de São Miguel	227
+3621	MA	Maio	227
+3622	MO	Mosteiros	227
+3623	PA	Paúl	227
+3624	PN	Porto Novo	227
+3625	PR	Praia	227
+3626	RG	Ribeira Grande	227
+3627	SD	São Domingos	227
+3628	SF	São Filipe	227
+3629	SL	Sal	227
+3630	SN	São Nicolau	227
+3631	SV	São Vicente	227
+3632	TA	Tarrafal	227
+3633	01	Lefkosia	229
+3634	02	Lemesos	229
+3635	03	Larnaka	229
+3636	04	Ammochostos	229
+3637	05	Pafos	229
+3638	06	Keryneia	229
+3639	JC	Jihoceský kraj	230
+3640	JM	Jihomoravský kraj 	230
+3641	KA	Karlovarský kraj	230
+3642	KR	Královéhradecký kraj	230
+3643	LI	Liberecký kraj	230
+3644	MO	Moravskoslezský kraj	230
+3645	OL	Olomoucký kraj	230
+3646	PA	Pardubický kraj	230
+3647	PL	Plzenský kraj	230
+3648	PR	Praha, hlavní mesto	230
+3649	ST	Stredoceský kraj	230
+3650	US	Ústecký kraj 	230
+3651	VY	Vysocina	230
+3652	ZL	Zlínský kraj	230
+3653	BB	Brandenburg	231
+3654	BE	Berlin	231
+3655	BW	Baden-Württemberg	231
+3656	BY	Bayern	231
+3657	HB	Bremen	231
+3658	HE	Hessen	231
+3659	HH	Hamburg	231
+3660	MV	Mecklenburg-Vorpommern	231
+3661	NI	Niedersachsen	231
+3662	NW	Nordrhein-Westfalen	231
+3663	RP	Rheinland-Pfalz	231
+3664	SH	Schleswig-Holstein	231
+3665	SL	Saarland	231
+3666	SN	Sachsen	231
+3667	ST	Sachsen-Anhalt	231
+3668	TH	Thüringen	231
+3669	AR	Arta	232
+3670	AS	Ali Sabieh	232
+3671	DI	Dikhil	232
+3672	DJ	Djibouti	232
+3673	OB	Obock	232
+3674	TA	Tadjourah	232
+3675	015	København	233
+3676	020	Frederiksborg	233
+3677	025	Roskilde	233
+3678	030	Vestsjælland	233
+3679	035	Storstrøm	233
+3680	040	Bornholm	233
+3681	042	Fyn	233
+3682	050	Sønderjylland	233
+3683	055	Ribe	233
+3684	060	Vejle	233
+3685	065	Ringkøbing	233
+3686	070	Århus	233
+3687	076	Viborg	233
+3688	080	Nordjylland	233
+3689	101	København City	233
+3690	147	Frederiksberg City	233
+3691	81	North Jutland	233
+3692	82	Central Jutland	233
+3693	83	South Denmark	233
+3694	84	Capital	233
+3695	85	Zeeland	233
+3696	02	Saint Andrew	234
+3697	03	Saint David	234
+3698	04	Saint George	234
+3699	05	Saint John	234
+3700	06	Saint Joseph	234
+3701	07	Saint Luke	234
+3702	08	Saint Mark	234
+3703	09	Saint Patrick	234
+3704	10	Saint Paul	234
+3705	11	Saint Peter	234
+3706	01	Distrito Nacional (Santo Domingo)	235
+3707	02	Azua	235
+3708	03	Bahoruco	235
+3709	04	Barahona	235
+3710	05	Dajabón	235
+3711	06	Duarte	235
+3712	07	La Estrelleta [Elías Piña]	235
+3713	08	El Seybo [El Seibo]	235
+3714	09	Espaillat	235
+3715	10	Independencia	235
+3716	11	La Altagracia	235
+3717	12	La Romana	235
+3718	13	La Vega	235
+3719	14	María Trinidad Sánchez	235
+3720	15	Monte Cristi	235
+3721	16	Pedernales	235
+3722	17	Peravia	235
+3723	18	Puerto Plata	235
+3724	19	Salcedo	235
+3725	20	Samaná	235
+3726	21	San Cristóbal	235
+3727	22	San Juan	235
+3728	23	San Pedro de Macorís	235
+3729	24	Sánchez Ramírez	235
+3730	25	Santiago	235
+3731	26	Santiago Rodríguez	235
+3732	27	Valverde	235
+3733	28	Monseñor Nouel	235
+3734	29	Monte Plata	235
+3735	30	Hato Mayor	235
+3736	31	San Jose de Ocoa	235
+3737	01	Adrar	236
+3738	02	Chlef	236
+3739	03	Laghouat	236
+3740	04	Oum el Bouaghi	236
+3741	05	Batna	236
+3742	06	Béjaïa	236
+3743	07	Biskra	236
+3744	08	Béchar	236
+3745	09	Blida	236
+3746	10	Bouira	236
+3747	11	Tamanghasset	236
+3748	12	Tébessa	236
+3749	13	Tlemcen	236
+3750	14	Tiaret	236
+3751	15	Tizi Ouzou	236
+3752	16	Alger	236
+3753	17	Djelfa	236
+3754	18	Jijel	236
+3755	19	Sétif	236
+3756	20	Saïda	236
+3757	21	Skikda	236
+3758	22	Sidi Bel Abbès	236
+3759	23	Annaba	236
+3760	24	Guelma	236
+3761	25	Constantine	236
+3762	26	Médéa	236
+3763	27	Mostaganem	236
+3764	28	Msila	236
+3765	29	Mascara	236
+3766	30	Ouargla	236
+3767	31	Oran	236
+3768	32	El Bayadh	236
+3769	33	Illizi	236
+3770	34	Bordj Bou Arréridj	236
+3771	35	Boumerdès	236
+3772	36	El Tarf	236
+3773	37	Tindouf	236
+3774	38	Tissemsilt	236
+3775	39	El Oued	236
+3776	40	Khenchela	236
+3777	41	Souk Ahras	236
+3778	42	Tipaza	236
+3779	43	Mila	236
+3780	44	Aïn Defla	236
+3781	45	Naama	236
+3782	46	Aïn Témouchent	236
+3783	47	Ghardaïa	236
+3784	48	Relizane	236
+3785	A	Azuay	237
+3786	B	Bolívar	237
+3787	C	Carchi	237
+3788	D	Orellana	237
+3789	E	Esmeraldas	237
+3790	F	Cañar	237
+3791	G	Guayas	237
+3792	H	Chimborazo	237
+3793	I	Imbabura	237
+3794	L	Loja	237
+3795	M	Manabí	237
+3796	N	Napo	237
+3797	O	El Oro	237
+3798	P	Pichincha	237
+3799	R	Los Ríos	237
+3800	S	Morona-Santiago	237
+3801	T	Tungurahua	237
+3802	U	Sucumbíos	237
+3803	W	Galápagos	237
+3804	X	Cotopaxi	237
+3805	X1~	Santa Elena	237
+3806	X2~	Santo Domingo de los Tsachilas	237
+3807	Y	Pastaza	237
+3808	Z	Zamora-Chinchipe	237
+3809	37	Harjumaa	238
+3810	39	Hiiumaa	238
+3811	44	Ida-Virumaa	238
+3812	49	Jõgevamaa	238
+3813	51	Järvamaa	238
+3814	57	Läänemaa	238
+3815	59	Lääne-Virumaa	238
+3816	65	Põlvamaa	238
+3817	67	Pärnumaa	238
+3818	70	Raplamaa	238
+3819	74	Saaremaa	238
+3820	78	Tartumaa	238
+3821	82	Valgamaa	238
+3822	84	Viljandimaa	238
+3823	86	Võrumaa	238
+3824	ALX	Al Iskandariyah	239
+3825	ASN	Aswan	239
+3826	AST	Asyut	239
+3827	BA	Al Bahr al Ahmar	239
+3828	BH	Al Buhayrah	239
+3829	BNS	Bani Suwayf	239
+3830	C	Al Qahirah	239
+3831	DK	Ad Daqahliyah	239
+3832	DT	Dumyat	239
+3833	FYM	Al Fayyum	239
+3834	GH	Al Gharbiyah	239
+3835	GZ	Al Jizah	239
+3836	IS	Al Ismā`īlīyah	239
+3837	JS	Janub Sina'	239
+3838	KB	Al Qalyubiyah	239
+3839	KFS	Kafr ash Shaykh	239
+3840	KN	Qina	239
+3841	LX	al-Uqsur	239
+3842	MN	Al Minya	239
+3843	MNF	Al Minufiyah	239
+3844	MT	Matrūh	239
+3845	PTS	Būr Sa`īd	239
+3846	SHG	Suhaj	239
+3847	SHR	Ash Sharqiyah	239
+3848	SIN	Shamal Sina'	239
+3849	SUZ	As Suways	239
+3850	WAD	Al Wadi al Jadid	239
+3851	BOD	Boujdour	240
+3852	ESM	Es Semara	240
+3853	LAA	Laayoune	240
+3854	OUD	Oued el Dahab	240
+3855	AN	Anseba	241
+3856	DK	Debubawi Keyih Bahri [Debub-Keih-Bahri]	241
+3857	DU	Debub	241
+3858	GB	Gash-Barka	241
+3859	MA	Maakel [Maekel]	241
+3860	SK	Semenawi Keyih Bahri [Semien-Keih-Bahri]	241
+3861	A	Alicante	242
+3862	AB	Albacete	242
+3863	AL	Almería	242
+3864	AV	Ávila	242
+3865	B	Barcelona	242
+3866	BA	Badajoz	242
+3867	BI	Vizcaya	242
+3868	BU	Burgos	242
+3869	C	A Coruña	242
+3870	CA	Cádiz	242
+3871	CC	Cáceres	242
+3872	CE	Ceuta	242
+3873	CO	Córdoba	242
+3874	CR	Ciudad Real	242
+3875	CS	Castellón	242
+3876	CU	Cuenca	242
+3877	GC	Las Palmas	242
+3878	GI	Girona	242
+3879	GR	Granada	242
+3880	GU	Guadalajara	242
+3881	H	Huelva	242
+3882	HU	Huesca	242
+3883	J	Jaén	242
+3884	L	Lleida	242
+3885	LE	León	242
+3886	LO	La Rioja	242
+3887	LU	Lugo	242
+3888	M	Madrid	242
+3889	MA	Málaga	242
+3890	ML	Melilla	242
+3891	MU	Murcia	242
+3892	NA	Navarra	242
+3893	O	Asturias	242
+3894	OR	Ourense	242
+3895	P	Palencia	242
+3896	PM	Baleares	242
+3897	PO	Pontevedra	242
+3898	S	Cantabria	242
+3899	SA	Salamanca	242
+3900	SE	Sevilla	242
+3901	SG	Segovia	242
+3902	SO	Soria	242
+3903	SS	Guipúzcoa	242
+3904	T	Tarragona	242
+3905	TE	Teruel	242
+3906	TF	Santa Cruz de Tenerife	242
+3907	TO	Toledo	242
+3908	V	Valencia	242
+3909	VA	Valladolid	242
+3910	VI	Álava	242
+3911	Z	Zaragoza	242
+3912	ZA	Zamora	242
+3913	AA	Adis Abeba	243
+3914	AF	Afar	243
+3915	AM	Amara	243
+3916	BE	Binshangul Gumuz	243
+3917	DD	Dire Dawa	243
+3918	GA	Gambela Hizboch	243
+3919	HA	Hareri Hizb	243
+3920	OR	Oromiya	243
+3921	SN	YeDebub Biheroch Bihereseboch na Hizboch	243
+3922	SO	Sumale	243
+3923	TI	Tigray	243
+3924	AL	Ahvenanmaan lääni	244
+3925	ES	Etelä-Suomen lääni	244
+3926	IS	Itä-Suomen lääni	244
+3927	LL	Lapin lääni	244
+3928	LS	Länsi-Suomen lääni	244
+3929	OL	Oulun lääni	244
+3930	C	Central	245
+3931	E	Eastern	245
+3932	N	Northern	245
+3933	R	Rotuma	245
+3934	W	Western	245
+3935	KSA	Kosrae	247
+3936	PNI	Pohnpei	247
+3937	TRK	Chuuk	247
+3938	YAP	Yap	247
+3939	01	Ain	249
+3940	02	Aisne	249
+3941	03	Allier	249
+3942	04	Alpes-de-Haute-Provence	249
+3943	05	Hautes-Alpes	249
+3944	06	Alpes-Maritimes	249
+3945	07	Ardèche	249
+3946	08	Ardennes	249
+3947	09	Ariège	249
+3948	10	Aube	249
+3949	11	Aude	249
+3950	12	Aveyron	249
+3951	13	Bouches-du-Rhône	249
+3952	14	Calvados	249
+3953	15	Cantal	249
+3954	16	Charente	249
+3955	17	Charente-Maritime	249
+3956	18	Cher	249
+3957	19	Corrèze	249
+3958	21	Côte-d'Or	249
+3959	22	Côtes-d'Armor	249
+3960	23	Creuse	249
+3961	24	Dordogne	249
+3962	25	Doubs	249
+3963	26	Drôme	249
+3964	27	Eure	249
+3965	28	Eure-et-Loir	249
+3966	29	Finistère	249
+3967	2A	Corse-du-Sud	249
+3968	2B	Haute-Corse	249
+3969	30	Gard	249
+3970	31	Haute-Garonne	249
+3971	32	Gers	249
+3972	33	Gironde	249
+3973	34	Hérault	249
+3974	35	Ille-et-Vilaine	249
+3975	36	Indre	249
+3976	37	Indre-et-Loire	249
+3977	38	Isère	249
+3978	39	Jura	249
+3979	40	Landes	249
+3980	41	Loir-et-Cher	249
+3981	42	Loire	249
+3982	43	Haute-Loire	249
+3983	44	Loire-Atlantique	249
+3984	45	Loiret	249
+3985	46	Lot	249
+3986	47	Lot-et-Garonne	249
+3987	48	Lozère	249
+3988	49	Maine-et-Loire	249
+3989	50	Manche	249
+3990	51	Marne	249
+3991	52	Haute-Marne	249
+3992	53	Mayenne	249
+3993	54	Meurthe-et-Moselle	249
+3994	55	Meuse	249
+3995	56	Morbihan	249
+3996	57	Moselle	249
+3997	58	Nièvre	249
+3998	59	Nord	249
+3999	60	Oise	249
+4000	61	Orne	249
+4001	62	Pas-de-Calais	249
+4002	63	Puy-de-Dôme	249
+4003	64	Pyrénées-Atlantiques	249
+4004	65	Hautes-Pyrénées	249
+4005	66	Pyrénées-Orientales	249
+4006	67	Bas-Rhin	249
+4007	68	Haut-Rhin	249
+4008	69	Rhône	249
+4009	70	Haute-Saône	249
+4010	71	Saône-et-Loire	249
+4011	72	Sarthe	249
+4012	73	Savoie	249
+4013	74	Haute-Savoie	249
+4014	75	Paris	249
+4015	76	Seine-Maritime	249
+4016	77	Seine-et-Marne	249
+4017	78	Yvelines	249
+4018	79	Deux-Sèvres	249
+4019	80	Somme	249
+4020	81	Tarn	249
+4021	82	Tarn-et-Garonne	249
+4022	83	Var	249
+4023	84	Vaucluse	249
+4024	85	Vendée	249
+4025	86	Vienne	249
+4026	87	Haute-Vienne	249
+4027	88	Vosges	249
+4028	89	Yonne	249
+4029	90	Territoire de Belfort	249
+4030	91	Essonne	249
+4031	92	Hauts-de-Seine	249
+4032	93	Seine-Saint-Denis	249
+4033	94	Val-de-Marne	249
+4034	95	Val-d'Oise	249
+4035	NC	Nouvelle-Calédonie (see also separate entry under NC)	249
+4036	PF	Polynésie française (see also separate entry under PF)	249
+4037	PM	Saint-Pierre-et-Miquelon (see also separate entry under PM)	249
+4038	TF	Terres Australes Françaises (see also separate entry under TF)	249
+4039	WF	Wallis et Futuna (see also separate entry under WF)	249
+4040	YT	Mayotte (see also separate entry under YT)	249
+4041	1	Estuaire	250
+4042	2	Haut-Ogooué	250
+4043	3	Moyen-Ogooué	250
+4044	4	Ngounié	250
+4045	5	Nyanga	250
+4046	6	Ogooué-Ivindo	250
+4047	7	Ogooué-Lolo	250
+4048	8	Ogooué-Maritime	250
+4049	9	Woleu-Ntem	250
+4050	ABD	Aberdeenshire	251
+4051	ABE	Aberdeen City	251
+4052	AGB	Argyll and Bute	251
+4053	AGY	Isle of Anglesey [Sir Ynys Môn GB-YNM]	251
+4054	ANS	Angus	251
+4055	ANT	Antrim	251
+4056	ARD	Ards	251
+4057	ARM	Armagh	251
+4058	BAS	Bath and North East Somerset	251
+4059	BBD	Blackburn with Darwen	251
+4060	BDF	Bedfordshire	251
+4061	BDG	Barking and Dagenham	251
+4062	BEN	Brent	251
+4063	BEX	Bexley	251
+4064	BFS	Belfast	251
+4065	BGE	Bridgend [Pen-y-bont ar Ogwr GB-POG]	251
+4066	BGW	Blaenau Gwent	251
+4067	BIR	Birmingham	251
+4068	BKM	Buckinghamshire	251
+4069	BLA	Ballymena	251
+4070	BLY	Ballymoney	251
+4071	BMH	Bournemouth	251
+4072	BNB	Banbridge	251
+4073	BNE	Barnet	251
+4074	BNH	Brighton and Hove	251
+4075	BNS	Barnsley	251
+4076	BOL	Bolton	251
+4077	BPL	Blackpool	251
+4078	BRC	Bracknell Forest	251
+4079	BRD	Bradford	251
+4080	BRY	Bromley	251
+4081	BST	Bristol, City of	251
+4082	BUR	Bury	251
+4083	CAM	Cambridgeshire	251
+4084	CAY	Caerphilly [Caerffili GB-CAF]	251
+4085	CGN	Ceredigion [Sir Ceredigion]	251
+4086	CGV	Craigavon	251
+4087	CHS	Cheshire	251
+4088	CKF	Carrickfergus	251
+4089	CKT	Cookstown	251
+4090	CLD	Calderdale	251
+4091	CLK	Clackmannanshire	251
+4092	CLR	Coleraine	251
+4093	CMA	Cumbria	251
+4094	CMD	Camden	251
+4095	CMN	Carmarthenshire [Sir Gaerfyrddin GB-GFY]	251
+4096	CON	Cornwall	251
+4097	COV	Coventry	251
+4098	CRF	Cardiff [Caerdydd GB-CRD]	251
+4099	CRY	Croydon	251
+4100	CSR	Castlereagh	251
+4101	CWY	Conwy	251
+4102	DAL	Darlington	251
+4103	DBY	Derbyshire	251
+4104	DEN	Denbighshire [Sir Ddinbych GB-DDB]	251
+4105	DER	Derby	251
+4106	DEV	Devon	251
+4107	DGN	Dungannon	251
+4108	DGY	Dumfries and Galloway	251
+4109	DNC	Doncaster	251
+4110	DND	Dundee City	251
+4111	DOR	Dorset	251
+4112	DOW	Down	251
+4113	DRY	Derry	251
+4114	DUD	Dudley	251
+4115	DUR	Durham	251
+4116	EAL	Ealing	251
+4117	EAY	East Ayrshire	251
+4118	EDH	Edinburgh, City of	251
+4119	EDU	East Dunbartonshire	251
+4120	ELN	East Lothian	251
+4121	ELS	Eilean Siar	251
+4122	ENF	Enfield	251
+4123	ERW	East Renfrewshire	251
+4124	ERY	East Riding of Yorkshire	251
+4125	ESS	Essex	251
+4126	ESX	East Sussex	251
+4127	FAL	Falkirk	251
+4128	FER	Fermanagh	251
+4129	FIF	Fife	251
+4130	FLN	Flintshire [Sir y Fflint GB-FFL]	251
+4131	GAT	Gateshead	251
+4132	GLG	Glasgow City	251
+4133	GLS	Gloucestershire	251
+4134	GRE	Greenwich	251
+4135	GWN	Gwynedd	251
+4136	HAL	Halton	251
+4137	HAM	Hampshire	251
+4138	HAV	Havering	251
+4139	HCK	Hackney	251
+4140	HEF	Herefordshire, County of	251
+4141	HIL	Hillingdon	251
+4142	HLD	Highland	251
+4143	HMF	Hammersmith and Fulham	251
+4144	HNS	Hounslow	251
+4145	HPL	Hartlepool	251
+4146	HRT	Hertfordshire	251
+4147	HRW	Harrow	251
+4148	HRY	Haringey	251
+4149	IOS	Isles of Scilly	251
+4150	IOW	Isle of Wight	251
+4151	ISL	Islington	251
+4152	IVC	Inverclyde	251
+4153	KEC	Kensington and Chelsea	251
+4154	KEN	Kent	251
+4155	KHL	Kingston upon Hull, City of	251
+4156	KIR	Kirklees	251
+4157	KTT	Kingston upon Thames	251
+4158	KWL	Knowsley	251
+4159	LAN	Lancashire	251
+4160	LBH	Lambeth	251
+4161	LCE	Leicester	251
+4162	LDS	Leeds	251
+4163	LEC	Leicestershire	251
+4164	LEW	Lewisham	251
+4165	LIN	Lincolnshire	251
+4166	LIV	Liverpool	251
+4167	LMV	Limavady	251
+4168	LND	London, City of	251
+4169	LRN	Larne	251
+4170	LSB	Lisburn	251
+4171	LUT	Luton	251
+4172	MAN	Manchester	251
+4173	MDB	Middlesbrough	251
+4174	MDW	Medway	251
+4175	MFT	Magherafelt	251
+4176	MIK	Milton Keynes	251
+4177	MLN	Midlothian	251
+4178	MON	Monmouthshire [Sir Fynwy GB-FYN]	251
+4179	MRT	Merton	251
+4180	MRY	Moray	251
+4181	MTY	Merthyr Tydfil [Merthyr Tudful GB-MTU]	251
+4182	MYL	Moyle	251
+4183	NAY	North Ayrshire	251
+4184	NBL	Northumberland	251
+4185	NDN	North Down	251
+4186	NEL	North East Lincolnshire	251
+4187	NET	Newcastle upon Tyne	251
+4188	NFK	Norfolk	251
+4189	NGM	Nottingham	251
+4190	NLK	North Lanarkshire	251
+4191	NLN	North Lincolnshire	251
+4192	NSM	North Somerset	251
+4193	NTA	Newtownabbey	251
+4194	NTH	Northamptonshire	251
+4195	NTL	Neath Port Talbot [Castell-nedd Port Talbot GB-CTL]	251
+4196	NTT	Nottinghamshire	251
+4197	NTY	North Tyneside	251
+4198	NWM	Newham	251
+4199	NWP	Newport [Casnewydd GB-CNW]	251
+4200	NYK	North Yorkshire	251
+4201	NYM	Newry and Mourne	251
+4202	OLD	Oldham	251
+4203	OMH	Omagh	251
+4204	ORK	Orkney Islands	251
+4205	OXF	Oxfordshire	251
+4206	PEM	Pembrokeshire [Sir Benfro GB-BNF]	251
+4207	PKN	Perth and Kinross	251
+4208	PLY	Plymouth	251
+4209	POL	Poole	251
+4210	POR	Portsmouth	251
+4211	POW	Powys	251
+4212	PTE	Peterborough	251
+4213	RCC	Redcar and Cleveland	251
+4214	RCH	Rochdale	251
+4215	RCT	Rhondda, Cynon, Taff [Rhondda, Cynon,Taf]	251
+4216	RDB	Redbridge	251
+4217	RDG	Reading	251
+4218	RFW	Renfrewshire	251
+4219	RIC	Richmond upon Thames	251
+4220	ROT	Rotherham	251
+4221	RUT	Rutland	251
+4222	SAW	Sandwell	251
+4223	SAY	South Ayrshire	251
+4224	SCB	Scottish Borders, The	251
+4225	SFK	Suffolk	251
+4226	SFT	Sefton	251
+4227	SGC	South Gloucestershire	251
+4228	SHF	Sheffield	251
+4229	SHN	St. Helens	251
+4230	SHR	Shropshire	251
+4231	SKP	Stockport	251
+4232	SLF	Salford	251
+4233	SLG	Slough	251
+4234	SLK	South Lanarkshire	251
+4235	SND	Sunderland	251
+4236	SOL	Solihull	251
+4237	SOM	Somerset	251
+4238	SOS	Southend-on-Sea	251
+4239	SRY	Surrey	251
+4240	STB	Strabane	251
+4241	STE	Stoke-on-Trent	251
+4242	STG	Stirling	251
+4243	STH	Southampton	251
+4244	STN	Sutton	251
+4245	STS	Staffordshire	251
+4246	STT	Stockton-on-Tees	251
+4247	STY	South Tyneside	251
+4248	SWA	Swansea [Abertawe GB-ATA]	251
+4249	SWD	Swindon	251
+4250	SWK	Southwark	251
+4251	TAM	Tameside	251
+4252	TFW	Telford and Wrekin	251
+4253	THR	Thurrock	251
+4254	TOB	Torbay	251
+4255	TOF	Torfaen [Tor-faen]	251
+4256	TRF	Trafford	251
+4257	TWH	Tower Hamlets	251
+4258	VGL	Vale of Glamorgan, The [Bro Morgannwg GB-BMG]	251
+4259	WAR	Warwickshire	251
+4260	WBK	West Berkshire	251
+4261	WDU	West Dunbartonshire	251
+4262	WFT	Waltham Forest	251
+4263	WGN	Wigan	251
+4264	WIL	Wiltshire	251
+4265	WKF	Wakefield	251
+4266	WLL	Walsall	251
+4267	WLN	West Lothian	251
+4268	WLV	Wolverhampton	251
+4269	WND	Wandsworth	251
+4270	WNM	Windsor and Maidenhead	251
+4271	WOK	Wokingham	251
+4272	WOR	Worcestershire	251
+4273	WRL	Wirral	251
+4274	WRT	Warrington	251
+4275	WRX	Wrexham [Wrecsam GB-WRC]	251
+4276	WSM	Westminster	251
+4277	WSX	West Sussex	251
+4278	YOR	York	251
+4279	ZET	Shetland Islands	251
+4280	01	Saint Andrew	252
+4281	02	Saint David	252
+4282	03	Saint George	252
+4283	04	Saint John	252
+4284	05	Saint Mark	252
+4285	06	Saint Patrick	252
+4286	10	Southern Grenadine Islands	252
+4287	AB	Abkhazia	253
+4288	AJ	Ajaria	253
+4289	GU	Guria	253
+4290	IM	Imereti	253
+4291	KA	Kakheti	253
+4292	KK	Kvemo Kartli	253
+4293	MM	Mtskheta-Mtianeti	253
+4294	RL	Racha-Lechkhumi [and] Kvemo Svaneti	253
+4295	SJ	Samtskhe-Javakheti	253
+4296	SK	Shida Kartli	253
+4297	SZ	Samegrelo-Zemo Svaneti	253
+4298	TB	Tbilisi	253
+4299	AA	Greater Accra	256
+4300	AH	Ashanti	256
+4301	BA	Brong-Ahafo	256
+4302	CP	Central	256
+4303	EP	Eastern	256
+4304	NP	Northern	256
+4305	TV	Volta	256
+4306	UE	Upper East	256
+4307	UW	Upper West	256
+4308	WP	Western	256
+4309	B	Banjul	259
+4310	L	Lower River	259
+4311	M	MacCarthy Island	259
+4312	N	North Bank	259
+4313	U	Upper River	259
+4314	W	Western	259
+4315	BE	Beyla	260
+4316	BF	Boffa	260
+4317	BK	Boké	260
+4318	C	Conakry	260
+4319	CO	Coyah	260
+4320	DB	Dabola	260
+4321	DI	Dinguiraye	260
+4322	DL	Dalaba	260
+4323	DU	Dubréka	260
+4324	FA	Faranah	260
+4325	FO	Forécariah	260
+4326	FR	Fria	260
+4327	GA	Gaoual	260
+4328	GU	Guékédou	260
+4329	KA	Kankan	260
+4330	KB	Koubia	260
+4331	KD	Kindia	260
+4332	KE	Kérouané	260
+4333	KN	Koundara	260
+4334	KO	Kouroussa	260
+4335	KS	Kissidougou	260
+4336	LA	Labé	260
+4337	LE	Lélouma	260
+4338	LO	Lola	260
+4339	MC	Macenta	260
+4340	MD	Mandiana	260
+4341	ML	Mali	260
+4342	MM	Mamou	260
+4343	NZ	Nzérékoré	260
+4344	PI	Pita	260
+4345	SI	Siguiri	260
+4346	TE	Télimélé	260
+4347	TO	Tougué	260
+4348	YO	Yomou	260
+4349	AN	Annobón	262
+4350	BN	Bioko Norte	262
+4351	BS	Bioko Sur	262
+4352	C	Región Continental	262
+4353	CS	Centro Sur	262
+4354	I	Región Insular	262
+4355	KN	Kie-Ntem	262
+4356	LI	Litoral	262
+4357	WN	Wele-Nzás	262
+4358	01	Aitolia-Akarnania	263
+4359	03	Voiotia	263
+4360	04	Evvoia	263
+4361	05	Evrytania	263
+4362	06	Fthiotis	263
+4363	07	Fokis	263
+4364	11	Argolis	263
+4365	12	Arkadia	263
+4366	13	Achaïa	263
+4367	14	Ileia	263
+4368	15	Korinthia	263
+4369	16	Lakonia	263
+4370	17	Messinia	263
+4371	21	Zakynthos	263
+4372	22	Kerkyra	263
+4373	23	Kefallinia	263
+4374	24	Lefkas	263
+4375	31	Arta	263
+4376	32	Thesprotia	263
+4377	33	Ioannina	263
+4378	34	Preveza	263
+4379	41	Karditsa	263
+4380	42	Larisa	263
+4381	43	Magnisia	263
+4382	44	Trikala	263
+4383	51	Grevena	263
+4384	52	Drama	263
+4385	53	Imathia	263
+4386	54	Thessaloniki	263
+4387	55	Kavalla	263
+4388	56	Kastoria	263
+4389	57	Kilkis	263
+4390	58	Kozani	263
+4391	59	Pella	263
+4392	61	Pieria	263
+4393	62	Serrai	263
+4394	63	Florina	263
+4395	64	Chalkidiki	263
+4396	69	Agio Oros	263
+4397	71	Evros	263
+4398	72	Xanthi	263
+4399	73	Rodopi	263
+4400	81	Dodekanisos	263
+4401	82	Kyklades	263
+4402	83	Lesvos	263
+4403	84	Samos	263
+4404	85	Chios	263
+4405	91	Irakleion	263
+4406	92	Lasithion	263
+4407	93	Rethymnon	263
+4408	94	Chania	263
+4409	A1	Attiki	263
+4410	AV	Alta Verapaz	265
+4411	BV	Baja Verapaz	265
+4412	CM	Chimaltenango	265
+4413	CQ	Chiquimula	265
+4414	ES	Escuintla	265
+4415	GU	Guatemala	265
+4416	HU	Huehuetenango	265
+4417	IZ	Izabal	265
+4418	JA	Jalapa	265
+4419	JU	Jutiapa	265
+4420	PE	Petén	265
+4421	PR	El Progreso	265
+4422	QC	Quiché	265
+4423	QZ	Quetzaltenango	265
+4424	RE	Retalhuleu	265
+4425	SA	Sacatepéquez	265
+4426	SM	San Marcos	265
+4427	SO	Sololá	265
+4428	SR	Santa Rosa	265
+4429	SU	Suchitepéquez	265
+4430	TO	Totonicapán	265
+4431	ZA	Zacapa	265
+4432	BA	Bafatá	267
+4433	BL	Bolama	267
+4434	BM	Biombo	267
+4435	BS	Bissau	267
+4436	CA	Cacheu	267
+4437	GA	Gabú	267
+4438	OI	Oio	267
+4439	QU	Quinara	267
+4440	TO	Tombali	267
+4441	BA	Barima-Waini	268
+4442	CU	Cuyuni-Mazaruni	268
+4443	DE	Demerara-Mahaica	268
+4444	EB	East Berbice-Corentyne	268
+4445	ES	Essequibo Islands-West Demerara	268
+4446	MA	Mahaica-Berbice	268
+4447	PM	Pomeroon-Supenaam	268
+4448	PT	Potaro-Siparuni	268
+4449	UD	Upper Demerara-Berbice	268
+4450	UT	Upper Takutu-Upper Essequibo	268
+4451	AT	Atlántida	271
+4452	CH	Choluteca	271
+4453	CL	Colón	271
+4454	CM	Comayagua	271
+4455	CP	Copán	271
+4456	CR	Cortés	271
+4457	EP	El Paraíso	271
+4458	FM	Francisco Morazán	271
+4459	GD	Gracias a Dios	271
+4460	IB	Islas de la Bahía	271
+4461	IN	Intibucá	271
+4462	LE	Lempira	271
+4463	LP	La Paz	271
+4464	OC	Ocotepeque	271
+4465	OL	Olancho	271
+4466	SB	Santa Bárbara	271
+4467	VA	Valle	271
+4468	YO	Yoro	271
+4469	01	Zagrebacka županija	272
+4470	02	Krapinsko-zagorska županija	272
+4471	03	Sisacko-moslavacka županija	272
+4472	04	Karlovacka županija	272
+4473	05	Varaždinska županija	272
+4474	06	Koprivnicko-križevacka županija	272
+4475	07	Bjelovarsko-bilogorska županija	272
+4476	08	Primorsko-goranska županija	272
+4477	09	Licko-senjska županija	272
+4478	10	Viroviticko-podravska županija	272
+4479	11	Požeško-slavonska županija	272
+4480	12	Brodsko-posavska županija	272
+4481	13	Zadarska županija	272
+4482	14	Osjecko-baranjska županija	272
+4483	15	Šibensko-kninska županija	272
+4484	16	Vukovarsko-srijemska županija	272
+4485	17	Splitsko-dalmatinska županija	272
+4486	18	Istarska županija	272
+4487	19	Dubrovacko-neretvanska županija	272
+4488	20	Medimurska županija	272
+4489	21	Grad Zagreb	272
+4490	AR	Artibonite	273
+4491	CE	Centre	273
+4492	GA	Grande-Anse	273
+4493	ND	Nord	273
+4494	NE	Nord-Est	273
+4495	NO	Nord-Ouest	273
+4496	OU	Ouest	273
+4497	SD	Sud	273
+4498	SE	Sud-Est	273
+4499	BA	Baranya	274
+4500	BC	Békéscsaba	274
+4501	BE	Békés	274
+4502	BK	Bács-Kiskun	274
+4503	BU	Budapest	274
+4504	BZ	Borsod-Abaúj-Zemplén	274
+4505	CS	Csongrád	274
+4506	DE	Debrecen	274
+4507	DU	Dunaújváros	274
+4508	EG	Eger	274
+4509	FE	Fejér	274
+4510	GS	Gyor-Moson-Sopron	274
+4511	GY	Gyor	274
+4512	HB	Hajdú-Bihar	274
+4513	HE	Heves	274
+4514	HV	Hódmezovásárhely	274
+4515	JN	Jász-Nagykun-Szolnok	274
+4516	KE	Komárom-Esztergom	274
+4517	KM	Kecskemét	274
+4518	KV	Kaposvár	274
+4519	MI	Miskolc	274
+4520	NK	Nagykanizsa	274
+4521	NO	Nógrád	274
+4522	NY	Nyíregyháza	274
+4523	PE	Pest	274
+4524	PS	Pécs	274
+4525	SD	Szeged	274
+4526	SF	Székesfehérvár	274
+4527	SH	Szombathely	274
+4528	SK	Szolnok	274
+4529	SN	Sopron	274
+4530	SO	Somogy	274
+4531	SS	Szekszárd	274
+4532	ST	Salgótarján	274
+4533	SZ	Szabolcs-Szatmár-Bereg	274
+4534	TB	Tatabánya	274
+4535	TO	Tolna	274
+4536	VA	Vas	274
+4537	VE	Veszprém	274
+4538	VM	Veszprém City	274
+4539	X1~	Erd	274
+4540	ZA	Zala	274
+4541	ZE	Zalaegerszeg	274
+4542	AC	Aceh	275
+4543	BA	Bali	275
+4544	BB	Bangka Belitung	275
+4545	BE	Bengkulu	275
+4546	BT	Banten	275
+4547	GO	Gorontalo	275
+4548	JA	Jambi	275
+4549	JB	Jawa Barat	275
+4550	JI	Jawa Timur	275
+4551	JK	Jakarta Raya	275
+4552	JT	Jawa Tengah	275
+4553	KB	Kalimantan Barat	275
+4554	KI	Kalimantan Timur	275
+4555	KR	Kepulauan Riau	275
+4556	KS	Kalimantan Selatan	275
+4557	KT	Kalimantan Tengah	275
+4558	LA	Lampung	275
+4559	MA	Maluku	275
+4560	MU	Maluku Utara	275
+4561	NB	Nusa Tenggara Barat	275
+4562	NT	Nusa Tenggara Timur	275
+4563	PA	Papua	275
+4564	RI	Riau	275
+4565	SA	Sulawesi Utara	275
+4566	SB	Sumatera Barat	275
+4567	SG	Sulawesi Tenggara	275
+4568	SN	Sulawesi Selatan	275
+4569	SR	Sulawesi Barat	275
+4570	SS	Sumatera Selatan	275
+4571	ST	Sulawesi Tengah	275
+4572	SU	Sumatera Utara	275
+4573	X1~	Papua Barat	275
+4574	YO	Yogyakarta	275
+4575	C	Cork	276
+4576	CE	Clare	276
+4577	CN	Cavan	276
+4578	CW	Carlow	276
+4579	D	Dublin	276
+4580	DL	Donegal	276
+4581	G	Galway	276
+4582	KE	Kildare	276
+4583	KK	Kilkenny	276
+4584	KY	Kerry	276
+4585	LD	Longford	276
+4586	LH	Louth	276
+4587	LK	Limerick	276
+4588	LM	Leitrim	276
+4589	LS	Laois	276
+4590	MH	Meath	276
+4591	MN	Monaghan	276
+4592	MO	Mayo	276
+4593	OY	Offaly	276
+4594	RN	Roscommon	276
+4595	SO	Sligo	276
+4596	TA	Tipperary	276
+4597	WD	Waterford	276
+4598	WH	Westmeath	276
+4599	WW	Wicklow	276
+4600	WX	Wexford	276
+4601	D	HaDarom	277
+4602	HA	Haifa	277
+4603	JM	Yerushalayim	277
+4604	M	HaMerkaz	277
+4605	TA	Tel-Aviv	277
+4606	Z	HaZafon	277
+4607	AN	Andaman and Nicobar Islands	279
+4608	AP	Andhra Pradesh	279
+4609	AR	Arunachal Pradesh	279
+4610	AS	Assam	279
+4611	BR	Bihar	279
+4612	CH	Chandigarh	279
+4613	CT	Chhattisgarh	279
+4614	DD	Daman and Diu	279
+4615	DL	Delhi	279
+4616	DN	Dadra and Nagar Haveli	279
+4617	GA	Goa	279
+4618	GJ	Gujarat	279
+4619	HP	Himachal Pradesh	279
+4620	HR	Haryana	279
+4621	JH	Jharkhand	279
+4622	JK	Jammu and Kashmir	279
+4623	KA	Karnataka	279
+4624	KL	Kerala	279
+4625	LD	Lakshadweep	279
+4626	MH	Maharashtra	279
+4627	ML	Meghalaya	279
+4628	MN	Manipur	279
+4629	MP	Madhya Pradesh	279
+4630	MZ	Mizoram	279
+4631	NL	Nagaland	279
+4632	OR	Orissa	279
+4633	PB	Punjab	279
+4634	PY	Pondicherry	279
+4635	RJ	Rajasthan	279
+4636	SK	Sikkim	279
+4637	TN	Tamil Nadu	279
+4638	TR	Tripura	279
+4639	UL	Uttaranchal	279
+4640	UP	Uttar Pradesh	279
+4641	WB	West Bengal	279
+4642	AN	Al Anbar	281
+4643	AR	Arbil	281
+4644	BA	Al Basrah	281
+4645	BB	Babil	281
+4646	BG	Baghdad	281
+4647	DA	Dahuk	281
+4648	DI	Diyalá	281
+4649	DQ	Dhi Qar	281
+4650	KA	Karbala'	281
+4651	MA	Maysan	281
+4652	MU	Al Muthanná	281
+4653	NA	An Najaf	281
+4654	NI	Ninawá	281
+4655	QA	Al Qadisiyah	281
+4656	SD	Salah ad Din	281
+4657	SU	As Sulaymaniyah	281
+4658	TS	At Ta'mim	281
+4659	WA	Wasit	281
+4660	01	Az¯arbayjan-e Sharqi	282
+4661	02	Az¯arbayjan-e Gharbi	282
+4662	03	Ardabil	282
+4663	04	Esfahan	282
+4664	05	Ilam	282
+4665	06	Bushehr	282
+4666	07	Tehran	282
+4667	08	Chahar Mah¸all va Bakhtiari	282
+4668	09	Khorasan	282
+4669	10	Khuzestan	282
+4670	11	Zanjan	282
+4671	12	Semnan	282
+4672	13	Sistan va Baluchestan	282
+4673	14	Fars	282
+4674	15	Kerman	282
+4675	16	Kordestan	282
+4676	17	Kermanshah	282
+4677	18	Kohkiluyeh va Buyer Ahmad	282
+4678	19	Gilan	282
+4679	20	Lorestan	282
+4680	21	Mazandaran	282
+4681	22	Markazi	282
+4682	23	Hormozgan	282
+4683	24	Hamadan	282
+4684	25	Yazd	282
+4685	26	Qom	282
+4686	27	Golestan	282
+4687	28	Qazvin	282
+4688	29	Khorasan-e Janubi	282
+4689	30	Khorasan-e Razavi	282
+4690	31	Khorasan-e Shemali	282
+4691	0	Reykjavík	283
+4692	1	Höfuðborgarsvæði utan Reykjavíkur	283
+4693	2	Suðurnes	283
+4694	3	Vesturland	283
+4695	4	Vestfirðir	283
+4696	5	Norðurland vestra	283
+4697	6	Norðurland eystra	283
+4698	7	Austurland	283
+4699	8	Suðurland	283
+4700	AG	Agrigento	284
+4701	AL	Alessandria	284
+4702	AN	Ancona	284
+4703	AO	Aosta	284
+4704	AP	Ascoli Piceno	284
+4705	AQ	L'Aquila	284
+4706	AR	Arezzo	284
+4707	AT	Asti	284
+4708	AV	Avellino	284
+4709	BA	Bari	284
+4710	BG	Bergamo	284
+4711	BI	Biella	284
+4712	BL	Belluno	284
+4713	BN	Benevento	284
+4714	BO	Bologna	284
+4715	BR	Brindisi	284
+4716	BS	Brescia	284
+4717	BZ	Bolzano	284
+4718	CA	Cagliari	284
+4719	CB	Campobasso	284
+4720	CE	Caserta	284
+4721	CH	Chieti	284
+4722	CI	Carbonia-Iglesias	284
+4723	CL	Caltanissetta	284
+4724	CN	Cuneo	284
+4725	CO	Como	284
+4726	CR	Cremona	284
+4727	CS	Cosenza	284
+4728	CT	Catania	284
+4729	CZ	Catanzaro	284
+4730	EN	Enna	284
+4731	FE	Ferrara	284
+4732	FG	Foggia	284
+4733	FI	Firenze	284
+4734	FO	Forlì	284
+4735	FR	Frosinone 	284
+4736	GE	Genova	284
+4737	GO	Gorizia	284
+4738	GR	Grosseto	284
+4739	IM	Imperia	284
+4740	IS	Isernia	284
+4741	KR	Crotone	284
+4742	LC	Lecco	284
+4743	LE	Lecce	284
+4744	LI	Livorno	284
+4745	LO	Lodi	284
+4746	LT	Latina	284
+4747	LU	Lucca	284
+4748	MA	Medio Campidano	284
+4749	MC	Macerata	284
+4750	ME	Messina	284
+4751	MI	Milano	284
+4752	MN	Mantova	284
+4753	MO	Modena	284
+4754	MS	Massa-Carrara	284
+4755	MT	Matera	284
+4756	NA	Napoli	284
+4757	NO	Novara	284
+4758	NU	Nuoro	284
+4759	OG	Ogliastra	284
+4760	OL	Olbia-Tempio	284
+4761	OR	Oristano	284
+4762	PA	Palermo	284
+4763	PC	Piacenza	284
+4764	PD	Padova	284
+4765	PE	Pescara	284
+4766	PG	Perugia	284
+4767	PI	Pisa	284
+4768	PN	Pordenone	284
+4769	PO	Prato	284
+4770	PR	Parma	284
+4771	PS	Pesaro e Urbino	284
+4772	PT	Pistoia	284
+4773	PV	Pavia	284
+4774	PZ	Potenza	284
+4775	RA	Ravenna	284
+4776	RC	Reggio Calabria	284
+4777	RE	Reggio Emilia	284
+4778	RG	Ragusa	284
+4779	RI	Rieti	284
+4780	RM	Roma	284
+4781	RN	Rimini	284
+4782	RO	Rovigo	284
+4783	SA	Salerno	284
+4784	SI	Siena	284
+4785	SO	Sondrio	284
+4786	SP	La Spezia	284
+4787	SR	Siracusa	284
+4788	SS	Sassari	284
+4789	SV	Savona	284
+4790	TA	Taranto	284
+4791	TE	Teramo	284
+4792	TN	Trento	284
+4793	TO	Torino	284
+4794	TP	Trapani	284
+4795	TR	Terni	284
+4796	TS	Trieste	284
+4797	TV	Treviso	284
+4798	UD	Udine	284
+4799	VA	Varese	284
+4800	VB	Verbano-Cusio-Ossola	284
+4801	VC	Vercelli	284
+4802	VE	Venezia	284
+4803	VI	Vicenza	284
+4804	VR	Verona	284
+4805	VT	Viterbo	284
+4806	VV	Vibo Valentia	284
+4807	01	Kingston	286
+4808	02	Saint Andrew	286
+4809	03	Saint Thomas	286
+4810	04	Portland	286
+4811	05	Saint Mary	286
+4812	06	Saint Ann	286
+4813	07	Trelawny	286
+4814	08	Saint James	286
+4815	09	Hanover	286
+4816	10	Westmoreland	286
+4817	11	Saint Elizabeth	286
+4818	12	Manchester	286
+4819	13	Clarendon	286
+4820	14	Saint Catherine	286
+4821	AJ	?Ajlun	287
+4822	AM	?Amman	287
+4823	AQ	Aqaba	287
+4824	AT	At Tafilah	287
+4825	AZ	Az Zarqa'	287
+4826	BA	Al Balqa'	287
+4827	IR	Irbid	287
+4828	JA	Jarash	287
+4829	KA	Al Karak	287
+4830	MA	Al Mafraq	287
+4831	MD	Madaba	287
+4832	MN	Ma`an	287
+4833	01	Hokkaidô [Hokkaido]	288
+4834	02	Aomori	288
+4835	03	Iwate	288
+4836	04	Miyagi	288
+4837	05	Akita	288
+4838	06	Yamagata	288
+4839	07	Hukusima [Fukushima]	288
+4840	08	Ibaraki	288
+4841	09	Totigi [Tochigi]	288
+4842	10	Gunma	288
+4843	11	Saitama	288
+4844	12	Tiba [Chiba]	288
+4845	13	Tôkyô [Tokyo]	288
+4846	14	Kanagawa	288
+4847	15	Niigata	288
+4848	16	Toyama	288
+4849	17	Isikawa [Ishikawa]	288
+4850	18	Hukui [Fukui]	288
+4851	19	Yamanasi [Yamanashi]	288
+4852	20	Nagano	288
+4853	21	Gihu [Gifu]	288
+4854	22	Sizuoka [Shizuoka]	288
+4855	23	Aiti [Aichi]	288
+4856	24	Mie	288
+4857	25	Siga [Shiga]	288
+4858	26	Kyôto [Kyoto]	288
+4859	27	Ôsaka [Osaka]	288
+4860	28	Hyôgo [Hyogo]	288
+4861	29	Nara	288
+4862	30	Wakayama	288
+4863	31	Tottori	288
+4864	32	Simane [Shimane]	288
+4865	33	Okayama	288
+4866	34	Hirosima [Hiroshima]	288
+4867	35	Yamaguti [Yamaguchi]	288
+4868	36	Tokusima [Tokushima]	288
+4869	37	Kagawa	288
+4870	38	Ehime	288
+4871	39	Kôti [Kochi]	288
+4872	40	Hukuoka [Fukuoka]	288
+4873	41	Saga	288
+4874	42	Nagasaki	288
+4875	43	Kumamoto	288
+4876	44	Ôita [Oita]	288
+4877	45	Miyazaki	288
+4878	46	Kagosima [Kagoshima]	288
+4879	47	Okinawa	288
+4880	110	Nairobi Municipality	289
+4881	200	Central	289
+4882	300	Coast	289
+4883	400	Eastern	289
+4884	500	North-Eastern	289
+4885	600	Nyanza	289
+4886	700	Rift Valley	289
+4887	900	Western	289
+4888	B	Batken	290
+4889	C	Chü	290
+4890	GB	Bishkek	290
+4891	J	Jalal-Abad	290
+4892	N	Naryn	290
+4893	O	Osh	290
+4894	T	Talas	290
+4895	Y	Ysyk-Köl	290
+4896	1	Banteay Mean Chey [Bântéay Méanchey]	291
+4897	10	Kracheh [Krâchéh]	291
+4898	11	Mondol Kiri [Môndól Kiri]	291
+4899	12	Phnom Penh [Phnum Pénh]	291
+4900	13	Preah Vihear [Preah Vihéar]	291
+4901	14	Prey Veaeng [Prey Vêng]	291
+4902	15	Pousaat [Pouthisat]	291
+4903	16	Rotanak Kiri [Rôtânôkiri]	291
+4904	17	Siem Reab [Siemréab]	291
+4905	18	Krong Preah Sihanouk [Krong Preah Sihanouk]	291
+4906	19	Stueng Traeng [Stœ?ng Trêng]	291
+4907	2	Baat Dambang [Batdâmbâng]	291
+4908	20	Svaay Rieng [Svay Rieng]	291
+4909	21	Taakaev [Takêv]	291
+4910	22	Otdar Mean Chey [Otdâr Méanchey] 	291
+4911	23	Krong Kep [Krong Kêb]	291
+4912	24	Krong Pailin [Krong Pailin]	291
+4913	3	Kampong Chaam [Kâmpóng Cham]	291
+4914	4	Kampong Chhnang [Kâmpóng Chhnang]	291
+4915	5	Kampong Spueu [Kâmpóng Spœ]	291
+4916	6	Kampong Thum [Kâmpóng Thum]	291
+4917	7	Kampot [Kâmpôt]	291
+4918	8	Kandaal [Kândal]	291
+4919	9	Kaoh Kong [Kaôh Kong]	291
+4920	G	Gilbert Islands	292
+4921	L	Line Islands	292
+4922	P	Phoenix Islands	292
+4923	A	Anjouan	293
+4924	G	Grande Comore	293
+4925	M	Mohéli	293
+4926	01	Christ Church Nichola Town	294
+4927	02	Saint Anne Sandy Point	294
+4928	03	Saint George Basseterre	294
+4929	04	Saint George Gingerland	294
+4930	05	Saint James Windward	294
+4931	06	Saint John Capisterre	294
+4932	07	Saint John Figtree	294
+4933	08	Saint Mary Cayon	294
+4934	09	Saint Paul Capisterre	294
+4935	10	Saint Paul Charlestown	294
+4936	11	Saint Peter Basseterre	294
+4937	12	Saint Thomas Lowland	294
+4938	13	Saint Thomas Middle Island	294
+4939	15	Trinity Palmetto Point	294
+4940	CHA	Chagang-do	295
+4941	HAB	Hamgyongbuk-do	295
+4942	HAN	Hamgyongnam-do	295
+4943	HWB	Hwanghaebuk-do	295
+4944	HWN	Hwanghaenam-do	295
+4945	KAE	Kaesong-si	295
+4946	KAN	Kangwon-do	295
+4947	NAJ	Najin Sonbong-si	295
+4948	NAM	Nampo-si	295
+4949	PYB	Pyonganbuk-do	295
+4950	PYN	Pyongannam-do	295
+4951	PYO	Pyongyang-si	295
+4952	X1~	Rason	295
+4953	YAN	Yanggang-do	295
+4954	11	Seoul Teugbyeolsi [Seoul-T'ukpyolshi]	296
+4955	26	Busan Gwang'yeogsi [Pusan-Kwangyokshi]	296
+4956	27	Daegu Gwang'yeogsi [Taegu-Kwangyokshi]	296
+4957	28	Incheon Gwang'yeogsi [Inch'n-Kwangyokshi]	296
+4958	29	Gwangju Gwang'yeogsi [Kwangju-Kwangyokshi]	296
+4959	30	Daejeon Gwang'yeogsi [Taejon-Kwangyokshi]	296
+4960	31	Ulsan Gwang'yeogsi [Ulsan-Kwangyokshi]	296
+4961	41	Gyeonggido [Kyonggi-do]	296
+4962	42	Gang'weondo [Kang-won-do]	296
+4963	43	Chungcheongbugdo [Ch'ungch'ongbuk-do]	296
+4964	44	Chungcheongnamdo [Ch'ungch'ongnam-do]	296
+4965	45	Jeonrabugdo[Chollabuk-do]	296
+4966	46	Jeonranamdo [Chollanam-do]	296
+4967	47	Gyeongsangbugdo [Kyongsangbuk-do]	296
+4968	48	Gyeongsangnamdo [Kyongsangnam-do]	296
+4969	49	Jejudo [Cheju-do]	296
+4970	AH	Al Ahmadi	297
+4971	FA	Al Farwaniyah	297
+4972	HA	Hawalli	297
+4973	JA	Al Jahrah	297
+4974	KU	Al Kuwayt	297
+4975	MU	Mubarak al-Kabir	297
+4976	AKM	Aqmola oblysy	299
+4977	AKT	Aqtöbe oblysy	299
+4978	ALA	Almaty	299
+4979	ALM	Almaty oblysy	299
+4980	AST	Astana	299
+4981	ATY	Atyrau oblysy	299
+4982	BAY	Bayqongyr	299
+4983	KAR	Qaraghandy oblysy	299
+4984	KUS	Qostanay oblysy	299
+4985	KZY	Qyzylorda oblysy	299
+4986	MAN	Mangghystau oblysy	299
+4987	PAV	Pavlodar oblysy	299
+4988	SEV	Soltüstik Qazaqstan oblysy	299
+4989	VOS	Shyghys Qazaqstan oblysy	299
+4990	YUZ	Ongtüstik Qazaqstan oblysy	299
+4991	ZAP	Batys Qazaqstan oblysy	299
+4992	ZHA	Zhambyl oblysy	299
+4993	AT	Attapu [Attopeu]	300
+4994	BK	Bokèo	300
+4995	BL	Bolikhamxai [Borikhane]	300
+4996	CH	Champasak [Champassak]	300
+4997	HO	Houaphan	300
+4998	KH	Khammouan	300
+4999	LM	Louang Namtha	300
+5000	LP	Louangphabang [Louang Prabang]	300
+5001	OU	Oudômxai [Oudomsai]	300
+5002	PH	Phôngsali [Phong Saly]	300
+5003	SL	Salavan [Saravane]	300
+5004	SV	Savannakhét	300
+5005	VI	Vientiane	300
+5006	VT	Vientiane Prefecture	300
+5007	XA	Xaignabouli [Sayaboury]	300
+5008	XE	Xékong [Sékong]	300
+5009	XI	Xiangkhoang [Xieng Khouang]	300
+5010	XN	Xaisômboun	300
+5011	AS	Loubnâne ech Chemâli	301
+5012	BA	Beirut	301
+5013	BI	El Béqaa	301
+5014	JA	Loubnâne ej Jnoûbi	301
+5015	JL	Jabal Loubnâne	301
+5016	NA	Nabatîyé	301
+5017	01	Balzers	303
+5018	02	Eschen	303
+5019	03	Gamprin	303
+5020	04	Mauren	303
+5021	05	Planken	303
+5022	06	Ruggell	303
+5023	07	Schaan	303
+5024	08	Schellenberg	303
+5025	09	Triesen	303
+5026	10	Triesenberg	303
+5027	11	Vaduz	303
+5028	11	Colombo	304
+5029	12	Gampaha	304
+5030	13	Kalutara	304
+5031	21	Kandy	304
+5032	22	Matale	304
+5033	23	Nuwara Eliya	304
+5034	31	Galle	304
+5035	32	Matara	304
+5036	33	Hambantota	304
+5037	41	Jaffna	304
+5038	42	Kilinochchi	304
+5039	43	Mannar	304
+5040	44	Vavuniya	304
+5041	45	Mullaittivu	304
+5042	51	Batticaloa	304
+5043	52	Ampara	304
+5044	53	Trincomalee	304
+5045	61	Kurunegala	304
+5046	62	Puttalam	304
+5047	71	Anuradhapura	304
+5048	72	Polonnaruwa	304
+5049	81	Badulla	304
+5050	82	Monaragala	304
+5051	91	Ratnapura	304
+5052	92	Kegalla	304
+5053	BG	Bong	305
+5054	BM	Bomi	305
+5055	CM	Grand Cape Mount	305
+5056	GB	Grand Bassa	305
+5057	GG	Grand Gedeh	305
+5058	GK	Grand Kru	305
+5059	LO	Lofa	305
+5060	MG	Margibi	305
+5061	MO	Montserrado	305
+5062	MY	Maryland	305
+5063	NI	Nimba	305
+5064	RI	Rivercess	305
+5065	SI	Sinoe	305
+5066	X1~	Gbarpolu	305
+5067	X2~	River Gee	305
+5068	A	Maseru	306
+5069	B	Butha-Buthe	306
+5070	C	Leribe	306
+5071	D	Berea	306
+5072	E	Mafeteng	306
+5073	F	Mohale's Hoek	306
+5074	G	Quthing	306
+5075	H	Qacha's Nek	306
+5076	J	Mokhotlong	306
+5077	K	Thaba-Tseka	306
+5078	AL	Alytaus Apskritis	307
+5079	KL	Klaipedos Apskritis	307
+5080	KU	Kauno Apskritis	307
+5081	MR	Marijampoles Apskritis	307
+5082	PN	Panevežio Apskritis	307
+5083	SA	Šiauliu Apskritis	307
+5084	TA	Taurages Apskritis	307
+5085	TE	Telšiu Apskritis	307
+5086	UT	Utenos Apskritis	307
+5087	VL	Vilniaus Apskritis	307
+5088	D	Diekirch	308
+5089	G	Grevenmacher	308
+5090	L	Luxembourg (fr)	308
+5091	AI	Aizkraukles Aprinkis	309
+5092	AL	Aluksnes Aprinkis	309
+5093	BL	Balvu Aprinkis	309
+5094	BU	Bauskas Aprinkis	309
+5095	CE	Cesu Aprinkis	309
+5096	DA	Daugavpils Aprinkis	309
+5097	DGV	Daugavpils	309
+5098	DO	Dobeles Aprinkis	309
+5099	GU	Gulbenes Aprinkis	309
+5100	JEL	Jelgava	309
+5101	JK	Jekabpils Aprinkis	309
+5102	JL	Jelgavas Aprinkis	309
+5103	JUR	Jurmala	309
+5104	KR	Kraslavas Aprinkis	309
+5105	KU	Kuldigas Aprinkis	309
+5106	LE	Liepajas Aprinkis	309
+5107	LM	Limbažu Aprinkis	309
+5108	LPX	Liepaja	309
+5109	LU	Ludzas Aprinkis	309
+5110	MA	Madonas Aprinkis	309
+5111	OG	Ogres Aprinkis	309
+5112	PR	Preilu Aprinkis	309
+5113	RE	Rezeknes Aprinkis	309
+5114	REZ	Rezekne	309
+5115	RI	Rigas Aprinkis	309
+5116	RIX	Riga	309
+5117	SA	Saldus Aprinkis	309
+5118	TA	Talsu Aprinkis	309
+5119	TU	Tukuma Aprinkis	309
+5120	VE	Ventspils Aprinkis	309
+5121	VEN	Ventspils	309
+5122	VK	Valkas Aprinkis	309
+5123	VM	Valmieras Aprinkis	309
+5124	AJ	Ajdabiya	310
+5125	BA	Banghazi	310
+5126	BU	Al Butnan	310
+5127	BW	Bani Walid	310
+5128	DR	Darnah	310
+5129	GD	Ghadamis	310
+5130	GR	Gharyan	310
+5131	GT	Ghat	310
+5132	HZ	Al ?izam al Akh?ar	310
+5133	JA	Al Jabal al Akh?ar	310
+5134	JB	Jaghbub	310
+5135	JI	Al Jifarah	310
+5136	JU	Al Jufrah	310
+5137	KF	Al Kufrah	310
+5138	MB	Al Marqab	310
+5139	MI	Misratah	310
+5140	MJ	Al Marj	310
+5141	MQ	Murzuq	310
+5142	MZ	Mizdah	310
+5143	NL	Nalut	310
+5144	NQ	An Nuqat al Khams	310
+5145	QB	Al Qubbah	310
+5146	QT	Al Qatrun	310
+5147	SB	Sabha	310
+5148	SH	Ash Shati'	310
+5149	SR	Surt	310
+5150	SS	Sabratah Surman	310
+5151	TB	Tarabulus	310
+5152	TM	Tarhunah-Masallatah	310
+5153	TN	Tajura' wa an Nawa?i Arba?	310
+5154	WA	Al Wa?ah	310
+5155	WD	Wadi al ?ayat	310
+5156	YJ	Yafran-Jadu	310
+5157	ZA	Az Zawiyah	310
+5158	AGD	Agadir*	311
+5159	ASZ	Assa-Zag	311
+5160	AZI	Azilal	311
+5161	BAH	Aït Baha	311
+5162	BEM	Beni Mellal	311
+5163	BER	Berkane	311
+5164	BES	Ben Slimane	311
+5165	BOD	Boujdour (EH)	311
+5166	BOM	Boulemane	311
+5167	CAS	Casablanca [Dar el Beïda]*	311
+5168	CHE	Chefchaouene	311
+5169	CHI	Chichaoua	311
+5170	ERR	Errachidia	311
+5171	ESI	Essaouira	311
+5172	ESM	Es Smara (EH)	311
+5173	FES	Fès*	311
+5174	FIG	Figuig	311
+5175	GUE	Guelmim	311
+5176	HAJ	El Hajeb	311
+5177	HAO	Al Haouz	311
+5178	HOC	Al Hoceïma	311
+5179	IFR	Ifrane	311
+5180	JDI	El Jadida	311
+5181	JRA	Jerada	311
+5182	KEN	Kénitra	311
+5183	KES	Kelaat Sraghna	311
+5184	KHE	Khemisset	311
+5185	KHN	Khenifra	311
+5186	KHO	Khouribga	311
+5187	LAA	Laâyoune* (EH)	311
+5188	LAR	Larache	311
+5189	MAR	Marrakech*	311
+5190	MEK	Meknès*	311
+5191	MEL	Aït Melloul	311
+5192	NAD	Nador	311
+5193	OUA	Ouarzazate	311
+5194	OUD	Oued ed Dahab (EH)	311
+5195	OUJ	Oujda*	311
+5196	RBA	Rabat-Salé*	311
+5197	SAF	Safi	311
+5198	SEF	Sefrou	311
+5199	SET	Settat	311
+5200	SIK	Sidi Kacem	311
+5201	TAO	Taounate	311
+5202	TAR	Taroudannt	311
+5203	TAT	Tata	311
+5204	TAZ	Taza	311
+5205	TET	Tétouan*	311
+5206	TIZ	Tiznit	311
+5207	TNG	Tanger	311
+5208	TNT	Tan-Tan	311
+5209	X1~	Laayoune-Boujdour-Sakia El Hamra	311
+5210	BA	Balti	313
+5211	CA	Cahul	313
+5212	CH	Chisinau City	313
+5213	CU	Chisinau	313
+5214	ED	Edinet	313
+5215	GA	Gagauzia, Unitate Teritoriala Autonoma (UTAG)	313
+5216	LA	Lapusna	313
+5217	OR	Orhei	313
+5218	SN	Stînga Nistrului, unitatea teritoriala din	313
+5219	SO	Soroca	313
+5220	TA	Taraclia	313
+5221	TI	Tighina [Bender]	313
+5222	UN	Ungheni	313
+5223	01	Andrijevica	314
+5224	02	Bar	314
+5225	03	Berane	314
+5226	04	Bijelo Polje	314
+5227	05	Budva	314
+5228	06	Cetinje	314
+5229	07	Danilovgrad	314
+5230	08	Herceg-Novi	314
+5231	09	Kolašin	314
+5232	10	Kotor	314
+5233	11	Mojkovac	314
+5234	12	Nikšic´	314
+5235	13	Plav	314
+5236	14	Pljevlja	314
+5237	15	Plužine	314
+5238	16	Podgorica	314
+5239	17	Rožaje	314
+5240	18	Šavnik	314
+5241	19	Tivat	314
+5242	20	Ulcinj	314
+5243	21	Žabljak	314
+5244	A	Toamasina	316
+5245	D	Antsiranana	316
+5246	F	Fianarantsoa	316
+5247	M	Mahajanga	316
+5248	T	Antananarivo	316
+5249	U	Toliara	316
+5250	ALK	Ailuk	317
+5251	ALL	Ailinglapalap	317
+5252	ARN	Arno	317
+5253	AUR	Aur	317
+5254	EBO	Ebon	317
+5255	ENI	Eniwetok	317
+5256	JAL	Jaluit	317
+5257	KIL	Kili	317
+5258	KWA	Kwajalein	317
+5259	LAE	Lae	317
+5260	LIB	Lib	317
+5261	LIK	Likiep	317
+5262	MAJ	Majuro	317
+5263	MAL	Maloelap	317
+5264	MEJ	Mejit	317
+5265	MIL	Mili	317
+5266	NMK	Namorik	317
+5267	NMU	Namu	317
+5268	RON	Rongelap	317
+5269	UJA	Ujae	317
+5270	UJL	Ujelang	317
+5271	UTI	Utirik	317
+5272	WTH	Wotho	317
+5273	WTJ	Wotje	317
+5274	AD	Aerodrom *	318
+5275	AJ	Saraj *	318
+5276	AR	Aracinovo	318
+5277	AV	Kavadarci	318
+5278	BG	Bogdanci	318
+5279	BN	Brvenica	318
+5280	BR	Berovo	318
+5281	BS	Bosilovo	318
+5282	BU	Butel *	318
+5283	CA	Caška	318
+5284	CE	Centar *	318
+5285	CH	Cešinovo-Obleševo	318
+5286	CI	Cair *	318
+5287	CS	Cucer Sandevo	318
+5288	CZ	Centar Župa	318
+5289	DA	Debarca	318
+5290	DB	Debar	318
+5291	DE	Dolneni	318
+5292	DK	Demir Kapija	318
+5293	DL	Delcevo	318
+5294	DM	Demir Hisar	318
+5295	DR	Drugovo	318
+5296	ET	Tetovo	318
+5297	GB	Gazi Baba *	318
+5298	GP	Gjorce Petrov *	318
+5299	GR	Gradsko	318
+5300	GT	Gostivar	318
+5301	GV	Gevgelija	318
+5302	IL	Ilinden	318
+5303	JG	Jegunovce	318
+5304	KB	Karbinci	318
+5305	KG	Krivogaštani	318
+5306	KH	Kicevo	318
+5307	KN	Konce	318
+5308	KS	Kruševo	318
+5309	KX	Karpoš *	318
+5310	KY	Kratovo	318
+5311	KZ	Kriva Palanka	318
+5312	LI	Lipkovo	318
+5313	LO	Lozovo	318
+5314	MD	Makedonski Brod	318
+5315	MG	Mogila	318
+5316	MK	Makedonska Kamenica	318
+5317	MR	Mavrovo-i-Rostuša	318
+5318	NA	Staro Nagoricane	318
+5319	NG	Negotino	318
+5320	NI	Vinica	318
+5321	NS	Novo Selo	318
+5322	NV	Novaci	318
+5323	OC	Kocani	318
+5324	OD	Ohrid	318
+5325	OS	Oslomej	318
+5326	PE	Petrovec	318
+5327	PH	Pehcevo	318
+5328	PN	Plasnica	318
+5329	PP	Prilep	318
+5330	PT	Probištip	318
+5331	RE	Resen	318
+5332	RM	Rosoman	318
+5333	RN	Rankovce	318
+5334	RU	Strumica	318
+5335	RV	Radoviš	318
+5336	SD	Dojran	318
+5337	SL	Sveti Nikole	318
+5338	SO	Šuto Orizari *	318
+5339	SS	Sopište	318
+5340	ST	Štip	318
+5341	SU	Studenicani	318
+5342	TL	Bitola	318
+5343	TR	Tearce	318
+5344	UG	Struga	318
+5345	UM	Kumanovo	318
+5346	VA	Valandovo	318
+5347	VC	Vraneštica	318
+5348	VD	Kisela Voda *	318
+5349	VE	Veles	318
+5350	VH	Vrapcište	318
+5351	VJ	Bogovinje	318
+5352	VL	Vasilevo	318
+5353	VV	Vevcani	318
+5354	X1~	Skopje	318
+5355	ZA	Zajas	318
+5356	ZE	Želino	318
+5357	ZK	Zelenikovo	318
+5358	ZR	Zrnovci	318
+5359	1	Kayes	319
+5360	2	Koulikoro	319
+5361	3	Sikasso	319
+5362	4	Ségou	319
+5363	5	Mopti	319
+5364	6	Tombouctou	319
+5365	7	Gao	319
+5366	8	Kidal	319
+5367	BKO	Bamako	319
+5368	01	Sagaing	320
+5369	02	Bago	320
+5370	03	Magway	320
+5371	04	Mandalay	320
+5372	05	Tanintharyi	320
+5373	06	Yangon	320
+5374	07	Ayeyarwady	320
+5375	11	Kachin	320
+5376	12	Kayah	320
+5377	13	Kayin	320
+5378	14	Chin	320
+5379	15	Mon	320
+5380	16	Rakhine	320
+5381	17	Shan	320
+5382	035	Orhon	321
+5383	037	Darhan uul	321
+5384	039	Hentiy	321
+5385	041	Hövsgöl	321
+5386	043	Hovd	321
+5387	046	Uvs	321
+5388	047	Töv	321
+5389	049	Selenge	321
+5390	051	Sühbaatar	321
+5391	053	Ömnögovi	321
+5392	055	Övörhangay	321
+5393	057	Dzavhan	321
+5394	059	Dundgovi	321
+5395	061	Dornod	321
+5396	063	Dornogovi	321
+5397	064	Govi-Sümber	321
+5398	065	Govi-Altay	321
+5399	067	Bulgan	321
+5400	069	Bayanhongor	321
+5401	071	Bayan-Ölgiy	321
+5402	073	Arhangay	321
+5403	1	Ulaanbaatar	321
+5404	01	Hodh ech Chargui	325
+5405	02	Hodh el Gharbi	325
+5406	03	Assaba	325
+5407	04	Gorgol	325
+5408	05	Brakna	325
+5409	06	Trarza	325
+5410	07	Adrar	325
+5411	08	Dakhlet Nouâdhibou	325
+5412	09	Tagant	325
+5413	10	Guidimaka	325
+5414	11	Tiris Zemmour	325
+5415	12	Inchiri	325
+5416	NKC	Nouakchott	325
+5417	AG	Agalega Islands	328
+5418	BL	Black River	328
+5419	BR	Beau Bassin-Rose Hill	328
+5420	CC	Cargados Carajos Shoals [Saint Brandon Islands]	328
+5421	CU	Curepipe	328
+5422	FL	Flacq	328
+5423	GP	Grand Port	328
+5424	MO	Moka	328
+5425	PA	Pamplemousses	328
+5426	PL	Port Louis City	328
+5427	PU	Port Louis District	328
+5428	PW	Plaines Wilhems	328
+5429	QB	Quatre Bornes	328
+5430	RO	Rodrigues Island	328
+5431	RR	Rivière du Rempart	328
+5432	SA	Savanne	328
+5433	VP	Vacoas-Phoenix	328
+5434	01	Seenu	329
+5435	02	Alif	329
+5436	03	Lhaviyani	329
+5437	04	Vaavu	329
+5438	05	Laamu	329
+5439	07	Haa Alif	329
+5440	08	Thaa	329
+5441	12	Meemu	329
+5442	13	Raa	329
+5443	14	Faafu	329
+5444	17	Dhaalu	329
+5445	20	Baa	329
+5446	23	Haa Dhaalu	329
+5447	24	Shaviyani	329
+5448	25	Noonu	329
+5449	26	Kaafu	329
+5450	27	Gaaf Alif	329
+5451	28	Gaafu Dhaalu	329
+5452	29	Gnaviyani	329
+5453	MLE	Male	329
+5454	X1~	Alif Dhaal	329
+5455	BA	Balaka	330
+5456	BL	Blantyre	330
+5457	CK	Chikwawa	330
+5458	CR	Chiradzulu	330
+5459	CT	Chitipa	330
+5460	DE	Dedza	330
+5461	DO	Dowa	330
+5462	KR	Karonga	330
+5463	KS	Kasungu	330
+5464	LI	Lilongwe	330
+5465	LK	Likoma Island	330
+5466	MC	Mchinji	330
+5467	MG	Mangochi	330
+5468	MH	Machinga	330
+5469	MU	Mulanje	330
+5470	MW	Mwanza	330
+5471	MZ	Mzimba	330
+5472	NB	Nkhata Bay	330
+5473	NI	Ntchisi	330
+5474	NK	Nkhotakota	330
+5475	NS	Nsanje	330
+5476	NU	Ntcheu	330
+5477	PH	Phalombe	330
+5478	RU	Rumphi	330
+5479	SA	Salima	330
+5480	TH	Thyolo	330
+5481	ZO	Zomba	330
+5482	AGU	Aguascalientes	331
+5483	BCN	Baja California	331
+5484	BCS	Baja California Sur	331
+5485	CAM	Campeche	331
+5486	CHH	Chihuahua	331
+5487	CHP	Chiapas	331
+5488	COA	Coahuila	331
+5489	COL	Colima	331
+5490	DIF	Distrito Federal	331
+5491	DUR	Durango	331
+5492	GRO	Guerrero	331
+5493	GUA	Guanajuato	331
+5494	HID	Hidalgo	331
+5495	JAL	Jalisco	331
+5496	MEX	México	331
+5497	MIC	Michoacán	331
+5498	MOR	Morelos	331
+5499	NAY	Nayarit	331
+5500	NLE	Nuevo León	331
+5501	OAX	Oaxaca	331
+5502	PUE	Puebla	331
+5503	QUE	Querétaro	331
+5504	ROO	Quintana Roo	331
+5505	SIN	Sinaloa	331
+5506	SLP	San Luis Potosí	331
+5507	SON	Sonora	331
+5508	TAB	Tabasco	331
+5509	TAM	Tamaulipas	331
+5510	TLA	Tlaxcala	331
+5511	VER	Veracruz	331
+5512	YUC	Yucatán	331
+5513	ZAC	Zacatecas	331
+5514	01	Johor	332
+5515	02	Kedah	332
+5516	03	Kelantan	332
+5517	04	Melaka	332
+5518	05	Negeri Sembilan	332
+5519	06	Pahang	332
+5520	07	Pulau Pinang	332
+5521	08	Perak	332
+5522	09	Perlis	332
+5523	10	Selangor	332
+5524	11	Terengganu	332
+5525	12	Sabah	332
+5526	13	Sarawak	332
+5527	14	Wilayah Persekutuan Kuala Lumpur	332
+5528	15	Wilayah Persekutuan Labuan	332
+5529	16	Wilayah Persekutuan Putrajaya	332
+5530	A	Niassa	333
+5531	B	Manica	333
+5532	G	Gaza	333
+5533	I	Inhambane	333
+5534	L	Maputo	333
+5535	MPM	Maputo City	333
+5536	N	Nampula	333
+5537	P	Cabo Delgado	333
+5538	Q	Zambézia	333
+5539	S	Sofala	333
+5540	T	Tete	333
+5541	CA	Caprivi	334
+5542	ER	Erongo	334
+5543	HA	Hardap	334
+5544	KA	Karas	334
+5545	KH	Khomas	334
+5546	KU	Kunene	334
+5547	OD	Otjozondjupa	334
+5548	OH	Omaheke	334
+5549	OK	Okavango	334
+5550	ON	Oshana	334
+5551	OS	Omusati	334
+5552	OT	Oshikoto	334
+5553	OW	Ohangwena	334
+5554	1	Agadez	336
+5555	2	Diffa	336
+5556	3	Dosso	336
+5557	4	Maradi	336
+5558	5	Tahoua	336
+5559	6	Tillabéri	336
+5560	7	Zinder	336
+5561	8	Niamey	336
+5562	AB	Abia	338
+5563	AD	Adamawa	338
+5564	AK	Akwa Ibom	338
+5565	AN	Anambra	338
+5566	BA	Bauchi	338
+5567	BE	Benue	338
+5568	BO	Borno	338
+5569	BY	Bayelsa	338
+5570	CR	Cross River	338
+5571	DE	Delta	338
+5572	EB	Ebonyi	338
+5573	ED	Edo	338
+5574	EK	Ekiti	338
+5575	EN	Enugu	338
+5576	FC	Abuja Capital Territory	338
+5577	GO	Gombe	338
+5578	IM	Imo	338
+5579	JI	Jigawa	338
+5580	KD	Kaduna	338
+5581	KE	Kebbi	338
+5582	KN	Kano	338
+5583	KO	Kogi	338
+5584	KT	Katsina	338
+5585	KW	Kwara	338
+5586	LA	Lagos	338
+5587	NA	Nassarawa	338
+5588	NI	Niger	338
+5589	OG	Ogun	338
+5590	ON	Ondo	338
+5591	OS	Osun	338
+5592	OY	Oyo	338
+5593	PL	Plateau	338
+5594	RI	Rivers	338
+5595	SO	Sokoto	338
+5596	TA	Taraba	338
+5597	YO	Yobe	338
+5598	ZA	Zamfara	338
+5599	AN	Atlántico Norte*	339
+5600	AS	Atlántico Sur*	339
+5601	BO	Boaco	339
+5602	CA	Carazo	339
+5603	CI	Chinandega	339
+5604	CO	Chontales	339
+5605	ES	Estelí	339
+5606	GR	Granada	339
+5607	JI	Jinotega	339
+5608	LE	León	339
+5609	MD	Madriz	339
+5610	MN	Managua	339
+5611	MS	Masaya	339
+5612	MT	Matagalpa	339
+5613	NS	Nueva Segovia	339
+5614	RI	Rivas	339
+5615	SJ	Río San Juan	339
+5616	DR	Drenthe	340
+5617	FL	Flevoland	340
+5618	FR	Friesland	340
+5619	GE	Gelderland	340
+5620	GR	Groningen	340
+5621	LI	Limburg	340
+5622	NB	Noord-Brabant	340
+5623	NH	Noord-Holland	340
+5624	OV	Overijssel	340
+5625	UT	Utrecht	340
+5626	ZE	Zeeland	340
+5627	ZH	Zuid-Holland	340
+5628	01	Østfold	341
+5629	02	Akershus	341
+5630	03	Oslo	341
+5631	04	Hedmark	341
+5632	05	Oppland	341
+5633	06	Buskerud	341
+5634	07	Vestfold	341
+5635	08	Telemark	341
+5636	09	Aust-Agder	341
+5637	10	Vest-Agder	341
+5638	11	Rogaland	341
+5639	12	Hordaland	341
+5640	14	Sogn og Fjordane	341
+5641	15	Møre og Romsdal	341
+5642	16	Sør-Trøndelag	341
+5643	17	Nord-Trøndelag	341
+5644	18	Nordland	341
+5645	19	Troms	341
+5646	20	Finnmark	341
+5647	21	Svalbard (Arctic Region) (See also country code SJ)	341
+5648	22	Jan Mayen (Arctic Region) (See also country code SJ)	341
+5649	BA	Bagmati	342
+5650	BH	Bheri	342
+5651	DH	Dhawalagiri	342
+5652	GA	Gandaki	342
+5653	JA	Janakpur	342
+5654	KA	Karnali	342
+5655	KO	Kosi [Koshi]	342
+5656	LU	Lumbini	342
+5657	MA	Mahakali	342
+5658	ME	Mechi	342
+5659	NA	Narayani	342
+5660	RA	Rapti	342
+5661	SA	Sagarmatha	342
+5662	SE	Seti	342
+5663	01	Aiwo	343
+5664	02	Anabar	343
+5665	03	Anetan	343
+5666	04	Anibare	343
+5667	05	Baiti	343
+5668	06	Boe	343
+5669	07	Buada	343
+5670	08	Denigomodu	343
+5671	09	Ewa	343
+5672	10	Ijuw	343
+5673	11	Meneng	343
+5674	12	Nibok	343
+5675	13	Uaboe	343
+5676	14	Yaren	343
+5677	AUK	Auckland	345
+5678	BOP	Bay of Plenty	345
+5679	CAN	Canterbury	345
+5680	GIS	Gisborne	345
+5681	HKB	Hawkes's Bay	345
+5682	MBH	Marlborough	345
+5683	MWT	Manawatu-Wanganui	345
+5684	NSN	Nelson	345
+5685	NTL	Northland	345
+5686	OTA	Otago	345
+5687	STL	Southland	345
+5688	TAS	Tasman	345
+5689	TKI	Taranaki	345
+5690	WGN	Wellington	345
+5691	WKO	Waikato	345
+5692	WTC	West Coast	345
+5693	X1~	Chatham  Islands	345
+5694	BA	Al Batinah	346
+5695	DA	Ad Dakhiliyah	346
+5696	JA	Dhofar	346
+5697	MA	Masqat	346
+5698	MU	Musandam	346
+5699	SH	Ash Sharqiyah	346
+5700	WU	Al Wustá	346
+5701	X1~	Al Buraymi	346
+5702	ZA	Adh Dhahirah	346
+5703	0	Comarca de San Blas	347
+5704	1	Bocas del Toro	347
+5705	2	Coclé	347
+5706	3	Colón	347
+5707	4	Chiriquí	347
+5708	5	Darién	347
+5709	6	Herrera	347
+5710	7	Los Santos	347
+5711	8	Panamá	347
+5712	9	Veraguas	347
+5713	AMA	Amazonas	348
+5714	ANC	Ancash	348
+5715	APU	Apurímac	348
+5716	ARE	Arequipa	348
+5717	AYA	Ayacucho	348
+5718	CAJ	Cajamarca	348
+5719	CAL	El Callao	348
+5720	CUS	Cuzco [Cusco]	348
+5721	HUC	Huánuco	348
+5722	HUV	Huancavelica	348
+5723	ICA	Ica	348
+5724	JUN	Junín	348
+5725	LAL	La Libertad	348
+5726	LAM	Lambayeque	348
+5727	LIM	Lima	348
+5728	LOR	Loreto	348
+5729	MDD	Madre de Dios	348
+5730	MOQ	Moquegua	348
+5731	PAS	Pasco	348
+5732	PIU	Piura	348
+5733	PUN	Puno	348
+5734	SAM	San Martín	348
+5735	TAC	Tacna	348
+5736	TUM	Tumbes	348
+5737	UCA	Ucayali	348
+5738	X1~	Lima Metropolitana	348
+5739	CPK	Chimbu	350
+5740	CPM	Central	350
+5741	EBR	East New Britain	350
+5742	EHG	Eastern Highlands	350
+5743	EPW	Enga	350
+5744	ESW	East Sepik	350
+5745	GPK	Gulf	350
+5746	MBA	Milne Bay	350
+5747	MPL	Morobe	350
+5748	MPM	Madang	350
+5749	MRL	Manus	350
+5750	NCD	National Capital District (Port Moresby)	350
+5751	NIK	New Ireland	350
+5752	NPP	Northern	350
+5753	NSA	North Solomons	350
+5754	SAN	Sandaun [West Sepik]	350
+5755	SHM	Southern Highlands	350
+5756	WBK	West New Britain	350
+5757	WHM	Western Highlands	350
+5758	WPD	Western	350
+5759	ABR	Abra	351
+5760	AGN	Agusan del Norte	351
+5761	AGS	Agusan del Sur	351
+5762	AKL	Aklan	351
+5763	ALB	Albay	351
+5764	ANT	Antique	351
+5765	APA	Apayao	351
+5766	AUR	Aurora	351
+5767	BAN	Bataan	351
+5768	BAS	Basilan	351
+5769	BEN	Benguet	351
+5770	BIL	Biliran	351
+5771	BOH	Bohol	351
+5772	BTG	Batangas	351
+5773	BTN	Batanes	351
+5774	BUK	Bukidnon	351
+5775	BUL	Bulacan	351
+5776	CAG	Cagayan	351
+5777	CAM	Camiguin	351
+5778	CAN	Camarines Norte	351
+5779	CAP	Capiz	351
+5780	CAS	Camarines Sur	351
+5781	CAT	Catanduanes	351
+5782	CAV	Cavite	351
+5783	CEB	Cebu	351
+5784	COM	Compostela Valley	351
+5785	DAO	Davao Oriental	351
+5786	DAS	Davao del Sur	351
+5787	DAV	Davao del Norte	351
+5788	EAS	Eastern Samar	351
+5789	GUI	Guimaras	351
+5790	IFU	Ifugao	351
+5791	ILI	Iloilo	351
+5792	ILN	Ilocos Norte	351
+5793	ILS	Ilocos Sur	351
+5794	ISA	Isabela	351
+5795	KAL	Kalinga	351
+5796	LAG	Laguna	351
+5797	LAN	Lanao del Norte	351
+5798	LAS	Lanao del Sur	351
+5799	LEY	Leyte	351
+5800	LUN	La Union	351
+5801	MAD	Marinduque	351
+5802	MAG	Maguindanao	351
+5803	MAS	Masbate	351
+5804	MDC	Mindoro Occidental	351
+5805	MDR	Mindoro Oriental	351
+5806	MNL		351
+5807	MOU	Mountain Province	351
+5808	MSC	Misamis Occidental	351
+5809	MSR	Misamis Oriental	351
+5810	NCO	North Cotabato	351
+5811	NEC	Negros Occidental	351
+5812	NER	Negros Oriental	351
+5813	NSA	Northern Samar	351
+5814	NUE	Nueva Ecija	351
+5815	NUV	Nueva Vizcaya	351
+5816	PAM	Pampanga	351
+5817	PAN	Pangasinan	351
+5818	PLW	Palawan	351
+5819	QUE	Quezon	351
+5820	QUI	Quirino	351
+5821	RIZ	Rizal	351
+5822	ROM	Romblon	351
+5823	SAR	Sarangani	351
+5824	SCO	South Cotabato	351
+5825	SIG	Siquijor	351
+5826	SLE	Southern Leyte	351
+5827	SLU	Sulu	351
+5828	SOR	Sorsogon	351
+5829	SUK	Sultan Kudarat	351
+5830	SUN	Surigao del Norte	351
+5831	SUR	Surigao del Sur	351
+5832	TAR	Tarlac	351
+5833	TAW	Tawi-Tawi	351
+5834	WSA	Western Samar	351
+5835	X1~	Dinagat	351
+5836	X2~	Shariff Kabunsuan	351
+5837	ZAN	Zamboanga del Norte	351
+5838	ZAS	Zamboanga del Sur	351
+5839	ZMB	Zambales	351
+5840	ZSI	Zamboanga Sibuguey [Zamboanga Sibugay]	351
+5841	BA	Baluchistan (en)	352
+5842	IS	Islamabad	352
+5843	JK	Azad Kashmir	352
+5844	NA	Northern Areas	352
+5845	NW	North-West Frontier	352
+5846	PB	Punjab	352
+5847	SD	Sind (en)	352
+5848	TA	Federally Administered Tribal Areas	352
+5849	DS	Dolnoslaskie	353
+5850	KP	Kujawsko-pomorskie	353
+5851	LB	Lubuskie	353
+5852	LD	Lódzkie	353
+5853	LU	Lubelskie	353
+5854	MA	Malopolskie	353
+5855	MZ	Mazowieckie	353
+5856	OP	Opolskie	353
+5857	PD	Podlaskie	353
+5858	PK	Podkarpackie	353
+5859	PM	Pomorskie	353
+5860	SK	Swietokrzyskie	353
+5861	SL	Slaskie	353
+5862	WN	Warminsko-mazurskie	353
+5863	WP	Wielkopolskie	353
+5864	ZP	Zachodniopomorskie	353
+5865	01	Aveiro	358
+5866	02	Beja	358
+5867	03	Braga	358
+5868	04	Bragança	358
+5869	05	Castelo Branco	358
+5870	06	Coimbra	358
+5871	07	Évora	358
+5872	08	Faro	358
+5873	09	Guarda	358
+5874	10	Leiria	358
+5875	11	Lisboa	358
+5876	12	Portalegre	358
+5877	13	Porto	358
+5878	14	Santarém	358
+5879	15	Setúbal	358
+5880	16	Viana do Castelo	358
+5881	17	Vila Real	358
+5882	18	Viseu	358
+5883	20	Região Autónoma dos Açores	358
+5884	30	Região Autónoma da Madeira	358
+5885	002	Aimeliik	359
+5886	004	Airai	359
+5887	010	Angaur	359
+5888	050	Hatobohei	359
+5889	100	Kayangel	359
+5890	150	Koror	359
+5891	212	Melekeok	359
+5892	214	Ngaraard	359
+5893	218	Ngarchelong	359
+5894	222	Ngardmau	359
+5895	224	Ngatpang	359
+5896	226	Ngchesar	359
+5897	227	Ngeremlengui	359
+5898	228	Ngiwal	359
+5899	350	Peleliu	359
+5900	370	Sonsorol	359
+5901	1	Concepción	360
+5902	10	Alto Paraná	360
+5903	11	Central	360
+5904	12	Ñeembucú	360
+5905	13	Amambay	360
+5906	14	Canindeyú	360
+5907	15	Presidente Hayes	360
+5908	16	Alto Paraguay	360
+5909	19	Boquerón	360
+5910	2	San Pedro	360
+5911	3	Cordillera	360
+5912	4	Guairá	360
+5913	5	Caaguazú	360
+5914	6	Caazapá	360
+5915	7	Itapúa	360
+5916	8	Misiones	360
+5917	9	Paraguarí	360
+5918	ASU	Asunción	360
+5919	DA	Ad Dawhah	361
+5920	GH	Al Ghuwayriyah	361
+5921	JB	Jariyan al Batnah	361
+5922	JU	Al Jumayliyah	361
+5923	KH	Al Khawr	361
+5924	MS	Madinat ash Shamal	361
+5925	RA	Ar Rayyan	361
+5926	US	Umm Salal	361
+5927	WA	Al Wakrah	361
+5928	X1~	Umm Sa'id	361
+5929	AB	Alba	363
+5930	AG	Arges	363
+5931	AR	Arad	363
+5932	B	Bucuresti	363
+5933	BC	Bacau	363
+5934	BH	Bihor	363
+5935	BN	Bistrita-Nasaud	363
+5936	BR	Braila	363
+5937	BT	Botosani	363
+5938	BV	Brasov	363
+5939	BZ	Buzau	363
+5940	CJ	Cluj	363
+5941	CL	Calarasi	363
+5942	CS	Caras-Severin	363
+5943	CT	Constanta	363
+5944	CV	Covasna	363
+5945	DB	Dâmbovita	363
+5946	DJ	Dolj	363
+5947	GJ	Gorj	363
+5948	GL	Galati	363
+5949	GR	Giurgiu	363
+5950	HD	Hunedoara	363
+5951	HR	Harghita	363
+5952	IF	Ilfov	363
+5953	IL	Ialomita	363
+5954	IS	Iasi	363
+5955	MH	Mehedinti	363
+5956	MM	Maramures	363
+5957	MS	Mures	363
+5958	NT	Neamt	363
+5959	OT	Olt	363
+5960	PH	Prahova	363
+5961	SB	Sibiu	363
+5962	SJ	Salaj	363
+5963	SM	Satu Mare	363
+5964	SV	Suceava	363
+5965	TL	Tulcea	363
+5966	TM	Timis	363
+5967	TR	Teleorman	363
+5968	VL	Vâlcea	363
+5969	VN	Vrancea	363
+5970	VS	Vaslui	363
+5971	00	Belgrade	364
+5972	01	Severna Backa	364
+5973	02	Srednji Banat	364
+5974	03	Severni Banat	364
+5975	04	Južni Banat	364
+5976	05	Zapadna Backa	364
+5977	06	Južna Backa	364
+5978	07	Srem	364
+5979	08	Macva	364
+5980	09	Kolubara	364
+5981	10	Podunavlje	364
+5982	11	Branicevo	364
+5983	12	Šumadija	364
+5984	13	Pomoravlje	364
+5985	14	Bor	364
+5986	15	Zajecar	364
+5987	16	Zlatibor	364
+5988	17	Moravica	364
+5989	18	Raška	364
+5990	19	Rasina	364
+5991	20	Nišava	364
+5992	21	Toplica	364
+5993	22	Pirot	364
+5994	23	Jablanica	364
+5995	24	Pcinja	364
+5996	25	Kosovo	364
+5997	26	Pec´	364
+5998	27	Prizren	364
+5999	28	Kosovska Mitrovica	364
+6000	29	Kosovo-Pomoravlje	364
+6001	AD	Adygeya, Respublika	365
+6002	AGB	Aginskiy Buryatskiy avtonomnyy okrug	365
+6003	AL	Altay, Respublika	365
+6004	ALT	Altayskiy kray	365
+6005	AMU	Amurskaya oblast'	365
+6006	ARK	Arkhangel'skaya oblast'	365
+6007	AST	Astrakhanskaya oblast'	365
+6008	BA	Bashkortostan, Respublika	365
+6009	BEL	Belgorodskaya oblast'	365
+6010	BRY	Bryanskaya oblast'	365
+6011	BU	Buryatiya, Respublika	365
+6012	CE	Chechenskaya Respublika	365
+6013	CHE	Chelyabinskaya oblast'	365
+6014	CHI	Chitinskaya oblast'	365
+6015	CHU	Chukotskiy avtonomnyy okrug	365
+6016	CU	Chuvashskaya Respublika	365
+6017	DA	Dagestan, Respublika	365
+6018	EVE	Evenkiyskiy avtonomnyy okrug	365
+6019	IN	Ingushskaya Respublika [Respublika Ingushetiya]	365
+6020	IRK	Irkutskaya oblast'	365
+6021	IVA	Ivanovskaya oblast'	365
+6022	KAM	Kamchatskaya oblast'	365
+6023	KB	Kabardino-Balkarskaya Respublika	365
+6024	KC	Karachayevo-Cherkesskaya Respublika	365
+6025	KDA	Krasnodarskiy kray	365
+6026	KEM	Kemerovskaya oblast'	365
+6027	KGD	Kaliningradskaya oblast'	365
+6028	KGN	Kurganskaya oblast'	365
+6029	KHA	Khabarovskiy kray	365
+6030	KHM	Khanty-Mansiyskiy avtonomnyy okrug [Yugra]	365
+6031	KIR	Kirovskaya oblast'	365
+6032	KK	Khakasiya, Respublika	365
+6033	KL	Kalmykiya, Respublika	365
+6034	KLU	Kaluzhskaya oblast'	365
+6035	KO	Komi, Respublika	365
+6036	KOR	Koryakskiy avtonomnyy okrug	365
+6037	KOS	Kostromskaya oblast'	365
+6038	KR	Kareliya, Respublika	365
+6039	KRS	Kurskaya oblast'	365
+6040	KYA	Krasnoyarskiy kray	365
+6041	LEN	Leningradskaya oblast'	365
+6042	LIP	Lipetskaya oblast'	365
+6043	MAG	Magadanskaya oblast'	365
+6044	ME	Mariy El, Respublika	365
+6045	MO	Mordoviya, Respublika	365
+6046	MOS	Moskovskaya oblast'	365
+6047	MOW	Moskva	365
+6048	MUR	Murmanskaya oblast'	365
+6049	NEN	Nenetskiy avtonomnyy okrug	365
+6050	NGR	Novgorodskaya oblast'	365
+6051	NIZ	Nizhegorodskaya oblast'	365
+6052	NVS	Novosibirskaya oblast'	365
+6053	OMS	Omskaya oblast'	365
+6054	ORE	Orenburgskaya oblast'	365
+6055	ORL	Orlovskaya oblast'	365
+6056	PER	Perm	365
+6057	PNZ	Penzenskaya oblast'	365
+6058	PRI	Primorskiy kray	365
+6059	PSK	Pskovskaya oblast'	365
+6060	ROS	Rostovskaya oblast'	365
+6061	RYA	Ryazanskaya oblast'	365
+6062	SA	Sakha, Respublika [Yakutiya]	365
+6063	SAK	Sakhalinskaya oblast'	365
+6064	SAM	Samarskaya oblast'	365
+6065	SAR	Saratovskaya oblast'	365
+6066	SE	Severnaya Osetiya, Respublika [Alaniya] [Respublika Severnaya Osetiya-Alaniya]	365
+6067	SMO	Smolenskaya oblast'	365
+6068	SPE	Sankt-Peterburg	365
+6069	STA	Stavropol'skiy kray	365
+6070	SVE	Sverdlovskaya oblast'	365
+6071	TA	Tatarstan, Respublika	365
+6072	TAM	Tambovskaya oblast'	365
+6073	TAY	Taymyrskiy (Dolgano-Nenetskiy) avtonomnyy okrug	365
+6074	TOM	Tomskaya oblast'	365
+6075	TUL	Tul'skaya oblast'	365
+6076	TVE	Tverskaya oblast'	365
+6077	TY	Tyva, Respublika [Tuva]	365
+6078	TYU	Tyumenskaya oblast'	365
+6079	UD	Udmurtskaya Respublika	365
+6080	ULY	Ul'yanovskaya oblast'	365
+6081	UOB	Ust'-Ordynskiy Buryatskiy avtonomnyy okrug	365
+6082	VGG	Volgogradskaya oblast'	365
+6083	VLA	Vladimirskaya oblast'	365
+6084	VLG	Vologodskaya oblast'	365
+6085	VOR	Voronezhskaya oblast'	365
+6086	X1~	Komi-Permyak	365
+6087	YAN	Yamalo-Nenetskiy avtonomnyy okrug	365
+6088	YAR	Yaroslavskaya oblast'	365
+6089	YEV	Yevreyskaya avtonomnaya oblast'	365
+6090	01	Ville de Kigali	366
+6091	02	Est	366
+6092	03	Nord	366
+6093	04	Ouest	366
+6094	05	Sud	366
+6095	01	Ar Riya?	367
+6096	02	Makkah	367
+6097	03	Al Madinah	367
+6098	04	Ash Sharqiyah	367
+6099	05	Al Qasim	367
+6100	06	?a'il	367
+6101	07	Tabuk	367
+6102	08	Al ?udud ash Shamaliyah	367
+6103	09	Jizan	367
+6104	10	Najran	367
+6105	11	Al Ba?ah	367
+6106	12	Al Jawf	367
+6107	14	?Asir	367
+6108	CE	Central	368
+6109	CH	Choiseul	368
+6110	CT	Capital Territory (Honiara)	368
+6111	GU	Guadalcanal	368
+6112	IS	Isabel	368
+6113	MK	Makira	368
+6114	ML	Malaita	368
+6115	RB	Rennell and Bellona	368
+6116	TE	Temotu	368
+6117	WE	Western	368
+6118	01	Anse aux Pins	369
+6119	02	Anse Boileau	369
+6120	03	Anse Étoile	369
+6121	04	Anse Louis	369
+6122	05	Anse Royale	369
+6123	06	Baie Lazare	369
+6124	07	Baie Sainte Anne	369
+6125	08	Beau Vallon	369
+6126	09	Bel Air	369
+6127	10	Bel Ombre	369
+6128	11	Cascade	369
+6129	12	Glacis	369
+6130	13	Grand' Anse (Mahé)	369
+6131	14	Grand' Anse (Praslin)	369
+6132	15	La Digue	369
+6133	16	La Rivière Anglaise	369
+6134	17	Mont Buxton	369
+6135	18	Mont Fleuri	369
+6136	19	Plaisance	369
+6137	20	Pointe La Rue	369
+6138	21	Port Glaud	369
+6139	22	Saint Louis	369
+6140	23	Takamaka	369
+6141	01	Ash Shamaliyah	370
+6142	02	Shamal Darfur	370
+6143	03	Al Khartum	370
+6144	04	An Nil	370
+6145	05	Kassala	370
+6146	06	Al Qa?arif	370
+6147	07	Al Jazirah	370
+6148	08	An Nil al Abya?	370
+6149	09	Shamal Kurdufan	370
+6150	10	Gharb Kurdufan	370
+6151	11	Janub Darfur	370
+6152	12	Gharb Darfur	370
+6153	13	Janub Kurdufan	370
+6154	14	Gharb Ba?r al Ghazal	370
+6155	15	Shamal Ba?r al Ghazal	370
+6156	16	Gharb al Istiwa'iyah	370
+6157	17	Ba?r al Jabal	370
+6158	18	Al Bu?ayrat	370
+6159	19	Sharq al Istiwa'iyah	370
+6160	20	Junqali	370
+6161	21	Warab	370
+6162	22	Al Wa?dah	370
+6163	23	A?ali an Nil	370
+6164	24	An Nil al Azraq	370
+6165	25	Sinnar	370
+6166	26	Al Ba?r al A?mar	370
+6167	AB	Stockholms län [SE-01]	371
+6168	AC	Västerbottens län [SE-24]	371
+6169	BD	Norrbottens län [SE-25]	371
+6170	C	Uppsala län [SE-03]	371
+6171	D	Södermanlands län [SE-04]	371
+6172	E	Östergötlands län [SE-05]	371
+6173	F	Jönköpings län [SE-06]	371
+6174	G	Kronobergs län [SE-07]	371
+6175	H	Kalmar län [SE-08]	371
+6176	I	Gotlands län [SE-09]	371
+6177	K	Blekinge län [SE-10]	371
+6178	M	Skåne län [SE-12]	371
+6179	N	Hallands län [SE-13]	371
+6180	O	Västra Götalands län [SE-14]	371
+6181	S	Värmlands län [SE-17]	371
+6182	T	Örebro län [SE-18]	371
+6183	U	Västmanlands län [SE-19]	371
+6184	W	Dalarnas län [SE-20]	371
+6185	X	Gävleborgs län [SE-21]	371
+6186	Y	Västernorrlands län [SE-22]	371
+6187	Z	Jämtlands län [SE-23]	371
+6188	X1~	Singapore - No State	372
+6189	AC	Ascension	373
+6190	SH	Saint Helena	373
+6191	TA	Tristan da Cunha	373
+6192	001	Ajdovšcina	374
+6193	002	Beltinci	374
+6194	003	Bled	374
+6195	004	Bohinj	374
+6196	005	Borovnica	374
+6197	006	Bovec	374
+6198	007	Brda	374
+6199	008	Brezovica	374
+6200	009	Brežice	374
+6201	010	Tišina	374
+6202	011	Celje	374
+6203	012	Cerklje na Gorenjskem	374
+6204	013	Cerknica	374
+6205	014	Cerkno	374
+6206	015	Crenšovci	374
+6207	016	Crna na Koroškem	374
+6208	017	Crnomelj	374
+6209	018	Destrnik	374
+6210	019	Divaca	374
+6211	020	Dobrepolje	374
+6212	021	Dobrova-Polhov Gradec	374
+6213	022	Dol pri Ljubljani	374
+6214	023	Domžale	374
+6215	024	Dornava	374
+6216	025	Dravograd	374
+6217	026	Duplek	374
+6218	027	Gorenja vas-Poljane	374
+6219	028	Gorišnica	374
+6220	029	Gornja Radgona	374
+6221	030	Gornji Grad	374
+6222	031	Gornji Petrovci	374
+6223	032	Grosuplje	374
+6224	033	Šalovci	374
+6225	034	Hrastnik	374
+6226	035	Hrpelje-Kozina	374
+6227	036	Idrija	374
+6228	037	Ig	374
+6229	038	Ilirska Bistrica	374
+6230	039	Ivancna Gorica	374
+6231	040	Izola/Isola	374
+6232	041	Jesenice	374
+6233	042	Juršinci	374
+6234	043	Kamnik	374
+6235	044	Kanal	374
+6236	045	Kidricevo	374
+6237	046	Kobarid	374
+6238	047	Kobilje	374
+6239	048	Kocevje	374
+6240	049	Komen	374
+6241	050	Koper/Capodistria	374
+6242	051	Kozje	374
+6243	052	Kranj	374
+6244	053	Kranjska Gora	374
+6245	054	Krško	374
+6246	055	Kungota	374
+6247	056	Kuzma	374
+6248	057	Laško	374
+6249	058	Lenart	374
+6250	059	Lendava/Lendva	374
+6251	060	Litija	374
+6252	061	Ljubljana	374
+6253	062	Ljubno	374
+6254	063	Ljutomer	374
+6255	064	Logatec	374
+6256	065	Loška dolina	374
+6257	066	Loški Potok	374
+6258	067	Luce	374
+6259	068	Lukovica	374
+6260	069	Majšperk	374
+6261	070	Maribor	374
+6262	071	Medvode	374
+6263	072	Mengeš	374
+6264	073	Metlika	374
+6265	074	Mežica	374
+6266	075	Miren-Kostanjevica	374
+6267	076	Mislinja	374
+6268	077	Moravce	374
+6269	078	Moravske Toplice	374
+6270	079	Mozirje	374
+6271	080	Murska Sobota	374
+6272	081	Muta	374
+6273	082	Naklo	374
+6274	083	Nazarje	374
+6275	084	Nova Gorica	374
+6276	085	Novo mesto	374
+6277	086	Odranci	374
+6278	087	Ormož	374
+6279	088	Osilnica	374
+6280	089	Pesnica	374
+6281	090	Piran/Pirano	374
+6282	091	Pivka	374
+6283	092	Podcetrtek	374
+6284	093	Podvelka	374
+6285	094	Postojna	374
+6286	095	Preddvor	374
+6287	096	Ptuj	374
+6288	097	Puconci	374
+6289	098	Race-Fram	374
+6290	099	Radece	374
+6291	100	Radenci	374
+6292	101	Radlje ob Dravi	374
+6293	102	Radovljica	374
+6294	103	Ravne na Koroškem	374
+6295	104	Ribnica	374
+6296	105	Rogašovci	374
+6297	106	Rogaška Slatina	374
+6298	107	Rogatec	374
+6299	108	Ruše	374
+6300	109	Semic	374
+6301	110	Sevnica	374
+6302	111	Sežana	374
+6303	112	Slovenj Gradec	374
+6304	113	Slovenska Bistrica	374
+6305	114	Slovenske Konjice	374
+6306	115	Starše	374
+6307	116	Sveti Jurij	374
+6308	117	Šencur	374
+6309	118	Šentilj	374
+6310	119	Šentjernej	374
+6311	120	Šentjur pri Celju	374
+6312	121	Škocjan	374
+6313	122	Škofja Loka	374
+6314	123	Škofljica	374
+6315	124	Šmarje pri Jelšah	374
+6316	125	Šmartno ob Paki	374
+6317	126	Šoštanj	374
+6318	127	Štore	374
+6319	128	Tolmin	374
+6320	129	Trbovlje	374
+6321	130	Trebnje	374
+6322	131	Tržic	374
+6323	132	Turnišce	374
+6324	133	Velenje	374
+6325	134	Velike Lašce	374
+6326	135	Videm	374
+6327	136	Vipava	374
+6328	137	Vitanje	374
+6329	138	Vodice	374
+6330	139	Vojnik	374
+6331	140	Vrhnika	374
+6332	141	Vuzenica	374
+6333	142	Zagorje ob Savi	374
+6334	143	Zavrc	374
+6335	144	Zrece	374
+6336	146	Železniki	374
+6337	147	Žiri	374
+6338	148	Benedikt	374
+6339	149	Bistrica ob Sotli	374
+6340	150	Bloke	374
+6341	151	Braslovce	374
+6342	152	Cankova	374
+6343	153	Cerkvenjak	374
+6344	154	Dobje	374
+6345	155	Dobrna	374
+6346	156	Dobrovnik/Dobronak	374
+6347	157	Dolenjske Toplice	374
+6348	158	Grad	374
+6349	159	Hajdina	374
+6350	160	Hoce-Slivnica	374
+6351	161	Hodoš/Hodos	374
+6352	162	Horjul	374
+6353	163	Jezersko	374
+6354	164	Komenda	374
+6355	165	Kostel	374
+6356	166	Križevci	374
+6357	167	Lovrenc na Pohorju	374
+6358	168	Markovci	374
+6359	169	Miklavž na Dravskem polju	374
+6360	170	Mirna Pec	374
+6361	171	Oplotnica	374
+6362	172	Podlehnik	374
+6363	173	Polzela	374
+6364	174	Prebold	374
+6365	175	Prevalje	374
+6366	176	Razkrižje	374
+6367	177	Ribnica na Pohorju	374
+6368	178	Selnica ob Dravi	374
+6369	179	Sodražica	374
+6370	180	Solcava	374
+6371	181	Sveta Ana	374
+6372	182	Sveti Andraž v Slovenskih goricah	374
+6373	183	Šempeter-Vrtojba	374
+6374	184	Tabor	374
+6375	185	Trnovska vas	374
+6376	186	Trzin	374
+6377	187	Velika Polana	374
+6378	188	Veržej	374
+6379	189	Vransko	374
+6380	190	Žalec	374
+6381	191	Žetale	374
+6382	192	Žirovnica	374
+6383	193	Žužemberk	374
+6384	194	Šmartno pri Litiji	374
+6385	BC	Banskobystrický kraj	376
+6386	BL	Bratislavský kraj	376
+6387	KI	Košický kraj	376
+6388	NI	Nitriansky kraj	376
+6389	PV	Prešovský kraj	376
+6390	TA	Trnavský kraj	376
+6391	TC	Trenciansky kraj	376
+6392	ZI	Žilinský kraj	376
+6393	E	Eastern	377
+6394	N	Northern	377
+6395	S	Southern	377
+6396	W	Western Area (Freetown)	377
+6397	01	Acquaviva	378
+6398	02	Chiesanuova	378
+6399	03	Domagnano	378
+6400	04	Faetano	378
+6401	05	Fiorentino	378
+6402	06	Borgo Maggiore	378
+6403	07	San Marino	378
+6404	08	Montegiardino	378
+6405	09	Serravalle	378
+6406	DB	Diourbel	379
+6407	DK	Dakar	379
+6408	FK	Fatick	379
+6409	KD	Kolda	379
+6410	KL	Kaolack	379
+6411	LG	Louga	379
+6412	MT	Matam	379
+6413	SL	Saint-Louis	379
+6414	TC	Tambacounda	379
+6415	TH	Thiès	379
+6416	ZG	Ziguinchor	379
+6417	AW	Awdal	380
+6418	BK	Bakool	380
+6419	BN	Banaadir	380
+6420	BR	Bari	380
+6421	BY	Bay	380
+6422	GA	Galguduud	380
+6423	GE	Gedo	380
+6424	HI	Hiiraan	380
+6425	JD	Jubbada Dhexe	380
+6426	JH	Jubbada Hoose	380
+6427	MU	Mudug	380
+6428	NU	Nugaal	380
+6429	SA	Sanaag	380
+6430	SD	Shabeellaha Dhexe	380
+6431	SH	Shabeellaha Hoose	380
+6432	SO	Sool	380
+6433	TO	Togdheer	380
+6434	WO	Woqooyi Galbeed	380
+6435	BR	Brokopondo	381
+6436	CM	Commewijne	381
+6437	CR	Coronie	381
+6438	MA	Marowijne	381
+6439	NI	Nickerie	381
+6440	PM	Paramaribo	381
+6441	PR	Para	381
+6442	SA	Saramacca	381
+6443	SI	Sipaliwini	381
+6444	WA	Wanica	381
+6445	P	Príncipe	382
+6446	S	São Tomé	382
+6447	AH	Ahuachapán	383
+6448	CA	Cabañas	383
+6449	CH	Chalatenango	383
+6450	CU	Cuscatlán	383
+6451	LI	La Libertad	383
+6452	MO	Morazán	383
+6453	PA	La Paz	383
+6454	SA	Santa Ana	383
+6455	SM	San Miguel	383
+6456	SO	Sonsonate	383
+6457	SS	San Salvador	383
+6458	SV	San Vicente	383
+6459	UN	La Unión	383
+6460	US	Usulután	383
+6461	DI	Dimashq	384
+6462	DR	Dar?a	384
+6463	DY	Dayr az Zawr	384
+6464	HA	Al ?asakah	384
+6465	HI	?ims	384
+6466	HL	?alab	384
+6467	HM	?amah	384
+6468	ID	Idlib	384
+6469	LA	Al Ladhiqiyah	384
+6470	QU	Al Qunaytirah	384
+6471	RA	Ar Raqqah	384
+6472	RD	Rif Dimashq	384
+6473	SU	As Suwayda'	384
+6474	TA	Tartus	384
+6475	HH	Hhohho	385
+6476	LU	Lubombo	385
+6477	MA	Manzini	385
+6478	SH	Shiselweni	385
+6479	BA	Batha	387
+6480	BET	Borkou-Ennedi-Tibesti	387
+6481	CB	Chari-Baguirmi	387
+6482	GR	Guéra	387
+6483	HL	Hadjer Lamis	387
+6484	KA	Kanem	387
+6485	LC	Lac	387
+6486	LO	Logone-Occidental	387
+6487	LR	Logone-Oriental	387
+6488	MA	Mandoul	387
+6489	MC	Moyen-Chari	387
+6490	ME	Mayo-Kébbi-Est	387
+6491	MO	Mayo-Kébbi-Ouest	387
+6492	ND	Ndjamena	387
+6493	OD	Ouaddaï	387
+6494	SA	Salamat	387
+6495	TA	Tandjilé	387
+6496	WF	Wadi Fira	387
+6497	X1~	Ile Saint-Paul et Ile Amsterdam	388
+6498	X2~	Crozet Islands	388
+6499	X3~	Kerguelen	388
+6500	X4~	Iles Eparses	388
+6501	C	Centre	389
+6502	K	Kara	389
+6503	M	Maritime (Région)	389
+6504	P	Plateaux	389
+6505	S	Savannes	389
+6506	10	Krung Thep Maha Nakhon [Bangkok]	390
+6507	11	Samut Prakan	390
+6508	12	Nonthaburi	390
+6509	13	Pathum Thani	390
+6510	14	Phra Nakhon Si Ayutthaya	390
+6511	15	Ang Thong	390
+6512	16	Lop Buri	390
+6513	17	Sing Buri	390
+6514	18	Chai Nat	390
+6515	19	Saraburi	390
+6516	20	Chon Buri	390
+6517	21	Rayong	390
+6518	22	Chanthaburi	390
+6519	23	Trat	390
+6520	24	Chachoengsao	390
+6521	25	Prachin Buri	390
+6522	26	Nakhon Nayok	390
+6523	27	Sa Kaeo	390
+6524	30	Nakhon Ratchasima	390
+6525	31	Buri Ram	390
+6526	32	Surin	390
+6527	33	Si Sa Ket	390
+6528	34	Ubon Ratchathani	390
+6529	35	Yasothon	390
+6530	36	Chaiyaphum	390
+6531	37	Amnat Charoen	390
+6532	39	Nong Bua Lam Phu	390
+6533	40	Khon Kaen	390
+6534	41	Udon Thani	390
+6535	42	Loei	390
+6536	43	Nong Khai	390
+6537	44	Maha Sarakham	390
+6538	45	Roi Et	390
+6539	46	Kalasin	390
+6540	47	Sakon Nakhon	390
+6541	48	Nakhon Phanom	390
+6542	49	Mukdahan	390
+6543	50	Chiang Mai	390
+6544	51	Lamphun	390
+6545	52	Lampang	390
+6546	53	Uttaradit	390
+6547	54	Phrae	390
+6548	55	Nan	390
+6549	56	Phayao	390
+6550	57	Chiang Rai	390
+6551	58	Mae Hong Son	390
+6552	60	Nakhon Sawan	390
+6553	61	Uthai Thani	390
+6554	62	Kamphaeng Phet	390
+6555	63	Tak	390
+6556	64	Sukhothai	390
+6557	65	Phitsanulok	390
+6558	66	Phichit	390
+6559	67	Phetchabun	390
+6560	70	Ratchaburi	390
+6561	71	Kanchanaburi	390
+6562	72	Suphan Buri	390
+6563	73	Nakhon Pathom	390
+6564	74	Samut Sakhon	390
+6565	75	Samut Songkhram	390
+6566	76	Phetchaburi	390
+6567	77	Prachuap Khiri Khan	390
+6568	80	Nakhon Si Thammarat	390
+6569	81	Krabi	390
+6570	82	Phangnga	390
+6571	83	Phuket	390
+6572	84	Surat Thani	390
+6573	85	Ranong	390
+6574	86	Chumphon	390
+6575	90	Songkhla	390
+6576	91	Satun	390
+6577	92	Trang	390
+6578	93	Phatthalung	390
+6579	94	Pattani	390
+6580	95	Yala	390
+6581	96	Narathiwat	390
+6582	S	Phatthaya	390
+6583	AL	Aileu	393
+6584	AN	Ainaro	393
+6585	BA	Baucau	393
+6586	BO	Bobonaro	393
+6587	CO	Cova Lima	393
+6588	DI	Dili	393
+6589	ER	Ermera	393
+6590	LA	Lautem	393
+6591	LI	Liquiça	393
+6592	MF	Manufahi	393
+6593	MT	Manatuto	393
+6594	OE	Oecussi	393
+6595	VI	Viqueque	393
+6596	A	Ahal	394
+6597	B	Balkan	394
+6598	D	Dasoguz	394
+6599	L	Lebap	394
+6600	M	Mary	394
+6601	X~		394
+6602	11	Tunis	395
+6603	12	L'Ariana	395
+6604	13	Ben Arous	395
+6605	14	La Manouba	395
+6606	21	Nabeul	395
+6607	22	Zaghouan	395
+6608	23	Bizerte	395
+6609	31	Béja	395
+6610	32	Jendouba	395
+6611	33	Le Kef	395
+6612	34	Siliana	395
+6613	41	Kairouan	395
+6614	42	Kasserine	395
+6615	43	Sidi Bouzid	395
+6616	51	Sousse	395
+6617	52	Monastir	395
+6618	53	Mahdia	395
+6619	61	Sfax	395
+6620	71	Gafsa	395
+6621	72	Tozeur	395
+6622	73	Kebili	395
+6623	81	Gabès	395
+6624	82	Medenine	395
+6625	83	Tataouine	395
+6626	01	'Eua	396
+6627	02	Ha'apai	396
+6628	03	Niuas	396
+6629	04	Tongatapu	396
+6630	05	Vava'u	396
+6631	01	Adana	397
+6632	02	Adiyaman	397
+6633	03	Afyon	397
+6634	04	Agri	397
+6635	05	Amasya	397
+6636	06	Ankara	397
+6637	07	Antalya	397
+6638	08	Artvin	397
+6639	09	Aydin	397
+6640	10	Balikesir	397
+6641	11	Bilecik	397
+6642	12	Bingöl	397
+6643	13	Bitlis	397
+6644	14	Bolu	397
+6645	15	Burdur	397
+6646	16	Bursa	397
+6647	17	Çanakkale	397
+6648	18	Çankiri	397
+6649	19	Çorum	397
+6650	20	Denizli	397
+6651	21	Diyarbakir	397
+6652	22	Edirne	397
+6653	23	Elazig	397
+6654	24	Erzincan	397
+6655	25	Erzurum	397
+6656	26	Eskisehir	397
+6657	27	Gaziantep	397
+6658	28	Giresun	397
+6659	29	Gümüshane	397
+6660	30	Hakkâri	397
+6661	31	Hatay	397
+6662	32	Isparta	397
+6663	33	Içel	397
+6664	34	Istanbul	397
+6665	35	Izmir	397
+6666	36	Kars	397
+6667	37	Kastamonu	397
+6668	38	Kayseri	397
+6669	39	Kirklareli	397
+6670	40	Kirsehir	397
+6671	41	Kocaeli	397
+6672	42	Konya	397
+6673	43	Kütahya	397
+6674	44	Malatya	397
+6675	45	Manisa	397
+6676	46	Kahramanmaras	397
+6677	47	Mardin	397
+6678	48	Mugla	397
+6679	49	Mus	397
+6680	50	Nevsehir	397
+6681	51	Nigde	397
+6682	52	Ordu	397
+6683	53	Rize	397
+6684	54	Sakarya	397
+6685	55	Samsun	397
+6686	56	Siirt	397
+6687	57	Sinop	397
+6688	58	Sivas	397
+6689	59	Tekirdag	397
+6690	60	Tokat	397
+6691	61	Trabzon	397
+6692	62	Tunceli	397
+6693	63	Sanliurfa	397
+6694	64	Usak	397
+6695	65	Van	397
+6696	66	Yozgat	397
+6697	67	Zonguldak	397
+6698	68	Aksaray	397
+6699	69	Bayburt	397
+6700	70	Karaman	397
+6701	71	Kirikkale	397
+6702	72	Batman	397
+6703	73	Sirnak	397
+6704	74	Bartin	397
+6705	75	Ardahan	397
+6706	76	Igdir	397
+6707	77	Yalova	397
+6708	78	Karabük	397
+6709	79	Kilis	397
+6710	80	Osmaniye	397
+6711	81	Düzce	397
+6712	ARI	Arima	398
+6713	CHA	Chaguanas	398
+6714	CTT	Couva-Tabaquite-Talparo	398
+6715	DMN	Diego Martin	398
+6716	ETO	Eastern Tobago	398
+6717	PED	Penal-Debe	398
+6718	POS	Port of Spain	398
+6719	PRT	Princes Town	398
+6720	PTF	Point Fortin	398
+6721	RCM	Rio Claro-Mayaro	398
+6722	SFO	San Fernando	398
+6723	SGE	Sangre Grande	398
+6724	SIP	Siparia	398
+6725	SJL	San Juan-Laventille	398
+6726	TUP	Tunapuna-Piarco	398
+6727	WTO	Western Tobago	398
+6728	FUN	Funafuti	399
+6729	NIT	Niutao	399
+6730	NIU	Nui	399
+6731	NKF	Nukufetau	399
+6732	NKL	Nukulaelae	399
+6733	NMA	Nanumea	399
+6734	NMG	Nanumanga	399
+6735	VAI	Vaitupu	399
+6736	CHA	Changhua	400
+6737	CYI	Chiayi Municipality	400
+6738	CYQ	Chiayi	400
+6739	HSQ	Hsinchu	400
+6740	HSZ	Hsinchu Municipality	400
+6741	HUA	Hualien	400
+6742	ILA	Ilan	400
+6743	KEE	Keelung Municipality	400
+6744	KHH	Kaohsiung Special Municipality	400
+6745	KHQ	Kaohsiung	400
+6746	MIA	Miaoli	400
+6747	NAN	Nantou	400
+6748	PEN	Penghu	400
+6749	PIF	Pingtung	400
+6750	TAO	Taoyuan	400
+6751	TNN	Tainan Municipality	400
+6752	TNQ	Tainan	400
+6753	TPE	Taipei Special Municipality	400
+6754	TPQ	Taipei	400
+6755	TTT	Taitung	400
+6756	TXG	Taichung Municipality	400
+6757	TXQ	Taichung	400
+6758	YUN	Yunlin	400
+6759	01	Arusha	401
+6760	02	Dar es Salaam	401
+6761	03	Dodoma	401
+6762	04	Iringa	401
+6763	05	Kagera	401
+6764	06	Kaskazini Pemba	401
+6765	07	Kaskazini Unguja	401
+6766	08	Kigoma	401
+6767	09	Kilimanjaro	401
+6768	10	Kusini Pemba	401
+6769	11	Kusini Unguja	401
+6770	12	Lindi	401
+6771	13	Mara	401
+6772	14	Mbeya	401
+6773	15	Mjini Magharibi	401
+6774	16	Morogoro	401
+6775	17	Mtwara	401
+6776	18	Mwanza	401
+6777	19	Pwani	401
+6778	20	Rukwa	401
+6779	21	Ruvuma	401
+6780	22	Shinyanga	401
+6781	23	Singida	401
+6782	24	Tabora	401
+6783	25	Tanga	401
+6784	26	Manyara	401
+6785	05	Vinnyts'ka Oblast'	402
+6786	07	Volyns'ka Oblast'	402
+6787	09	Luhans'ka Oblast'	402
+6788	12	Dnipropetrovs'ka Oblast'	402
+6789	14	Donets'ka Oblast'	402
+6790	18	Zhytomyrs'ka Oblast'	402
+6791	21	Zakarpats'ka Oblast'	402
+6792	23	Zaporiz'ka Oblast'	402
+6793	26	Ivano-Frankivs'ka Oblast'	402
+6794	30	Kyïv	402
+6795	32	Kyïvs'ka Oblast'	402
+6796	35	Kirovohrads'ka Oblast'	402
+6797	40	Sevastopol'	402
+6798	43	Respublika Krym	402
+6799	46	L'vivs'ka Oblast'	402
+6800	48	Mykolaïvs'ka Oblast'	402
+6801	51	Odes'ka Oblast'	402
+6802	53	Poltavs'ka Oblast'	402
+6803	56	Rivnens'ka Oblast'	402
+6804	59	Sums'ka Oblast'	402
+6805	61	Ternopil's'ka Oblast'	402
+6806	63	Kharkivs'ka Oblast'	402
+6807	65	Khersons'ka Oblast'	402
+6808	68	Khmel'nyts'ka Oblast'	402
+6809	71	Cherkas'ka Oblast'	402
+6810	74	Chernihivs'ka Oblast'	402
+6811	77	Chernivets'ka Oblast'	402
+6812	101	Kalangala	403
+6813	102	Kampala	403
+6814	103	Kiboga	403
+6815	104	Luwero	403
+6816	105	Masaka	403
+6817	106	Mpigi	403
+6818	107	Mubende	403
+6819	108	Mukono	403
+6820	109	Nakasongola	403
+6821	110	Rakai	403
+6822	111	Sembabule	403
+6823	112	Kayunga	403
+6824	113	Wakiso	403
+6825	201	Bugiri	403
+6826	202	Busia	403
+6827	203	Iganga	403
+6828	204	Jinja	403
+6829	205	Kamuli	403
+6830	206	Kapchorwa	403
+6831	207	Katakwi	403
+6832	208	Kumi	403
+6833	209	Mbale	403
+6834	210	Pallisa	403
+6835	211	Soroti	403
+6836	212	Tororo	403
+6837	213	Kaberamaido	403
+6838	214	Mayuge	403
+6839	215	Sironko	403
+6840	301	Adjumani	403
+6841	302	Apac	403
+6842	303	Arua	403
+6843	304	Gulu	403
+6844	305	Kitgum	403
+6845	306	Kotido	403
+6846	307	Lira	403
+6847	308	Moroto	403
+6848	309	Moyo	403
+6849	310	Nebbi	403
+6850	311	Nakapiripirit	403
+6851	312	Pader	403
+6852	313	Yumbe	403
+6853	401	Bundibugyo	403
+6854	402	Bushenyi	403
+6855	403	Hoima	403
+6856	404	Kabale	403
+6857	405	Kabarole	403
+6858	406	Kasese	403
+6859	407	Kibaale	403
+6860	408	Kisoro	403
+6861	409	Masindi	403
+6862	410	Mbarara	403
+6863	411	Ntungamo	403
+6864	412	Rukungiri	403
+6865	413	Kamwenge	403
+6866	414	Kanungu	403
+6867	415	Kyenjojo	403
+6868	67	Johnston Atoll	404
+6869	71	Midway Islands	404
+6870	76	Navassa Island	404
+6871	79	Wake Island	404
+6872	81	Baker Island	404
+6873	84	Howland Island	404
+6874	86	Jarvis Island	404
+6875	89	Kingman Reef	404
+6876	95	Palmyra Atoll	404
+6877	AK	Alaska	405
+6878	AL	Alabama	405
+6879	AR	Arkansas	405
+6880	AS	American Samoa	405
+6881	AZ	Arizona	405
+6882	CA	California	405
+6883	CO	Colorado	405
+6884	CT	Connecticut	405
+6885	DC	District of Columbia	405
+6886	DE	Delaware	405
+6887	FL	Florida	405
+6888	GA	Georgia	405
+6889	GU	Guam	405
+6890	HI	Hawaii	405
+6891	IA	Iowa	405
+6892	ID	Idaho	405
+6893	IL	Illinois	405
+6894	IN	Indiana	405
+6895	KS	Kansas	405
+6896	KY	Kentucky	405
+6897	LA	Louisiana	405
+6898	MA	Massachusetts	405
+6899	MD	Maryland	405
+6900	ME	Maine	405
+6901	MI	Michigan	405
+6902	MN	Minnesota	405
+6903	MO	Missouri	405
+6904	MP	Northern Mariana Islands	405
+6905	MS	Mississippi	405
+6906	MT	Montana	405
+6907	NC	North Carolina	405
+6908	ND	North Dakota	405
+6909	NE	Nebraska	405
+6910	NH	New Hampshire	405
+6911	NJ	New Jersey	405
+6912	NM	New Mexico	405
+6913	NV	Nevada	405
+6914	NY	New York	405
+6915	OH	Ohio	405
+6916	OK	Oklahoma	405
+6917	OR	Oregon	405
+6918	PA	Pennsylvania	405
+6919	PR	Puerto Rico	405
+6920	RI	Rhode Island	405
+6921	SC	South Carolina	405
+6922	SD	South Dakota	405
+6923	TN	Tennessee	405
+6924	TX	Texas	405
+6925	UM	United States Minor Outlying Islands	405
+6926	UT	Utah	405
+6927	VA	Virginia	405
+6928	VI	Virgin Islands, U.S.	405
+6929	VT	Vermont	405
+6930	WA	Washington	405
+6931	WI	Wisconsin	405
+6932	WV	West Virginia	405
+6933	WY	Wyoming	405
+6934	AR	Artigas	406
+6935	DU	Durazno	406
+6936	FD	Florida	406
+6937	FS	Flores	406
+6938	LA	Lavalleja	406
+6939	MA	Maldonado	406
+6940	MO	Montevideo	406
+6941	PA	Paysandú	406
+6942	RN	Río Negro	406
+6943	RO	Rocha	406
+6944	RV	Rivera	406
+6945	SA	Salto	406
+6946	SJ	San José	406
+6947	SO	Soriano	406
+6948	TA	Tacuarembó	406
+6949	TT	Treinta y Tres	406
+6950	X1~		406
+6951	X2~		406
+6952	X3~		406
+6953	AN	Andijon	407
+6954	BU	Buxoro	407
+6955	FA	Farg‘ona	407
+6956	JI	Jizzax	407
+6957	NG	Namangan	407
+6958	NW	Navoiy	407
+6959	QA	Qashqadaryo	407
+6960	QR	Qoraqalpog‘iston Respublikasi	407
+6961	SA	Samarqand	407
+6962	SI	Sirdaryo	407
+6963	SU	Surxondaryo	407
+6964	TK	Toshkent City	407
+6965	TO	Toshkent	407
+6966	XO	Xorazm	407
+6967	01	Charlotte	409
+6968	02	Saint Andrew	409
+6969	03	Saint David	409
+6970	04	Saint George	409
+6971	05	Saint Patrick	409
+6972	06	Grenadines	409
+6973	A	Distrito Federal	410
+6974	B	Anzoátegui	410
+6975	C	Apure	410
+6976	D	Aragua	410
+6977	E	Barinas	410
+6978	F	Bolívar	410
+6979	G	Carabobo	410
+6980	H	Cojedes	410
+6981	I	Falcón	410
+6982	J	Guárico	410
+6983	K	Lara	410
+6984	L	Mérida	410
+6985	M	Miranda	410
+6986	N	Monagas	410
+6987	O	Nueva Esparta	410
+6988	P	Portuguesa	410
+6989	R	Sucre	410
+6990	S	Táchira	410
+6991	T	Trujillo	410
+6992	U	Yaracuy	410
+6993	V	Zulia	410
+6994	W	Dependencias Federales	410
+6995	X	Vargas	410
+6996	Y	Delta Amacuro	410
+6997	Z	Amazonas	410
+6998	01	Lai Chau	413
+6999	02	Lao Cai	413
+7000	03	Ha Giang	413
+7001	04	Cao Bang	413
+7002	05	Son La	413
+7003	06	Yen Bai	413
+7004	07	Tuyen Quang	413
+7005	09	Lang Son	413
+7006	13	Quang Ninh	413
+7007	14	Hoa Binh	413
+7008	15	Ha Tay	413
+7009	18	Ninh Binh	413
+7010	20	Thai Binh	413
+7011	21	Thanh Hoa	413
+7012	22	Nghe An	413
+7013	23	Ha Tinh	413
+7014	24	Quang Binh	413
+7015	25	Quang Tri	413
+7016	26	Thua Thien-Hue	413
+7017	27	Quang Nam	413
+7018	28	Kon Tum	413
+7019	29	Quang Ngai	413
+7020	30	Gia Lai	413
+7021	31	Binh Dinh	413
+7022	32	Phu Yen	413
+7023	33	Dac Lac	413
+7024	34	Khanh Hoa	413
+7025	35	Lam Dong	413
+7026	36	Ninh Thuan	413
+7027	37	Tay Ninh	413
+7028	39	Dong Nai	413
+7029	40	Binh Thuan	413
+7030	41	Long An	413
+7031	43	Ba Ria - Vung Tau	413
+7032	44	An Giang	413
+7033	45	Dong Thap	413
+7034	46	Tien Giang	413
+7035	47	Kien Giang	413
+7036	48	Can Tho	413
+7037	49	Vinh Long	413
+7038	50	Ben Tre	413
+7039	51	Tra Vinh	413
+7040	52	Soc Trang	413
+7041	53	Bac Can	413
+7042	54	Bac Giang	413
+7043	55	Bac Lieu	413
+7044	56	Bac Ninh	413
+7045	57	Binh Duong	413
+7046	58	Binh Phuoc	413
+7047	59	Ca Mau	413
+7048	60	Da Nang, thanh pho	413
+7049	61	Hai Duong	413
+7050	62	Hai Phong, thanh pho	413
+7051	63	Ha Nam	413
+7052	64	Ha Noi, thu do	413
+7053	65	Ho Chi Minh, thanh pho [Sai Gon]	413
+7054	66	Hung Yen	413
+7055	67	Nam Dinh	413
+7056	68	Phu Tho	413
+7057	69	Thai Nguyen	413
+7058	70	Vinh Phuc	413
+7059	71	Dien Bien	413
+7060	72	Dak Nong	413
+7061	73	Hau Giang	413
+7062	MAP	Malampa	414
+7063	PAM	Pénama	414
+7064	SAM	Sanma	414
+7065	SEE	Shéfa	414
+7066	TAE	Taféa	414
+7067	TOB	Torba	414
+7068	AA	A'ana	416
+7069	AL	Aiga-i-le-Tai	416
+7070	AT	Atua	416
+7071	FA	Fa'asaleleaga	416
+7072	GE	Gaga'emauga	416
+7073	GI	Gagaifomauga	416
+7074	PA	Palauli	416
+7075	SA	Satupa'itea	416
+7076	TU	Tuamasaga	416
+7077	VF	Va'a-o-Fonoti	416
+7078	VS	Vaisigano	416
+7079	AB	Abyan	417
+7080	AD	ʿAdan	417
+7081	AM	'Amran	417
+7082	BA	Al Bay?a'	417
+7083	DA	Ad¸ D¸ali'	417
+7084	DH	Dhamar	417
+7085	HD	Hadramawt	417
+7086	HJ	Hajjah	417
+7087	HU	Al ?udaydah	417
+7088	IB	Ibb	417
+7089	JA	Al Jawf	417
+7090	LA	La?ij	417
+7091	MA	Ma'rib	417
+7092	MR	Al Mahrah	417
+7093	MW	Al Mahwit	417
+7094	SD	Sa`dah	417
+7095	SH	Shabwah	417
+7096	SN	Sanʿā	417
+7097	TA	Taʿizz	417
+7098	EC	Eastern Cape	419
+7099	FS	Free State	419
+7100	GT	Gauteng	419
+7101	LP	Limpopo	419
+7102	MP	Mpumalanga	419
+7103	NC	Northern Cape	419
+7104	NL	Kwazulu-Natal	419
+7105	NW	North-West	419
+7106	WC	Western Cape	419
+7107	01	Western	420
+7108	02	Central	420
+7109	03	Eastern	420
+7110	04	Luapula	420
+7111	05	Northern	420
+7112	06	North-Western	420
+7113	07	Southern	420
+7114	08	Copperbelt	420
+7115	09	Lusaka	420
+7116	BU	Bulawayo	421
+7117	HA	Harare	421
+7118	MA	Manicaland	421
+7119	MC	Mashonaland Central	421
+7120	ME	Mashonaland East	421
+7121	MI	Midlands	421
+7122	MN	Matabeleland North	421
+7123	MS	Matabeleland South	421
+7124	MV	Masvingo	421
+7125	MW	Mashonaland West	421
+\.
+
+
+--
+-- Data for Name: taggings; Type: TABLE DATA; Schema: public; Owner: zone
+--
+
+COPY taggings (id, tag_id, taggable_id, taggable_type, tagger_id, tagger_type, context, created_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: tags; Type: TABLE DATA; Schema: public; Owner: zone
+--
+
+COPY tags (id, name) FROM stdin;
+\.
+
+
+--
+-- Data for Name: tax_method_values; Type: TABLE DATA; Schema: public; Owner: zone
+--
+
+COPY tax_method_values (id, tax_method_id, key, value) FROM stdin;
+1	1	state_abbr	NC
+2	1	rate	0.0675
+\.
+
+
+--
+-- Data for Name: tax_methods; Type: TABLE DATA; Schema: public; Owner: zone
+--
+
+COPY tax_methods (id, description, klass, active) FROM stdin;
+1	NC State Tax	Piggybak::TaxCalculator::Percent	t
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: zone
+--
+
+COPY users (id, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, display_name, created_at, updated_at) FROM stdin;
+10	test@endpoint.com	$2a$10$eq.pXquV5s1nQcQNnEpM6.rdsK5x8H7gAHbaTHBe/YhzxjMLQbd96	\N	\N	\N	34	2012-01-06 16:45:48.631517	2012-01-06 16:42:47.326797	174.111.14.48	174.111.14.48	Testy Tester	2012-01-03 20:26:41.571741	2012-01-06 16:45:48.633001
+\.
+
+
+--
+-- Data for Name: variants; Type: TABLE DATA; Schema: public; Owner: zone
+--
+
+COPY variants (id, sku, description, price, quantity, item_id, item_type, active, unlimited_inventory) FROM stdin;
+9	test-3	Print of Test #3	19.99	8	10	Image	t	f
+7	1	Sample Product	19.99	8	8	Image	t	f
+8	test-2	Print of Test #2	19.99	6	9	Image	t	f
+12	havanese-smile	4"x6" Print of Havanese Smile	19.99	0	13	Image	t	t
+13	puppy	4"x6" Print of Tired Puppy	19.99	20	14	Image	t	f
+14	beach-dog	4"x6" Print of Beach Dog	19.99	20	15	Image	t	f
+10	fall-leaves	4"x6" Print of Fall Leaves	19.99	100	11	Image	t	t
+15	nature	4"x6" Print of Nature	19.0	100	16	Image	t	t
+19	Green Bokeh	4"x6" Print of Green Bokeh	9.99	100	20	Image	t	f
+20	car-window	4"x6" Print of Car Window	24.99	10	21	Image	t	f
+21	dog-lookout	4"x6" Print of Dog Lookout	19.99	7	22	Image	t	t
+22	spider	4"x6" Print of Spider	19.99	100	23	Image	t	f
+24	puppy-pals	4"x6" Print of Puppy Pals	19.99	100	25	Image	t	f
+25	slug	4"x6" Print of Slug	19.99	100	26	Image	t	t
+26	happy-beagle	4"x6" Print of Happy Beagle	19.99	100	27	Image	t	t
+27	puppy-pile	4"x6" Print of Puppy Pile	39.99	20	28	Image	t	t
+28	purple-flowers	4"x6" Print of Purple Flowers	19.99	100	29	Image	t	t
+30	polination-2	4"x6" Print of Pollination #2	19.99	100	31	Image	t	t
+31	beach-dog-2	4"x6" Print of Beach Dog #2	19.99	100	32	Image	t	t
+32	spiderweb	4"x6" Print of Spiderweb	24.99	100	33	Image	t	t
+33	tug-of-war	4"x6" Print of Tug Of War	24.99	100	34	Image	t	f
+34	nature-2	4"x6" Print of Nature #2	24.99	100	35	Image	t	t
+35	nature-3	4"x6" Print of Nature #3	24.99	100	36	Image	t	t
+36	floor-dog	4"x6" Print of Floor Dog	24.99	100	37	Image	t	t
+37	nature-4	4"x6" Print of Nature #4	24.99	100	38	Image	t	t
+38	make-a-wish	4"x6" Print of Make a Wish	24.99	100	39	Image	t	t
+39	best-friends	4"x6" Print of Best Friends	24.99	100	40	Image	t	t
+41	fall-colors	4"x6" Print of Fall Colors	24.99	100	42	Image	t	t
+42	spider-2	4"x6" Print of Spider #2	24.99	100	43	Image	f	f
+43	japanese-maple	4"x6" Print of Japanese Maple	24.99	100	44	Image	f	f
+16	murky-reflection	4"x6" Print of Murky Reflection	19.99	98	17	Image	t	t
+23	spider-duo	4"x6" Print of Spider Duo	19.99	99	24	Image	t	t
+40	street-cat	4"x6" Print of Street Cat	24.99	7	41	Image	t	t
+17	butterfly	4"x6" Print of Butterfly	30.0	94	18	Image	t	t
+18	backlit-fall-leaves	4"x6" Print of Backlit Fall Leaves	19.99	999	19	Image	t	f
+29	pollination	4"x6" Print of Pollination	19.99	99	30	Image	t	t
+44	relaxing-puppy	4"x6" Print of Relaxing Puppy	24.99	3	45	Image	t	f
+11	dog-sunglasses	4"x6" Print of Dog in Sunglasses	19.99	3	12	Image	t	t
+\.
+
+
+--
+-- Name: addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+--
+
+ALTER TABLE ONLY addresses
+    ADD CONSTRAINT addresses_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: categories_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+--
+
+ALTER TABLE ONLY categories
+    ADD CONSTRAINT categories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: countries_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+--
+
+ALTER TABLE ONLY countries
+    ADD CONSTRAINT countries_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: credits_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+--
+
+ALTER TABLE ONLY credits
+    ADD CONSTRAINT credits_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: images_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+--
+
+ALTER TABLE ONLY images
+    ADD CONSTRAINT images_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: line_items_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+--
+
+ALTER TABLE ONLY line_items
+    ADD CONSTRAINT line_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: orders_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+--
+
+ALTER TABLE ONLY orders
+    ADD CONSTRAINT orders_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pages_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+--
+
+ALTER TABLE ONLY pages
+    ADD CONSTRAINT pages_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: payment_method_values_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+--
+
+ALTER TABLE ONLY payment_method_values
+    ADD CONSTRAINT payment_method_values_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: payment_methods_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+--
+
+ALTER TABLE ONLY payment_methods
+    ADD CONSTRAINT payment_methods_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: payments_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+--
+
+ALTER TABLE ONLY payments
+    ADD CONSTRAINT payments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: posts_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+--
+
+ALTER TABLE ONLY posts
+    ADD CONSTRAINT posts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: products_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+--
+
+ALTER TABLE ONLY variants
+    ADD CONSTRAINT products_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: rails_admin_histories_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+--
+
+ALTER TABLE ONLY rails_admin_histories
+    ADD CONSTRAINT rails_admin_histories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: roles_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+--
+
+ALTER TABLE ONLY roles
+    ADD CONSTRAINT roles_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: shipments_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+--
+
+ALTER TABLE ONLY shipments
+    ADD CONSTRAINT shipments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: shipping_method_values_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+--
+
+ALTER TABLE ONLY shipping_method_values
+    ADD CONSTRAINT shipping_method_values_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: shipping_methods_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+--
+
+ALTER TABLE ONLY shipping_methods
+    ADD CONSTRAINT shipping_methods_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: states_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+--
+
+ALTER TABLE ONLY states
+    ADD CONSTRAINT states_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: taggings_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+--
+
+ALTER TABLE ONLY taggings
+    ADD CONSTRAINT taggings_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tags_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+--
+
+ALTER TABLE ONLY tags
+    ADD CONSTRAINT tags_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tax_method_values_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+--
+
+ALTER TABLE ONLY tax_method_values
+    ADD CONSTRAINT tax_method_values_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tax_methods_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+--
+
+ALTER TABLE ONLY tax_methods
+    ADD CONSTRAINT tax_methods_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_rails_admin_histories; Type: INDEX; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE INDEX index_rails_admin_histories ON rails_admin_histories USING btree (item, "table", month, year);
+
+
+--
+-- Name: index_taggings_on_tag_id; Type: INDEX; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE INDEX index_taggings_on_tag_id ON taggings USING btree (tag_id);
+
+
+--
+-- Name: index_taggings_on_taggable_id_and_taggable_type_and_context; Type: INDEX; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE INDEX index_taggings_on_taggable_id_and_taggable_type_and_context ON taggings USING btree (taggable_id, taggable_type, context);
+
+
+--
+-- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
+
+
+--
+-- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (reset_password_token);
+
+
+--
+-- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: zone; Tablespace: 
+--
+
+CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
