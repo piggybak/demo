@@ -42,3 +42,19 @@
 </div><!-- end #ts-display-portfolio -->
 
 <div class="clearfix"></div>
+
+<% if false -%>
+<div class="title">
+<h1><span class="f-left"></span><span class="titletext">Read the Blog</span><span class="f-right"></span></h1>
+</div>
+
+<div id="row2">
+	<% recent_posts(4).each do |post| %>
+	<div class="three columns alpha">
+		<h3><%= link_to post.title, bloggybak.post_url(post.slug) %></h3>
+		<span class="smalldate"><%= post.created_at.strftime("%B %d, %Y") %></span>
+		<p><%= post.excerpt(230) %></p>
+	</div>
+	<% end -%>
+</div><!--#row2-->
+<% end -%>

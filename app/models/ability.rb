@@ -13,7 +13,8 @@ class Ability
                     ::Piggybak::PaymentMethod,
                     ::Piggybak::TaxMethod,
                     ::Piggybak::State,
-                    ::Piggybak::Country]
+                    ::Piggybak::Country,
+                    ::Bloggybak::Post]
 
       # can't delete orders
       can [:email, :download, :read, :create, :update, :history, :export], ::Piggybak::Order

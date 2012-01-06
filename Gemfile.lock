@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/sferik/rails_admin.git
-  revision: 4e3014605b734f28942db836a2fc78692af05b10
+  revision: 77784c80bc900cf9041a0bd608a17bc87ac5bffe
   specs:
     rails_admin (0.0.1)
       bbenezech-nested_form (~> 0.0)
@@ -14,10 +14,20 @@ GIT
       rails (~> 3.1)
       remotipart (~> 1.0)
 
-PATH
-  remote: ../piggybak
+GIT
+  remote: git://github.com/stephskardal/bloggybak.git
+  revision: 73fd7a2996d4c879d1e52d744f779c8f530747c6
   specs:
-    piggybak (0.1.2)
+    bloggybak (0.1.2)
+      countries
+      devise
+      rails_admin
+
+GIT
+  remote: git://github.com/stephskardal/piggybak.git
+  revision: abbc8823a40053cc1edb97aa93603c8486d3ef7a
+  specs:
+    piggybak (0.2.0)
       activemerchant
       countries
       countries
@@ -66,14 +76,14 @@ GEM
       activesupport (= 3.1.3)
     activesupport (3.1.3)
       multi_json (~> 1.0)
-    acts-as-taggable-on (2.2.1)
-      rails (~> 3.1)
+    acts-as-taggable-on (2.2.2)
+      rails (~> 3.0)
     arel (2.2.1)
     bbenezech-nested_form (0.0.2)
     bcrypt-ruby (3.0.1)
     bootstrap-sass (1.4.3)
       sass-rails (~> 3.1)
-    braintree (2.13.1)
+    braintree (2.13.2)
       builder (>= 2.0.0)
     builder (3.0.0)
     cancan (1.6.7)
@@ -192,6 +202,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts-as-taggable-on
+  bloggybak!
   cancan
   ckeditor
   coffee-rails (~> 3.1.1)

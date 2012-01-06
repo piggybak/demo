@@ -1,4 +1,4 @@
-class PageController < ApplicationController
+class PagesController < ApplicationController
   def show
     logger.warn "steph: #{params.inspect}"
     @page = Page.find_by_slug(params[:slug])

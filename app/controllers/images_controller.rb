@@ -1,4 +1,4 @@
-class ImageController < ApplicationController
+class ImagesController < ApplicationController
   def show
     @image = Image.find_by_slug(params[:id])
 
