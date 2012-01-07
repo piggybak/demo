@@ -106,9 +106,6 @@ RailsAdmin.config do |config|
       field :main
       field :categories
       field :user 
-      field :breed_list
-      field :color_list
-      field :style_list
       include_all_fields
     end
   end
@@ -128,6 +125,8 @@ RailsAdmin.config do |config|
     end
   end
   config.model User do
+    object_label_method :display_name
+
     parent Image
     list do
       field :email

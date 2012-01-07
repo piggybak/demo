@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: git://github.com/stephskardal/piggybak.git
-  revision: abbc8823a40053cc1edb97aa93603c8486d3ef7a
+  revision: f43404873a34ebf2be34d59d7baf76f3d60ba531
   specs:
     piggybak (0.2.0)
       activemerchant
