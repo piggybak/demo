@@ -16,7 +16,9 @@ class Ability
                     ::Piggybak::Country]
 
       # can't delete orders
-      can [:email, :download, :read, :create, :update, :history, :export], ::Piggybak::Order
+      can [:email, :download, :cancel, :read, :create, :update, :history, :export], ::Piggybak::Order
+
+      can :refund, ::Piggybak::Payment
     end
   end
 end

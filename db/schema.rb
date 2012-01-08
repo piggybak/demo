@@ -11,19 +11,21 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120106034634) do
+ActiveRecord::Schema.define(:version => 20120107140039) do
 
   create_table "addresses", :force => true do |t|
-    t.string   "firstname",  :null => false
-    t.string   "lastname",   :null => false
-    t.string   "address1",   :null => false
+    t.string   "firstname",                          :null => false
+    t.string   "lastname",                           :null => false
+    t.string   "address1",                           :null => false
     t.string   "address2"
-    t.string   "city",       :null => false
-    t.string   "state_id",   :null => false
-    t.string   "zip",        :null => false
+    t.string   "city",                               :null => false
+    t.string   "state_id",                           :null => false
+    t.string   "zip",                                :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "country_id"
+    t.boolean  "active_shipping", :default => false
+    t.boolean  "active_billing",  :default => false
   end
 
   create_table "categories", :force => true do |t|

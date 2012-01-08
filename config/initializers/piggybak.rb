@@ -5,4 +5,8 @@ Piggybak.config do |config|
   config.shipping_calculators << "Pickup" #= config.shipping_calculators + "Pickup"
 
   #config.tax_calculators = ["..."]
+
+  config.default_country = "CA"
+
+  config.activemerchant_mode = :test
 end

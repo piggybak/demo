@@ -23,9 +23,8 @@ GIT
       devise
       rails_admin
 
-GIT
-  remote: git://github.com/stephskardal/piggybak.git
-  revision: 85ae52bacbc6849aa32f76a428348a1fb459678b
+PATH
+  remote: ../piggybak
   specs:
     piggybak (0.2.1)
       activemerchant
@@ -168,7 +167,7 @@ GEM
       rdoc (~> 3.4)
       thor (~> 0.14.6)
     rake (0.9.2.2)
-    rake-compiler (0.7.9)
+    rake-compiler (0.8.0)
       rake
     rdoc (3.12)
       json (~> 1.4)
