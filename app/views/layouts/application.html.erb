@@ -32,7 +32,6 @@
 				</div><!--#logo-->
 				<div id="nav" class="eight columns">
 					<ul id="topnav" class="sf-menu">
-						<li><a href="/">Piggybak Home</a></li>
 						<li><a href="/demo/">Shop</a>
 							<ul>
 								<% Category.all.each do |category| %>
@@ -60,6 +59,7 @@
 							<%= link_to 'LOG IN', new_user_session_path %>
 						</li>
 						<% end -%>
+						<li><a href="/">Piggybak Home</a></li>
 					</ul><!-- #topnav -->
 				</div><!--#nav-->
 				<div class="clearfix"></div>
