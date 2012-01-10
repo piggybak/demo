@@ -1696,8 +1696,8 @@ COPY orders (id, billing_address_id, shipping_address_id, user_id, email, phone,
 --
 
 COPY pages (id, title, slug, content, created_at, updated_at) FROM stdin;
-2	Terms	terms	<p>\r\n\tThe photos used on this site are Copyright Steph Skardal.</p>\r\n<p>\r\n\tThe design used on this site was purchased from ThemeForest.net. You may not reuse the design unless you purchase it for personal use.</p>\r\n	2012-01-04 00:01:29.190115	2012-01-04 00:01:29.190115
-1	About	about	<p>\r\n\tThis is a demo ecommerce application that runs on Ruby on Rails with PostgreSQL and on a Linux OS.</p>\r\n<h2>\r\n\tDependencies</h2>\r\n<p>\r\n\tThis demo is built using <a href="https://github.com/stephskardal/piggybak">Piggybak</a>, a Ruby on Rails engine. This engine leverages:</p>\r\n<ul>\r\n\t<li>\r\n\t\t<a href="http://rubyonrails.org/">Ruby on Rails 3.1</a>, which includes Engine and asset (CSS, JS, image) management</li>\r\n\t<li>\r\n\t\t<a href="https://github.com/sferik/rails_admin">RailsAdmin</a>, an admin interface gem</li>\r\n\t<li>\r\n\t\t<a href="https://github.com/plataformatec/devise">Devise</a>, a user authentication gem</li>\r\n\t<li>\r\n\t\t<a href="https://github.com/ryanb/cancan">CanCan</a>, a user authorization gem</li>\r\n</ul>\r\n<h2>\r\n\tFeatures</h2>\r\n<p>\r\n\tThe Piggybak gem includes the following features:</p>\r\n<ul>\r\n\t<li>\r\n\t\tBasic data architecture for ecommerce functionality</li>\r\n\t<li>\r\n\t\tConfigurable payment methods, shipping methods, and tax methods</li>\r\n\t<li>\r\n\t\tOne page checkout, with AJAX for shipping and tax lookup</li>\r\n\t<li>\r\n\t\tAn admin interface for managing orders, variants (sellable items), payment methods, shipping methods, tax methods, countries, and states, which is based on the RailsAdmin interface.</li>\r\n</ul>\r\n	2012-01-03 23:59:47.608532	2012-01-05 02:49:38.925032
+2	Terms	terms	<p>\r\n\tThis is a generic Terms and Conditions page in the Piggbak demo. It&#39;s content is driven by a WYSIWIG editor in the Admin.</p>\r\n<h3>\r\n\tAll Rights Reserved</h3>\r\n<p>\r\n\tThe photos shown in this demo are &copy; Steph Skardal. All Rights Reserved.</p>\r\n<h3>\r\n\tTemplate</h3>\r\n<p>\r\n\tThe template shown in this demo was purchased from <a href="http://themeforest.net/item/sevenwonders-clean-responsive-html-template/1157155">ThemeForest</a>, under the <a href="http://themeforest.net/wiki/support/legal-terms/licensing-terms/">Regular License</a>. It can not be ported to additional sites without purchase of the theme.</p>\r\n	2012-01-04 00:01:29.190115	2012-01-10 21:24:22.633361
+1	About	about	<p>\r\n\tThis is a generic about page in the Piggybak demo. It is driven by a WYSIWIG editor in the Admin.</p>\r\n\r\n<h3>About Piggybak</h3>\r\n\r\n<p>Piggybak is a Ruby on Rails 3 gem that offers mountable ecommerce functionality. Visit the main site <a href="/">here</a>.</p>	2012-01-03 23:59:47.608532	2012-01-10 21:25:37.762214
 \.
 
 
@@ -6146,7 +6146,7 @@ COPY tax_methods (id, description, klass, active) FROM stdin;
 --
 
 COPY users (id, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, display_name, created_at, updated_at) FROM stdin;
-10	test@endpoint.com	$2a$10$eq.pXquV5s1nQcQNnEpM6.rdsK5x8H7gAHbaTHBe/YhzxjMLQbd96	\N	\N	\N	38	2012-01-10 16:19:54.590404	2012-01-10 16:07:38.298993	174.111.11.143	174.111.11.143	Testy Tester	2012-01-03 20:26:41.571741	2012-01-10 16:19:54.591347
+10	test@endpoint.com	$2a$10$eq.pXquV5s1nQcQNnEpM6.rdsK5x8H7gAHbaTHBe/YhzxjMLQbd96	\N	\N	\N	39	2012-01-10 21:17:14.613089	2012-01-10 16:19:54.590404	174.111.11.143	174.111.11.143	Testy Tester	2012-01-03 20:26:41.571741	2012-01-10 21:17:14.614052
 \.
 
 
