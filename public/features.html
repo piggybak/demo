@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<link rel="shortcut icon" href="images/content/favicon.ico" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" /> 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
+<meta name="robots" content="index, follow" />
+<meta name="keywords" content="" />
+<meta name="title" content="Piggybak: A Mountable Ruby on Rails Ecommerce Solution" />
+<meta name="description" content="" />
+<title>Piggybak: A Mountable Ruby on Rails Ecommerce Solution</title>
+<link rel="shortcut icon" href="images/favicon.ico" />
+
+<!--CSS-->
+<link rel="stylesheet" type="text/css" href="styles/skeleton_12.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="styles/style.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="styles/nivo-slider.css"/>
+<link rel="stylesheet" type="text/css" href="styles/response.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="styles/light.css" media="screen" />
+
+<!--Javascript-->
+<script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
+<script type="text/javascript" src="js/hoverIntent.js"></script> 
+<script type="text/javascript" src="js/jquery.easing.1.3.js"></script> 
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	//jQuery tab
+	jQuery(".tab-content,.tab2-content").hide(); //Hide all content
+	jQuery("ul.tabs li:first, ul.tabs2 li:first").addClass("active").show(); //Activate first tab
+	jQuery(".tab-content:first,.tab2-content:first").show(); //Show first tab content
+	//On Click Event
+	jQuery("ul.tabs li").click(function() {
+		jQuery("ul.tabs li").removeClass("active"); //Remove any "active" class
+		jQuery(this).addClass("active"); //Add "active" class to selected tab
+		jQuery(".tab-content").hide(); //Hide all tab content
+		var activeTab = jQuery(this).find("a").attr("href"); //Find the rel attribute value to identify the active tab + content
+		jQuery(activeTab).fadeIn(200); //Fade in the active content
+		return false;
+	});
+	jQuery("ul.tabs2 li").click(function() {
+		jQuery("ul.tabs2 li").removeClass("active"); //Remove any "active" class
+		jQuery(this).addClass("active"); //Add "active" class to selected tab
+		jQuery(".tab2-content").hide(); //Hide all tab content
+		var activeTab = jQuery(this).find("a").attr("href"); //Find the rel attribute value to identify the active tab + content
+		jQuery(activeTab).fadeIn(200); //Fade in the active content
+		return false;
+	});
+	
+});
+</script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-525312-15']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+<body>
+<div id="wrapper">
+
+	<div id="wrapper-top">
+		<div class="container">
+			<div id="top">
+				<div id="logo" class="four columns">
+					<a href="index.html"><img height="60" src="images/piggybak.png" alt="Piggybak" /></a>
+				</div><!--#logo-->
+				<div id="nav" class="eight columns">
+					<ul id="topnav" class="sf-menu">
+						<li><a href="index.html">Home</a></li>
+						<li class="current"><a href="features.html">Features</a></li>
+						<li><a href="documentation.html">Documentation</a></li>
+					</ul><!-- #topnav -->
+				</div><!--#nav-->
+				<div class="clearfix"></div>
+			</div><!--#top-->
+		</div><!--container-->
+	</div><!--#wrapper-top-->
+	
+	<div id="wrapper-beforeheader">
+		<div class="container">
+			<div id="sn" class="six columns">
+			</div><!--#sn-->
+			<div id="toptext" class="six columns">
+				<span><a href="index.html">Home</a> &raquo; Features</span>
+			</div><!--#toptext-->
+			<div class="clearfix"></div>
+		</div><!--container-->
+	</div><!--#wrapper-beforeheader-->
+	
+	<div id="wrapper-header">
+		<div class="container">
+			<div id="header" class="twelve columns">
+				<div id="header-text">
+					<h1>Piggybak: A Mountable Ruby on Rails Ecommerce Solution</h1>
+					<p><a href="https://github.com/stephskardal/piggybak">Piggybak</a> is a Ruby on Rails 3 Engine with basic shopping cart and one page checkout functionality. It uses <a href="https://github.com/sferik/rails_admin">Rails Admin</a> to provide an admin interface to work with orders, products, shipping methods, payment methods, and tax methods. It is not an ecommerce turn-key solution, but is intended to be mounted on existing Rails applications.</p>
+				</div><!-- #header-text -->
+			</div><!--#header-->
+		</div><!--container-->
+	</div><!--#wrapper-header-->
+	
+	
+	<div id="wrapper-content">
+		<div class="container">
+			<div id="content" class="twelve columns">
+				<div class="title">
+					<h1><span class="f-left"></span><span class="titletext">Features</span><span class="f-right"></span></h1>
+				</div>
+				<div id="maincontent" class="twelve columns alpha">
+					<div class="tabcontainer">
+						<ul class="tabs">
+							<li><a href="#tab0">Shopping Cart</a></li>
+							<li><a href="#tab1">One Page Checkout</a></li>
+							<li><a href="#tab2">Mountability</a></li>
+							<li><a href="#tab3">Admin Interface</a></li>
+							<li><a href="#tab4">Configurability</a></li>
+							<li><a href="#tab5">Appearance Overrides</a></li>
+						</ul>
+						<div id="tab-body">
+							<div id="tab0" class="tab-content">
+								<p>The Piggybak gem provides basic shopping cart functionality for adding, removing, and updating items.</p>
+								<img src="images/cart.png" width="900" alt="Shopping Cart" />
+							</div>
+							<div id="tab1" class="tab-content">
+								<p>This gem includes one page checkout. One page checkout uses AJAX to retrieve and update shipping options and calculate tax. One page checkout also allows users to check out as registered users or as guests.</p>
+								<img src="images/checkout.png" width="900" alt="One Page Checkout" />
+							</div>
+							<div id="tab2" class="tab-content">
+								<p>The Piggybak gem is designed as a mountable solution. It is intended to be included in an existing Ruby on Rails 3 application, which translates to more freedom in application business logic. Piggybak covers the shopping cart, checkout, receipt, and order listings views, and comes with a sleek admin interface.</p>
+							</div>
+							<div id="tab3" class="tab-content">
+								<p>Piggybak is built leveraging <a href="https://github.com/sferik/rails_admin">RailsAdmin</a>, a tool for building sleek admin interfaces for Ruby on Rails applications. RailsAdmin combined with an MVC framework provides a user-friendly experience for managing products and orders. Payment, tax, and shipping methods are also managed via the admin interface.</p>
+								<img src="images/admin_dashboard.png" width="900" alt="Admin Dashboard" />
+							</div>
+							<div id="tab4" class="tab-content">
+								<p>End Point's years of ecommerce experience shows us that absolutely no application has the same business rules driving shipping, payment, and tax calculators. For this reason, Piggybak was built to allow for configurable and extensible calculators to process payments, and calculate shipping and tax costs.</p>
+								<img src="images/shipping_method.png" width="900" alt="Shipping Method" />
+							</div>
+							<div id="tab5" class="tab-content">
+								<p>The primary Rails application can override any views from Piggybak to provide custom display of the shopping cart, checkout, receipt, order history, or various helpers that display the cart link and cart form.</p>
+								<img src="images/product.png" width="900" alt="Product Page" />
+							</div>
+						</div>
+					</div>
+				</div><!--#maincontent-->
+				<div class="clearfix"></div>
+				<br /><br />
+				<div class="title">
+					<h1><span class="f-left"></span><span class="titletext">Anti-Features</span><span class="f-right"></span></h1>
+				</div>
+				<p>As a mountable ecommerce solution, this gem chooses to not make several decisions that the primary (parent) Rails application will make. This gives complete control to business owners to build a web application off of the strong base of Ruby on Rails to meet custom business needs perfectly.</p>
+				<div id="maincontent2" class="twelve columns alpha">
+					<div class="tabcontainer">
+						<ul class="tabs2">
+							<li><a href="#anti0">Product Navigation</a></li>
+							<li><a href="#anti1">No SSL Decisions</a></li>
+							<li><a href="#anti2">No Authorization Decisions</a></li>
+							<li><a href="#anti3">Coupons and Gift Certificates</a></li>
+						</ul>
+						<div id="tab2-body">
+							<div id="anti0" class="tab2-content">
+								<p>Traditional ecommerce product finding methods include product navigation and product search. In both product navigation and product search, the underlying business logic can vary significantly across ecommerce applications. As a gem, Piggybak allows for the parent Rails application to control navigation to sellable items. A method for adding an "Add to Cart" from on any page is included in the gem.</p>
+								<p>In some cases, a significant amount of time must be spent customizing search integration. In other cases, a web application may want to display multiple add to cart forms on one page. Piggybak supports both of these options and more.</p>
+							</div>
+							<div id="anti1" class="tab2-content">
+								<p>SSL configuration can vary across web applications. In some cases, SSL is forced throughout the website. In other cases, SSL is required during the checkout process only. The Piggybak gem delegates the choice to the parent application.</p>
+							</div>
+							<div id="anti2" class="tab2-content">
+								<p>Authorization can be a tricky thing. Which admin users should be allowed to read orders? Which admin users should be allowed to edit orders? Which users should be allowed to send email confirmations for users? Integrated with <a href="https://github.com/ryanb/cancan">CanCan</a>, Piggybak gives full control to the parent application for determining the rights associated with orders, products, payment methods, shipping methods, tax methods, countries and states. This opens the door for building out a custom role management and authorization system to suit the needs of the business owners.</p>
+							</div>
+							<div id="anti3" class="tab2-content">
+								<p>While the Piggybak gems allows for the capability to add credits to orders, coupon and gift certificate business logic varies across ecommerce applications significantly. The Piggybak gem doesn't add bloat to the application by trying to solve every problem for coupon and gift certificate integration, but does open the door to be included as a custom business need.</p>
+							</div>
+						</div>
+					</div>
+				</div><!--#maincontent-->
+				<div class="clearfix"></div>
+			</div><!--#content-->
+		</div><!--container-->
+	</div><!--#wrapper-content-->
+	
+	<div id="wrapper-beforefooter">
+		<div class="container">
+			<div id="slogantext" class="twelve columns">
+				<a href="http://www.endpoint.com/"><img src="./images/end_point.png" alt="End Point" /></a><br />
+				Piggybak is sponsored and developed <a href="http://www.endpoint.com/">End Point</a>. End Point has over 15 years of ecommerce experience.
+			</div><!--#slogantext-->
+		</div><!--container-->
+	</div><!--#wrapper-beforefooter-->
+	
+	<div id="wrapper-footer">
+		<div class="container">
+		<div id="footer" class="twelve columns">
+			<span id="copyright">Copyright &copy;2012 Piggybak.  All Rights Reserved.</span>
+			<ul id="footnav">
+				<li><a href="index.html" >Home</a></li>
+				<li class="current"><a href="features.html">Features</a></li>
+				<li><a href="documentation.html">Documentation</a></li>
+			</ul><!-- #footnav -->
+		</div><!--#footer-->
+		</div><!--container-->
+	</div><!--#wrapper-footer-->
+	
+	
+</div><!--#wrapper-->
+
+</body>
+</html>

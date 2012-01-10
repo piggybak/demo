@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -18,14 +17,12 @@ ActiveRecord::Schema.define(:version => 20120107140039) do
     t.string   "lastname",                           :null => false
     t.string   "address1",                           :null => false
     t.string   "address2"
-    t.string   "city",                               :null => false
-    t.string   "state_id",                           :null => false
-    t.string   "zip",                                :null => false
+    t.string   "city",       :null => false
+    t.integer  "state_id",   :null => false
+    t.integer  "country_id", :null => false
+    t.string   "zip",        :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "country_id"
-    t.boolean  "active_shipping", :default => false
-    t.boolean  "active_billing",  :default => false
   end
 
   create_table "categories", :force => true do |t|
@@ -68,9 +65,9 @@ ActiveRecord::Schema.define(:version => 20120107140039) do
     t.string   "main_content_type"
     t.string   "main_file_size"
     t.datetime "main_updated_at"
+    t.boolean  "is_featured",          :default => false, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_featured",          :default => false, :null => false
   end
 
   create_table "line_items", :force => true do |t|
@@ -125,9 +122,9 @@ ActiveRecord::Schema.define(:version => 20120107140039) do
     t.integer  "month"
     t.integer  "year"
     t.string   "verification_value"
+    t.string   "transaction_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "transaction_id"
   end
 
   create_table "posts", :force => true do |t|
@@ -183,8 +180,8 @@ ActiveRecord::Schema.define(:version => 20120107140039) do
   end
 
   create_table "states", :force => true do |t|
-    t.string  "abbr"
     t.string  "name"
+    t.string  "abbr"
     t.integer "country_id"
   end
 
