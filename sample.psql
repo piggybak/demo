@@ -2,6 +2,7 @@
 -- PostgreSQL database dump
 --
 
+SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = off;
 SET check_function_bodies = false;
@@ -15,7 +16,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: addresses; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+-- Name: addresses; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE addresses (
@@ -33,37 +34,38 @@ CREATE TABLE addresses (
 );
 
 
-ALTER TABLE public.addresses OWNER TO zone;
+ALTER TABLE public.addresses OWNER TO piggybak;
 
 --
--- Name: addresses_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+-- Name: addresses_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
 CREATE SEQUENCE addresses_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE public.addresses_id_seq OWNER TO zone;
+ALTER TABLE public.addresses_id_seq OWNER TO piggybak;
 
 --
--- Name: addresses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+-- Name: addresses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
 ALTER SEQUENCE addresses_id_seq OWNED BY addresses.id;
 
 
 --
--- Name: addresses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+-- Name: addresses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-SELECT pg_catalog.setval('addresses_id_seq', 40, true);
+SELECT pg_catalog.setval('addresses_id_seq', 44, true);
 
 
 --
--- Name: categories; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+-- Name: categories; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE categories (
@@ -76,37 +78,38 @@ CREATE TABLE categories (
 );
 
 
-ALTER TABLE public.categories OWNER TO zone;
+ALTER TABLE public.categories OWNER TO piggybak;
 
 --
--- Name: categories_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+-- Name: categories_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
 CREATE SEQUENCE categories_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE public.categories_id_seq OWNER TO zone;
+ALTER TABLE public.categories_id_seq OWNER TO piggybak;
 
 --
--- Name: categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+-- Name: categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
 ALTER SEQUENCE categories_id_seq OWNED BY categories.id;
 
 
 --
--- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+-- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
 SELECT pg_catalog.setval('categories_id_seq', 3, true);
 
 
 --
--- Name: categories_images; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+-- Name: categories_images; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE categories_images (
@@ -115,50 +118,53 @@ CREATE TABLE categories_images (
 );
 
 
-ALTER TABLE public.categories_images OWNER TO zone;
+ALTER TABLE public.categories_images OWNER TO piggybak;
 
 --
--- Name: countries; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+-- Name: countries; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE countries (
     id integer NOT NULL,
     name character varying(255),
-    abbr character varying(255)
+    abbr character varying(255),
+    active_shipping boolean DEFAULT false,
+    active_billing boolean DEFAULT false
 );
 
 
-ALTER TABLE public.countries OWNER TO zone;
+ALTER TABLE public.countries OWNER TO piggybak;
 
 --
--- Name: countries_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+-- Name: countries_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
 CREATE SEQUENCE countries_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE public.countries_id_seq OWNER TO zone;
+ALTER TABLE public.countries_id_seq OWNER TO piggybak;
 
 --
--- Name: countries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+-- Name: countries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
 ALTER SEQUENCE countries_id_seq OWNED BY countries.id;
 
 
 --
--- Name: countries_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+-- Name: countries_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
 SELECT pg_catalog.setval('countries_id_seq', 421, true);
 
 
 --
--- Name: credits; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+-- Name: credits; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE credits (
@@ -172,37 +178,38 @@ CREATE TABLE credits (
 );
 
 
-ALTER TABLE public.credits OWNER TO zone;
+ALTER TABLE public.credits OWNER TO piggybak;
 
 --
--- Name: credits_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+-- Name: credits_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
 CREATE SEQUENCE credits_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE public.credits_id_seq OWNER TO zone;
+ALTER TABLE public.credits_id_seq OWNER TO piggybak;
 
 --
--- Name: credits_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+-- Name: credits_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
 ALTER SEQUENCE credits_id_seq OWNED BY credits.id;
 
 
 --
--- Name: credits_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+-- Name: credits_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
 SELECT pg_catalog.setval('credits_id_seq', 2, true);
 
 
 --
--- Name: images; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+-- Name: images; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE images (
@@ -225,37 +232,38 @@ CREATE TABLE images (
 );
 
 
-ALTER TABLE public.images OWNER TO zone;
+ALTER TABLE public.images OWNER TO piggybak;
 
 --
--- Name: images_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+-- Name: images_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
 CREATE SEQUENCE images_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE public.images_id_seq OWNER TO zone;
+ALTER TABLE public.images_id_seq OWNER TO piggybak;
 
 --
--- Name: images_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+-- Name: images_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
 ALTER SEQUENCE images_id_seq OWNED BY images.id;
 
 
 --
--- Name: images_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+-- Name: images_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
 SELECT pg_catalog.setval('images_id_seq', 45, true);
 
 
 --
--- Name: line_items; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+-- Name: line_items; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE line_items (
@@ -267,37 +275,38 @@ CREATE TABLE line_items (
 );
 
 
-ALTER TABLE public.line_items OWNER TO zone;
+ALTER TABLE public.line_items OWNER TO piggybak;
 
 --
--- Name: line_items_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+-- Name: line_items_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
 CREATE SEQUENCE line_items_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE public.line_items_id_seq OWNER TO zone;
+ALTER TABLE public.line_items_id_seq OWNER TO piggybak;
 
 --
--- Name: line_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+-- Name: line_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
 ALTER SEQUENCE line_items_id_seq OWNED BY line_items.id;
 
 
 --
--- Name: line_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+-- Name: line_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-SELECT pg_catalog.setval('line_items_id_seq', 18, true);
+SELECT pg_catalog.setval('line_items_id_seq', 20, true);
 
 
 --
--- Name: orders; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+-- Name: orders; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE orders (
@@ -316,37 +325,38 @@ CREATE TABLE orders (
 );
 
 
-ALTER TABLE public.orders OWNER TO zone;
+ALTER TABLE public.orders OWNER TO piggybak;
 
 --
--- Name: orders_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+-- Name: orders_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
 CREATE SEQUENCE orders_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE public.orders_id_seq OWNER TO zone;
+ALTER TABLE public.orders_id_seq OWNER TO piggybak;
 
 --
--- Name: orders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+-- Name: orders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
 ALTER SEQUENCE orders_id_seq OWNED BY orders.id;
 
 
 --
--- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+-- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-SELECT pg_catalog.setval('orders_id_seq', 15, true);
+SELECT pg_catalog.setval('orders_id_seq', 17, true);
 
 
 --
--- Name: pages; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+-- Name: pages; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE pages (
@@ -359,37 +369,38 @@ CREATE TABLE pages (
 );
 
 
-ALTER TABLE public.pages OWNER TO zone;
+ALTER TABLE public.pages OWNER TO piggybak;
 
 --
--- Name: pages_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+-- Name: pages_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
 CREATE SEQUENCE pages_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE public.pages_id_seq OWNER TO zone;
+ALTER TABLE public.pages_id_seq OWNER TO piggybak;
 
 --
--- Name: pages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+-- Name: pages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
 ALTER SEQUENCE pages_id_seq OWNED BY pages.id;
 
 
 --
--- Name: pages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+-- Name: pages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
 SELECT pg_catalog.setval('pages_id_seq', 2, true);
 
 
 --
--- Name: payment_method_values; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+-- Name: payment_method_values; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE payment_method_values (
@@ -400,37 +411,38 @@ CREATE TABLE payment_method_values (
 );
 
 
-ALTER TABLE public.payment_method_values OWNER TO zone;
+ALTER TABLE public.payment_method_values OWNER TO piggybak;
 
 --
--- Name: payment_method_values_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+-- Name: payment_method_values_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
 CREATE SEQUENCE payment_method_values_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE public.payment_method_values_id_seq OWNER TO zone;
+ALTER TABLE public.payment_method_values_id_seq OWNER TO piggybak;
 
 --
--- Name: payment_method_values_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+-- Name: payment_method_values_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
 ALTER SEQUENCE payment_method_values_id_seq OWNED BY payment_method_values.id;
 
 
 --
--- Name: payment_method_values_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+-- Name: payment_method_values_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
 SELECT pg_catalog.setval('payment_method_values_id_seq', 2, true);
 
 
 --
--- Name: payment_methods; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+-- Name: payment_methods; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE payment_methods (
@@ -443,37 +455,38 @@ CREATE TABLE payment_methods (
 );
 
 
-ALTER TABLE public.payment_methods OWNER TO zone;
+ALTER TABLE public.payment_methods OWNER TO piggybak;
 
 --
--- Name: payment_methods_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+-- Name: payment_methods_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
 CREATE SEQUENCE payment_methods_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE public.payment_methods_id_seq OWNER TO zone;
+ALTER TABLE public.payment_methods_id_seq OWNER TO piggybak;
 
 --
--- Name: payment_methods_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+-- Name: payment_methods_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
 ALTER SEQUENCE payment_methods_id_seq OWNED BY payment_methods.id;
 
 
 --
--- Name: payment_methods_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+-- Name: payment_methods_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
 SELECT pg_catalog.setval('payment_methods_id_seq', 2, true);
 
 
 --
--- Name: payments; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+-- Name: payments; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE payments (
@@ -492,37 +505,38 @@ CREATE TABLE payments (
 );
 
 
-ALTER TABLE public.payments OWNER TO zone;
+ALTER TABLE public.payments OWNER TO piggybak;
 
 --
--- Name: payments_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+-- Name: payments_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
 CREATE SEQUENCE payments_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE public.payments_id_seq OWNER TO zone;
+ALTER TABLE public.payments_id_seq OWNER TO piggybak;
 
 --
--- Name: payments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+-- Name: payments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
 ALTER SEQUENCE payments_id_seq OWNED BY payments.id;
 
 
 --
--- Name: payments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+-- Name: payments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-SELECT pg_catalog.setval('payments_id_seq', 14, true);
+SELECT pg_catalog.setval('payments_id_seq', 16, true);
 
 
 --
--- Name: posts; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+-- Name: posts; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE posts (
@@ -536,37 +550,38 @@ CREATE TABLE posts (
 );
 
 
-ALTER TABLE public.posts OWNER TO zone;
+ALTER TABLE public.posts OWNER TO piggybak;
 
 --
--- Name: posts_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+-- Name: posts_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
 CREATE SEQUENCE posts_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE public.posts_id_seq OWNER TO zone;
+ALTER TABLE public.posts_id_seq OWNER TO piggybak;
 
 --
--- Name: posts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+-- Name: posts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
 ALTER SEQUENCE posts_id_seq OWNED BY posts.id;
 
 
 --
--- Name: posts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+-- Name: posts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
 SELECT pg_catalog.setval('posts_id_seq', 4, true);
 
 
 --
--- Name: variants; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+-- Name: variants; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE variants (
@@ -582,37 +597,38 @@ CREATE TABLE variants (
 );
 
 
-ALTER TABLE public.variants OWNER TO zone;
+ALTER TABLE public.variants OWNER TO piggybak;
 
 --
--- Name: products_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+-- Name: products_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
 CREATE SEQUENCE products_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE public.products_id_seq OWNER TO zone;
+ALTER TABLE public.products_id_seq OWNER TO piggybak;
 
 --
--- Name: products_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+-- Name: products_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
 ALTER SEQUENCE products_id_seq OWNED BY variants.id;
 
 
 --
--- Name: products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+-- Name: products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
 SELECT pg_catalog.setval('products_id_seq', 44, true);
 
 
 --
--- Name: rails_admin_histories; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+-- Name: rails_admin_histories; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE rails_admin_histories (
@@ -628,37 +644,38 @@ CREATE TABLE rails_admin_histories (
 );
 
 
-ALTER TABLE public.rails_admin_histories OWNER TO zone;
+ALTER TABLE public.rails_admin_histories OWNER TO piggybak;
 
 --
--- Name: rails_admin_histories_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+-- Name: rails_admin_histories_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
 CREATE SEQUENCE rails_admin_histories_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE public.rails_admin_histories_id_seq OWNER TO zone;
+ALTER TABLE public.rails_admin_histories_id_seq OWNER TO piggybak;
 
 --
--- Name: rails_admin_histories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+-- Name: rails_admin_histories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
 ALTER SEQUENCE rails_admin_histories_id_seq OWNED BY rails_admin_histories.id;
 
 
 --
--- Name: rails_admin_histories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+-- Name: rails_admin_histories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
 SELECT pg_catalog.setval('rails_admin_histories_id_seq', 179, true);
 
 
 --
--- Name: roles; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+-- Name: roles; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE roles (
@@ -667,37 +684,38 @@ CREATE TABLE roles (
 );
 
 
-ALTER TABLE public.roles OWNER TO zone;
+ALTER TABLE public.roles OWNER TO piggybak;
 
 --
--- Name: roles_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+-- Name: roles_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
 CREATE SEQUENCE roles_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE public.roles_id_seq OWNER TO zone;
+ALTER TABLE public.roles_id_seq OWNER TO piggybak;
 
 --
--- Name: roles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+-- Name: roles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
 ALTER SEQUENCE roles_id_seq OWNED BY roles.id;
 
 
 --
--- Name: roles_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+-- Name: roles_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
 SELECT pg_catalog.setval('roles_id_seq', 10, true);
 
 
 --
--- Name: roles_users; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+-- Name: roles_users; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE roles_users (
@@ -706,10 +724,10 @@ CREATE TABLE roles_users (
 );
 
 
-ALTER TABLE public.roles_users OWNER TO zone;
+ALTER TABLE public.roles_users OWNER TO piggybak;
 
 --
--- Name: schema_migrations; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE schema_migrations (
@@ -717,10 +735,10 @@ CREATE TABLE schema_migrations (
 );
 
 
-ALTER TABLE public.schema_migrations OWNER TO zone;
+ALTER TABLE public.schema_migrations OWNER TO piggybak;
 
 --
--- Name: shipments; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+-- Name: shipments; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE shipments (
@@ -734,37 +752,38 @@ CREATE TABLE shipments (
 );
 
 
-ALTER TABLE public.shipments OWNER TO zone;
+ALTER TABLE public.shipments OWNER TO piggybak;
 
 --
--- Name: shipments_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+-- Name: shipments_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
 CREATE SEQUENCE shipments_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE public.shipments_id_seq OWNER TO zone;
+ALTER TABLE public.shipments_id_seq OWNER TO piggybak;
 
 --
--- Name: shipments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+-- Name: shipments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
 ALTER SEQUENCE shipments_id_seq OWNED BY shipments.id;
 
 
 --
--- Name: shipments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+-- Name: shipments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-SELECT pg_catalog.setval('shipments_id_seq', 14, true);
+SELECT pg_catalog.setval('shipments_id_seq', 16, true);
 
 
 --
--- Name: shipping_method_values; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+-- Name: shipping_method_values; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE shipping_method_values (
@@ -775,37 +794,38 @@ CREATE TABLE shipping_method_values (
 );
 
 
-ALTER TABLE public.shipping_method_values OWNER TO zone;
+ALTER TABLE public.shipping_method_values OWNER TO piggybak;
 
 --
--- Name: shipping_method_values_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+-- Name: shipping_method_values_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
 CREATE SEQUENCE shipping_method_values_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE public.shipping_method_values_id_seq OWNER TO zone;
+ALTER TABLE public.shipping_method_values_id_seq OWNER TO piggybak;
 
 --
--- Name: shipping_method_values_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+-- Name: shipping_method_values_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
 ALTER SEQUENCE shipping_method_values_id_seq OWNED BY shipping_method_values.id;
 
 
 --
--- Name: shipping_method_values_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+-- Name: shipping_method_values_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
 SELECT pg_catalog.setval('shipping_method_values_id_seq', 7, true);
 
 
 --
--- Name: shipping_methods; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+-- Name: shipping_methods; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE shipping_methods (
@@ -816,37 +836,38 @@ CREATE TABLE shipping_methods (
 );
 
 
-ALTER TABLE public.shipping_methods OWNER TO zone;
+ALTER TABLE public.shipping_methods OWNER TO piggybak;
 
 --
--- Name: shipping_methods_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+-- Name: shipping_methods_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
 CREATE SEQUENCE shipping_methods_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE public.shipping_methods_id_seq OWNER TO zone;
+ALTER TABLE public.shipping_methods_id_seq OWNER TO piggybak;
 
 --
--- Name: shipping_methods_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+-- Name: shipping_methods_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
 ALTER SEQUENCE shipping_methods_id_seq OWNED BY shipping_methods.id;
 
 
 --
--- Name: shipping_methods_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+-- Name: shipping_methods_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
 SELECT pg_catalog.setval('shipping_methods_id_seq', 6, true);
 
 
 --
--- Name: states; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+-- Name: states; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE states (
@@ -857,37 +878,38 @@ CREATE TABLE states (
 );
 
 
-ALTER TABLE public.states OWNER TO zone;
+ALTER TABLE public.states OWNER TO piggybak;
 
 --
--- Name: states_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+-- Name: states_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
 CREATE SEQUENCE states_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE public.states_id_seq OWNER TO zone;
+ALTER TABLE public.states_id_seq OWNER TO piggybak;
 
 --
--- Name: states_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+-- Name: states_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
 ALTER SEQUENCE states_id_seq OWNED BY states.id;
 
 
 --
--- Name: states_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+-- Name: states_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
 SELECT pg_catalog.setval('states_id_seq', 7125, true);
 
 
 --
--- Name: taggings; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+-- Name: taggings; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE taggings (
@@ -902,10 +924,10 @@ CREATE TABLE taggings (
 );
 
 
-ALTER TABLE public.taggings OWNER TO zone;
+ALTER TABLE public.taggings OWNER TO piggybak;
 
 --
--- Name: taggings_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+-- Name: taggings_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
 CREATE SEQUENCE taggings_id_seq
@@ -916,24 +938,24 @@ CREATE SEQUENCE taggings_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.taggings_id_seq OWNER TO zone;
+ALTER TABLE public.taggings_id_seq OWNER TO piggybak;
 
 --
--- Name: taggings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+-- Name: taggings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
 ALTER SEQUENCE taggings_id_seq OWNED BY taggings.id;
 
 
 --
--- Name: taggings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+-- Name: taggings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
 SELECT pg_catalog.setval('taggings_id_seq', 1, false);
 
 
 --
--- Name: tags; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+-- Name: tags; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE tags (
@@ -942,10 +964,10 @@ CREATE TABLE tags (
 );
 
 
-ALTER TABLE public.tags OWNER TO zone;
+ALTER TABLE public.tags OWNER TO piggybak;
 
 --
--- Name: tags_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+-- Name: tags_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
 CREATE SEQUENCE tags_id_seq
@@ -956,24 +978,24 @@ CREATE SEQUENCE tags_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.tags_id_seq OWNER TO zone;
+ALTER TABLE public.tags_id_seq OWNER TO piggybak;
 
 --
--- Name: tags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+-- Name: tags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
 ALTER SEQUENCE tags_id_seq OWNED BY tags.id;
 
 
 --
--- Name: tags_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+-- Name: tags_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
 SELECT pg_catalog.setval('tags_id_seq', 1, false);
 
 
 --
--- Name: tax_method_values; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+-- Name: tax_method_values; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE tax_method_values (
@@ -984,37 +1006,38 @@ CREATE TABLE tax_method_values (
 );
 
 
-ALTER TABLE public.tax_method_values OWNER TO zone;
+ALTER TABLE public.tax_method_values OWNER TO piggybak;
 
 --
--- Name: tax_method_values_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+-- Name: tax_method_values_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
 CREATE SEQUENCE tax_method_values_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE public.tax_method_values_id_seq OWNER TO zone;
+ALTER TABLE public.tax_method_values_id_seq OWNER TO piggybak;
 
 --
--- Name: tax_method_values_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+-- Name: tax_method_values_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
 ALTER SEQUENCE tax_method_values_id_seq OWNED BY tax_method_values.id;
 
 
 --
--- Name: tax_method_values_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+-- Name: tax_method_values_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
 SELECT pg_catalog.setval('tax_method_values_id_seq', 2, true);
 
 
 --
--- Name: tax_methods; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+-- Name: tax_methods; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE tax_methods (
@@ -1025,37 +1048,38 @@ CREATE TABLE tax_methods (
 );
 
 
-ALTER TABLE public.tax_methods OWNER TO zone;
+ALTER TABLE public.tax_methods OWNER TO piggybak;
 
 --
--- Name: tax_methods_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+-- Name: tax_methods_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
 CREATE SEQUENCE tax_methods_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE public.tax_methods_id_seq OWNER TO zone;
+ALTER TABLE public.tax_methods_id_seq OWNER TO piggybak;
 
 --
--- Name: tax_methods_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+-- Name: tax_methods_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
 ALTER SEQUENCE tax_methods_id_seq OWNED BY tax_methods.id;
 
 
 --
--- Name: tax_methods_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+-- Name: tax_methods_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
 SELECT pg_catalog.setval('tax_methods_id_seq', 1, true);
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: zone; Tablespace: 
+-- Name: users; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE users (
@@ -1076,213 +1100,218 @@ CREATE TABLE users (
 );
 
 
-ALTER TABLE public.users OWNER TO zone;
+ALTER TABLE public.users OWNER TO piggybak;
 
 --
--- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: zone
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
 CREATE SEQUENCE users_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE public.users_id_seq OWNER TO zone;
+ALTER TABLE public.users_id_seq OWNER TO piggybak;
 
 --
--- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zone
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
 ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
 --
--- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zone
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
 SELECT pg_catalog.setval('users_id_seq', 10, true);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
 ALTER TABLE addresses ALTER COLUMN id SET DEFAULT nextval('addresses_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
 ALTER TABLE categories ALTER COLUMN id SET DEFAULT nextval('categories_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
 ALTER TABLE countries ALTER COLUMN id SET DEFAULT nextval('countries_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
 ALTER TABLE credits ALTER COLUMN id SET DEFAULT nextval('credits_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
 ALTER TABLE images ALTER COLUMN id SET DEFAULT nextval('images_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
 ALTER TABLE line_items ALTER COLUMN id SET DEFAULT nextval('line_items_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
 ALTER TABLE orders ALTER COLUMN id SET DEFAULT nextval('orders_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
 ALTER TABLE pages ALTER COLUMN id SET DEFAULT nextval('pages_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
 ALTER TABLE payment_method_values ALTER COLUMN id SET DEFAULT nextval('payment_method_values_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
 ALTER TABLE payment_methods ALTER COLUMN id SET DEFAULT nextval('payment_methods_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
 ALTER TABLE payments ALTER COLUMN id SET DEFAULT nextval('payments_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
 ALTER TABLE posts ALTER COLUMN id SET DEFAULT nextval('posts_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
 ALTER TABLE rails_admin_histories ALTER COLUMN id SET DEFAULT nextval('rails_admin_histories_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
 ALTER TABLE roles ALTER COLUMN id SET DEFAULT nextval('roles_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
 ALTER TABLE shipments ALTER COLUMN id SET DEFAULT nextval('shipments_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
 ALTER TABLE shipping_method_values ALTER COLUMN id SET DEFAULT nextval('shipping_method_values_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
 ALTER TABLE shipping_methods ALTER COLUMN id SET DEFAULT nextval('shipping_methods_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
 ALTER TABLE states ALTER COLUMN id SET DEFAULT nextval('states_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
 ALTER TABLE taggings ALTER COLUMN id SET DEFAULT nextval('taggings_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
 ALTER TABLE tags ALTER COLUMN id SET DEFAULT nextval('tags_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
 ALTER TABLE tax_method_values ALTER COLUMN id SET DEFAULT nextval('tax_method_values_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
 ALTER TABLE tax_methods ALTER COLUMN id SET DEFAULT nextval('tax_methods_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
 ALTER TABLE users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: zone
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
 ALTER TABLE variants ALTER COLUMN id SET DEFAULT nextval('products_id_seq'::regclass);
 
 
 --
--- Data for Name: addresses; Type: TABLE DATA; Schema: public; Owner: zone
+-- Data for Name: addresses; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
 COPY addresses (id, firstname, lastname, address1, address2, city, state_id, zip, created_at, updated_at, country_id) FROM stdin;
+41	Testy	Tester	12360 West Carolina Dr.		Lakewood	6883	80228	2012-01-10 16:16:12.893695	2012-01-10 16:16:12.893695	405
+42	Testy	Tester	12360 West Carolina Dr.		Lakewood	6883	80228	2012-01-10 16:16:13.066987	2012-01-10 16:16:13.066987	405
+43	Steph	Skardal	54 Elizabeth St.		Salt Lake City	6926	84105	2012-01-10 16:19:25.728466	2012-01-10 16:19:25.728466	405
+44	Steph	Skardal	54 Elizabeth St.		Salt Lake City	6926	84105	2012-01-10 16:19:25.731399	2012-01-10 16:19:25.731399	405
 \.
 
 
 --
--- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: zone
+-- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
 COPY categories (id, title, slug, description, created_at, updated_at) FROM stdin;
@@ -1293,7 +1322,7 @@ COPY categories (id, title, slug, description, created_at, updated_at) FROM stdi
 
 
 --
--- Data for Name: categories_images; Type: TABLE DATA; Schema: public; Owner: zone
+-- Data for Name: categories_images; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
 COPY categories_images (category_id, image_id) FROM stdin;
@@ -1337,261 +1366,261 @@ COPY categories_images (category_id, image_id) FROM stdin;
 
 
 --
--- Data for Name: countries; Type: TABLE DATA; Schema: public; Owner: zone
+-- Data for Name: countries; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
-COPY countries (id, name, abbr) FROM stdin;
-176	Andorra	AD
-177	United Arab Emirates	AE
-178	Afghanistan	AF
-179	Antigua and Barbuda	AG
-180	Anguilla	AI
-181	Albania	AL
-182	Armenia	AM
-183	Netherlands Antilles	AN
-184	Angola	AO
-185	Antarctica	AQ
-186	Argentina	AR
-187	American Samoa	AS
-188	Austria	AT
-189	Australia	AU
-190	Aruba	AW
-191	Åland Islands	AX
-192	Azerbaijan	AZ
-193	Bosnia and Herzegovina	BA
-194	Barbados	BB
-195	Bangladesh	BD
-196	Belgium	BE
-197	Burkina Faso	BF
-198	Bulgaria	BG
-199	Bahrain	BH
-200	Burundi	BI
-201	Benin	BJ
-202	Saint Barthélemy	BL
-203	Bermuda	BM
-204	Brunei Darussalam	BN
-205	Bolivia	BO
-206	Brazil	BR
-207	Bahamas	BS
-208	Bhutan	BT
-209	Bouvet Island	BV
-210	Botswana	BW
-211	Belarus	BY
-212	Belize	BZ
-213	Canada	CA
-214	Cocos (Keeling) Islands	CC
-215	Congo, The Democratic Republic Of The	CD
-216	Central African Republic	CF
-217	Congo	CG
-218	Switzerland	CH
-219	Côte D'Ivoire	CI
-220	Cook Islands	CK
-221	Chile	CL
-222	Cameroon	CM
-223	China	CN
-224	Colombia	CO
-225	Costa Rica	CR
-226	Cuba	CU
-227	Cape Verde	CV
-228	Christmas Island	CX
-229	Cyprus	CY
-230	Czech Republic	CZ
-231	Germany	DE
-232	Djibouti	DJ
-233	Denmark	DK
-234	Dominica	DM
-235	Dominican Republic	DO
-236	Algeria	DZ
-237	Ecuador	EC
-238	Estonia	EE
-239	Egypt	EG
-240	Western Sahara	EH
-241	Eritrea	ER
-242	Spain	ES
-243	Ethiopia	ET
-244	Finland	FI
-245	Fiji	FJ
-246	Falkland Islands (Malvinas)	FK
-247	Micronesia, Federated States Of	FM
-248	Faroe Islands	FO
-249	France	FR
-250	Gabon	GA
-251	United Kingdom	GB
-252	Grenada	GD
-253	Georgia	GE
-254	French Guiana	GF
-255	Guernsey	GG
-256	Ghana	GH
-257	Gibraltar	GI
-258	Greenland	GL
-259	Gambia	GM
-260	Guinea	GN
-261	Guadeloupe	GP
-262	Equatorial Guinea	GQ
-263	Greece	GR
-264	South Georgia and the South Sandwich Islands	GS
-265	Guatemala	GT
-266	Guam	GU
-267	Guinea-Bissau	GW
-268	Guyana	GY
-269	Hong Kong	HK
-270	Heard and McDonald Islands	HM
-271	Honduras	HN
-272	Croatia	HR
-273	Haiti	HT
-274	Hungary	HU
-275	Indonesia	ID
-276	Ireland	IE
-277	Israel	IL
-278	Isle of Man	IM
-279	India	IN
-280	British Indian Ocean Territory	IO
-281	Iraq	IQ
-282	Iran, Islamic Republic Of	IR
-283	Iceland	IS
-284	Italy	IT
-285	Jersey	JE
-286	Jamaica	JM
-287	Jordan	JO
-288	Japan	JP
-289	Kenya	KE
-290	Kyrgyzstan	KG
-291	Cambodia	KH
-292	Kiribati	KI
-293	Comoros	KM
-294	Saint Kitts And Nevis	KN
-295	Korea, Democratic People's Republic Of	KP
-296	Korea, Republic of	KR
-297	Kuwait	KW
-298	Cayman Islands	KY
-299	Kazakhstan	KZ
-300	Lao People's Democratic Republic	LA
-301	Lebanon	LB
-302	Saint Lucia	LC
-303	Liechtenstein	LI
-304	Sri Lanka	LK
-305	Liberia	LR
-306	Lesotho	LS
-307	Lithuania	LT
-308	Luxembourg	LU
-309	Latvia	LV
-310	Libyan Arab Jamahiriya	LY
-311	Morocco	MA
-312	Monaco	MC
-313	Moldova, Republic of	MD
-314	Montenegro	ME
-315	Saint Martin	MF
-316	Madagascar	MG
-317	Marshall Islands	MH
-318	Macedonia, the Former Yugoslav Republic Of	MK
-319	Mali	ML
-320	Myanmar	MM
-321	Mongolia	MN
-322	Macao	MO
-323	Northern Mariana Islands	MP
-324	Martinique	MQ
-325	Mauritania	MR
-326	Montserrat	MS
-327	Malta	MT
-328	Mauritius	MU
-329	Maldives	MV
-330	Malawi	MW
-331	Mexico	MX
-332	Malaysia	MY
-333	Mozambique	MZ
-334	Namibia	NA
-335	New Caledonia	NC
-336	Niger	NE
-337	Norfolk Island	NF
-338	Nigeria	NG
-339	Nicaragua	NI
-340	Netherlands	NL
-341	Norway	NO
-342	Nepal	NP
-343	Nauru	NR
-344	Niue	NU
-345	New Zealand	NZ
-346	Oman	OM
-347	Panama	PA
-348	Peru	PE
-349	French Polynesia	PF
-350	Papua New Guinea	PG
-351	Philippines	PH
-352	Pakistan	PK
-353	Poland	PL
-354	Saint Pierre And Miquelon	PM
-355	Pitcairn	PN
-356	Puerto Rico	PR
-357	Palestinian Territory, Occupied	PS
-358	Portugal	PT
-359	Palau	PW
-360	Paraguay	PY
-361	Qatar	QA
-362	Réunion	RE
-363	Romania	RO
-364	Serbia	RS
-365	Russian Federation	RU
-366	Rwanda	RW
-367	Saudi Arabia	SA
-368	Solomon Islands	SB
-369	Seychelles	SC
-370	Sudan	SD
-371	Sweden	SE
-372	Singapore	SG
-373	Saint Helena	SH
-374	Slovenia	SI
-375	Svalbard And Jan Mayen	SJ
-376	Slovakia	SK
-377	Sierra Leone	SL
-378	San Marino	SM
-379	Senegal	SN
-380	Somalia	SO
-381	Suriname	SR
-382	Sao Tome and Principe	ST
-383	El Salvador	SV
-384	Syrian Arab Republic	SY
-385	Swaziland	SZ
-386	Turks and Caicos Islands	TC
-387	Chad	TD
-388	French Southern Territories	TF
-389	Togo	TG
-390	Thailand	TH
-391	Tajikistan	TJ
-392	Tokelau	TK
-393	Timor-Leste	TL
-394	Turkmenistan	TM
-395	Tunisia	TN
-396	Tonga	TO
-397	Turkey	TR
-398	Trinidad and Tobago	TT
-399	Tuvalu	TV
-400	Taiwan, Province Of China	TW
-401	Tanzania, United Republic of	TZ
-402	Ukraine	UA
-403	Uganda	UG
-404	United States Minor Outlying Islands	UM
-405	United States	US
-406	Uruguay	UY
-407	Uzbekistan	UZ
-408	Holy See (Vatican City State)	VA
-409	Saint Vincent And The Grenedines	VC
-410	Venezuela, Bolivarian Republic of	VE
-411	Virgin Islands, British	VG
-412	Virgin Islands, U.S.	VI
-413	Viet Nam	VN
-414	Vanuatu	VU
-415	Wallis and Futuna	WF
-416	Samoa	WS
-417	Yemen	YE
-418	Mayotte	YT
-419	South Africa	ZA
-420	Zambia	ZM
-421	Zimbabwe	ZW
+COPY countries (id, name, abbr, active_shipping, active_billing) FROM stdin;
+176	Andorra	AD	f	f
+177	United Arab Emirates	AE	f	f
+178	Afghanistan	AF	f	f
+179	Antigua and Barbuda	AG	f	f
+180	Anguilla	AI	f	f
+181	Albania	AL	f	f
+182	Armenia	AM	f	f
+183	Netherlands Antilles	AN	f	f
+184	Angola	AO	f	f
+185	Antarctica	AQ	f	f
+186	Argentina	AR	f	f
+187	American Samoa	AS	f	f
+188	Austria	AT	f	f
+189	Australia	AU	f	f
+190	Aruba	AW	f	f
+191	Åland Islands	AX	f	f
+192	Azerbaijan	AZ	f	f
+193	Bosnia and Herzegovina	BA	f	f
+194	Barbados	BB	f	f
+195	Bangladesh	BD	f	f
+196	Belgium	BE	f	f
+197	Burkina Faso	BF	f	f
+198	Bulgaria	BG	f	f
+199	Bahrain	BH	f	f
+200	Burundi	BI	f	f
+201	Benin	BJ	f	f
+202	Saint Barthélemy	BL	f	f
+203	Bermuda	BM	f	f
+204	Brunei Darussalam	BN	f	f
+205	Bolivia	BO	f	f
+206	Brazil	BR	f	f
+207	Bahamas	BS	f	f
+208	Bhutan	BT	f	f
+209	Bouvet Island	BV	f	f
+210	Botswana	BW	f	f
+211	Belarus	BY	f	f
+212	Belize	BZ	f	f
+214	Cocos (Keeling) Islands	CC	f	f
+215	Congo, The Democratic Republic Of The	CD	f	f
+216	Central African Republic	CF	f	f
+217	Congo	CG	f	f
+218	Switzerland	CH	f	f
+219	Côte D'Ivoire	CI	f	f
+220	Cook Islands	CK	f	f
+221	Chile	CL	f	f
+222	Cameroon	CM	f	f
+223	China	CN	f	f
+224	Colombia	CO	f	f
+225	Costa Rica	CR	f	f
+226	Cuba	CU	f	f
+227	Cape Verde	CV	f	f
+228	Christmas Island	CX	f	f
+229	Cyprus	CY	f	f
+230	Czech Republic	CZ	f	f
+231	Germany	DE	f	f
+232	Djibouti	DJ	f	f
+233	Denmark	DK	f	f
+234	Dominica	DM	f	f
+235	Dominican Republic	DO	f	f
+236	Algeria	DZ	f	f
+237	Ecuador	EC	f	f
+238	Estonia	EE	f	f
+239	Egypt	EG	f	f
+240	Western Sahara	EH	f	f
+241	Eritrea	ER	f	f
+242	Spain	ES	f	f
+243	Ethiopia	ET	f	f
+244	Finland	FI	f	f
+245	Fiji	FJ	f	f
+246	Falkland Islands (Malvinas)	FK	f	f
+247	Micronesia, Federated States Of	FM	f	f
+248	Faroe Islands	FO	f	f
+249	France	FR	f	f
+250	Gabon	GA	f	f
+251	United Kingdom	GB	f	f
+252	Grenada	GD	f	f
+253	Georgia	GE	f	f
+254	French Guiana	GF	f	f
+255	Guernsey	GG	f	f
+256	Ghana	GH	f	f
+257	Gibraltar	GI	f	f
+258	Greenland	GL	f	f
+259	Gambia	GM	f	f
+260	Guinea	GN	f	f
+261	Guadeloupe	GP	f	f
+262	Equatorial Guinea	GQ	f	f
+263	Greece	GR	f	f
+264	South Georgia and the South Sandwich Islands	GS	f	f
+265	Guatemala	GT	f	f
+266	Guam	GU	f	f
+267	Guinea-Bissau	GW	f	f
+268	Guyana	GY	f	f
+269	Hong Kong	HK	f	f
+270	Heard and McDonald Islands	HM	f	f
+271	Honduras	HN	f	f
+272	Croatia	HR	f	f
+273	Haiti	HT	f	f
+274	Hungary	HU	f	f
+275	Indonesia	ID	f	f
+276	Ireland	IE	f	f
+277	Israel	IL	f	f
+278	Isle of Man	IM	f	f
+279	India	IN	f	f
+281	Iraq	IQ	f	f
+282	Iran, Islamic Republic Of	IR	f	f
+283	Iceland	IS	f	f
+284	Italy	IT	f	f
+285	Jersey	JE	f	f
+286	Jamaica	JM	f	f
+287	Jordan	JO	f	f
+288	Japan	JP	f	f
+289	Kenya	KE	f	f
+290	Kyrgyzstan	KG	f	f
+291	Cambodia	KH	f	f
+292	Kiribati	KI	f	f
+293	Comoros	KM	f	f
+294	Saint Kitts And Nevis	KN	f	f
+295	Korea, Democratic People's Republic Of	KP	f	f
+296	Korea, Republic of	KR	f	f
+297	Kuwait	KW	f	f
+298	Cayman Islands	KY	f	f
+299	Kazakhstan	KZ	f	f
+300	Lao People's Democratic Republic	LA	f	f
+301	Lebanon	LB	f	f
+302	Saint Lucia	LC	f	f
+303	Liechtenstein	LI	f	f
+304	Sri Lanka	LK	f	f
+305	Liberia	LR	f	f
+306	Lesotho	LS	f	f
+307	Lithuania	LT	f	f
+308	Luxembourg	LU	f	f
+309	Latvia	LV	f	f
+310	Libyan Arab Jamahiriya	LY	f	f
+311	Morocco	MA	f	f
+312	Monaco	MC	f	f
+313	Moldova, Republic of	MD	f	f
+314	Montenegro	ME	f	f
+315	Saint Martin	MF	f	f
+316	Madagascar	MG	f	f
+317	Marshall Islands	MH	f	f
+318	Macedonia, the Former Yugoslav Republic Of	MK	f	f
+319	Mali	ML	f	f
+320	Myanmar	MM	f	f
+321	Mongolia	MN	f	f
+322	Macao	MO	f	f
+323	Northern Mariana Islands	MP	f	f
+324	Martinique	MQ	f	f
+325	Mauritania	MR	f	f
+326	Montserrat	MS	f	f
+327	Malta	MT	f	f
+328	Mauritius	MU	f	f
+329	Maldives	MV	f	f
+330	Malawi	MW	f	f
+280	British Indian Ocean Territory	IO	f	t
+331	Mexico	MX	f	f
+332	Malaysia	MY	f	f
+333	Mozambique	MZ	f	f
+334	Namibia	NA	f	f
+335	New Caledonia	NC	f	f
+336	Niger	NE	f	f
+337	Norfolk Island	NF	f	f
+338	Nigeria	NG	f	f
+339	Nicaragua	NI	f	f
+340	Netherlands	NL	f	f
+341	Norway	NO	f	f
+342	Nepal	NP	f	f
+343	Nauru	NR	f	f
+344	Niue	NU	f	f
+345	New Zealand	NZ	f	f
+346	Oman	OM	f	f
+347	Panama	PA	f	f
+348	Peru	PE	f	f
+349	French Polynesia	PF	f	f
+350	Papua New Guinea	PG	f	f
+351	Philippines	PH	f	f
+352	Pakistan	PK	f	f
+353	Poland	PL	f	f
+354	Saint Pierre And Miquelon	PM	f	f
+355	Pitcairn	PN	f	f
+356	Puerto Rico	PR	f	f
+357	Palestinian Territory, Occupied	PS	f	f
+358	Portugal	PT	f	f
+359	Palau	PW	f	f
+360	Paraguay	PY	f	f
+361	Qatar	QA	f	f
+362	Réunion	RE	f	f
+363	Romania	RO	f	f
+364	Serbia	RS	f	f
+365	Russian Federation	RU	f	f
+366	Rwanda	RW	f	f
+367	Saudi Arabia	SA	f	f
+368	Solomon Islands	SB	f	f
+369	Seychelles	SC	f	f
+370	Sudan	SD	f	f
+371	Sweden	SE	f	f
+372	Singapore	SG	f	f
+373	Saint Helena	SH	f	f
+374	Slovenia	SI	f	f
+375	Svalbard And Jan Mayen	SJ	f	f
+376	Slovakia	SK	f	f
+377	Sierra Leone	SL	f	f
+378	San Marino	SM	f	f
+379	Senegal	SN	f	f
+380	Somalia	SO	f	f
+381	Suriname	SR	f	f
+382	Sao Tome and Principe	ST	f	f
+383	El Salvador	SV	f	f
+384	Syrian Arab Republic	SY	f	f
+385	Swaziland	SZ	f	f
+386	Turks and Caicos Islands	TC	f	f
+387	Chad	TD	f	f
+388	French Southern Territories	TF	f	f
+389	Togo	TG	f	f
+390	Thailand	TH	f	f
+391	Tajikistan	TJ	f	f
+392	Tokelau	TK	f	f
+393	Timor-Leste	TL	f	f
+394	Turkmenistan	TM	f	f
+395	Tunisia	TN	f	f
+396	Tonga	TO	f	f
+397	Turkey	TR	f	f
+398	Trinidad and Tobago	TT	f	f
+399	Tuvalu	TV	f	f
+400	Taiwan, Province Of China	TW	f	f
+401	Tanzania, United Republic of	TZ	f	f
+402	Ukraine	UA	f	f
+403	Uganda	UG	f	f
+404	United States Minor Outlying Islands	UM	f	f
+406	Uruguay	UY	f	f
+407	Uzbekistan	UZ	f	f
+408	Holy See (Vatican City State)	VA	f	f
+409	Saint Vincent And The Grenedines	VC	f	f
+410	Venezuela, Bolivarian Republic of	VE	f	f
+411	Virgin Islands, British	VG	f	f
+412	Virgin Islands, U.S.	VI	f	f
+413	Viet Nam	VN	f	f
+414	Vanuatu	VU	f	f
+415	Wallis and Futuna	WF	f	f
+416	Samoa	WS	f	f
+417	Yemen	YE	f	f
+418	Mayotte	YT	f	f
+419	South Africa	ZA	f	f
+420	Zambia	ZM	f	f
+421	Zimbabwe	ZW	f	f
+405	United States	US	t	t
+213	Canada	CA	t	t
 \.
 
 
 --
--- Data for Name: credits; Type: TABLE DATA; Schema: public; Owner: zone
+-- Data for Name: credits; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
 COPY credits (id, order_id, source_type, source_id, total, created_at, updated_at) FROM stdin;
@@ -1601,7 +1630,7 @@ COPY credits (id, order_id, source_type, source_id, total, created_at, updated_a
 
 
 --
--- Data for Name: images; Type: TABLE DATA; Schema: public; Owner: zone
+-- Data for Name: images; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
 COPY images (id, title, slug, description, user_id, gallery_file_name, gallery_content_type, gallery_file_size, gallery_updated_at, main_file_name, main_content_type, main_file_size, main_updated_at, created_at, updated_at, is_featured) FROM stdin;
@@ -1643,23 +1672,27 @@ COPY images (id, title, slug, description, user_id, gallery_file_name, gallery_c
 
 
 --
--- Data for Name: line_items; Type: TABLE DATA; Schema: public; Owner: zone
+-- Data for Name: line_items; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
 COPY line_items (id, order_id, quantity, variant_id, total) FROM stdin;
+19	16	1	15	19.0
+20	17	1	15	19.0
 \.
 
 
 --
--- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: zone
+-- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
 COPY orders (id, billing_address_id, shipping_address_id, user_id, email, phone, total, total_due, tax_charge, status, created_at, updated_at) FROM stdin;
+16	41	42	10	test@endpoint.com	6304844834	29.0	0.0	0.0	paid	2012-01-10 16:16:12.691295	2012-01-10 16:16:13.081443
+17	43	44	\N	steph@endpoint.com	6304844834	39.0	0.0	0.0	paid	2012-01-10 16:19:25.541916	2012-01-10 16:19:25.745341
 \.
 
 
 --
--- Data for Name: pages; Type: TABLE DATA; Schema: public; Owner: zone
+-- Data for Name: pages; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
 COPY pages (id, title, slug, content, created_at, updated_at) FROM stdin;
@@ -1669,7 +1702,7 @@ COPY pages (id, title, slug, content, created_at, updated_at) FROM stdin;
 
 
 --
--- Data for Name: payment_method_values; Type: TABLE DATA; Schema: public; Owner: zone
+-- Data for Name: payment_method_values; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
 COPY payment_method_values (id, payment_method_id, key, value) FROM stdin;
@@ -1677,7 +1710,7 @@ COPY payment_method_values (id, payment_method_id, key, value) FROM stdin;
 
 
 --
--- Data for Name: payment_methods; Type: TABLE DATA; Schema: public; Owner: zone
+-- Data for Name: payment_methods; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
 COPY payment_methods (id, description, klass, active, created_at, updated_at) FROM stdin;
@@ -1686,15 +1719,17 @@ COPY payment_methods (id, description, klass, active, created_at, updated_at) FR
 
 
 --
--- Data for Name: payments; Type: TABLE DATA; Schema: public; Owner: zone
+-- Data for Name: payments; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
 COPY payments (id, order_id, payment_method_id, status, total, number, month, year, verification_value, created_at, updated_at, transaction_id) FROM stdin;
+15	16	1	paid	29.0	hidden	1	2012	hidden	2012-01-10 16:16:13.121248	2012-01-10 16:16:13.121248	N/A
+16	17	1	paid	39.0	hidden	1	2012	hidden	2012-01-10 16:19:25.751568	2012-01-10 16:19:25.751568	N/A
 \.
 
 
 --
--- Data for Name: posts; Type: TABLE DATA; Schema: public; Owner: zone
+-- Data for Name: posts; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
 COPY posts (id, title, slug, user_id, content, created_at, updated_at) FROM stdin;
@@ -1706,7 +1741,7 @@ COPY posts (id, title, slug, user_id, content, created_at, updated_at) FROM stdi
 
 
 --
--- Data for Name: rails_admin_histories; Type: TABLE DATA; Schema: public; Owner: zone
+-- Data for Name: rails_admin_histories; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
 COPY rails_admin_histories (id, message, username, item, "table", month, year, created_at, updated_at) FROM stdin;
@@ -1714,7 +1749,7 @@ COPY rails_admin_histories (id, message, username, item, "table", month, year, c
 
 
 --
--- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: zone
+-- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
 COPY roles (id, name) FROM stdin;
@@ -1723,7 +1758,7 @@ COPY roles (id, name) FROM stdin;
 
 
 --
--- Data for Name: roles_users; Type: TABLE DATA; Schema: public; Owner: zone
+-- Data for Name: roles_users; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
 COPY roles_users (role_id, user_id) FROM stdin;
@@ -1740,7 +1775,7 @@ COPY roles_users (role_id, user_id) FROM stdin;
 
 
 --
--- Data for Name: schema_migrations; Type: TABLE DATA; Schema: public; Owner: zone
+-- Data for Name: schema_migrations; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
 COPY schema_migrations (version) FROM stdin;
@@ -1771,42 +1806,45 @@ COPY schema_migrations (version) FROM stdin;
 20120104020930
 20120106010846
 20120106034634
+20120107140039
 \.
 
 
 --
--- Data for Name: shipments; Type: TABLE DATA; Schema: public; Owner: zone
+-- Data for Name: shipments; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
 COPY shipments (id, order_id, shipping_method_id, status, total, created_at, updated_at) FROM stdin;
+15	16	4	new	10.0	2012-01-10 16:16:13.12503	2012-01-10 16:16:13.12503
+16	17	5	new	20.0	2012-01-10 16:19:25.753415	2012-01-10 16:19:25.753415
 \.
 
 
 --
--- Data for Name: shipping_method_values; Type: TABLE DATA; Schema: public; Owner: zone
+-- Data for Name: shipping_method_values; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
 COPY shipping_method_values (id, shipping_method_id, key, value) FROM stdin;
 4	4	rate	10.00
 5	5	rate	20.00
-6	6	state_abbr	NC
 7	6	rate	0.00
+6	6	state_id	6907
 \.
 
 
 --
--- Data for Name: shipping_methods; Type: TABLE DATA; Schema: public; Owner: zone
+-- Data for Name: shipping_methods; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
 COPY shipping_methods (id, description, klass, active) FROM stdin;
-4	Standard Shipping	Piggybak::ShippingCalculator::FlatRate	t
-5	Express Shipping	Piggybak::ShippingCalculator::FlatRate	t
-6	Pickup (NC Only)	Piggybak::ShippingCalculator::Pickup	t
+6	Pickup (NC Only)	Pickup	t
+4	Standard Shipping	::Piggybak::ShippingCalculator::FlatRate	t
+5	Express Shipping	::Piggybak::ShippingCalculator::FlatRate	t
 \.
 
 
 --
--- Data for Name: states; Type: TABLE DATA; Schema: public; Owner: zone
+-- Data for Name: states; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
 COPY states (id, abbr, name, country_id) FROM stdin;
@@ -3004,6 +3042,7 @@ COPY states (id, abbr, name, country_id) FROM stdin;
 4062	BEN	Brent	251
 4063	BEX	Bexley	251
 4064	BFS	Belfast	251
+4208	PLY	Plymouth	251
 4065	BGE	Bridgend [Pen-y-bont ar Ogwr GB-POG]	251
 4066	BGW	Blaenau Gwent	251
 4067	BIR	Birmingham	251
@@ -3147,7 +3186,6 @@ COPY states (id, abbr, name, country_id) FROM stdin;
 4205	OXF	Oxfordshire	251
 4206	PEM	Pembrokeshire [Sir Benfro GB-BNF]	251
 4207	PKN	Perth and Kinross	251
-4208	PLY	Plymouth	251
 4209	POL	Poole	251
 4210	POR	Portsmouth	251
 4211	POW	Powys	251
@@ -6069,7 +6107,7 @@ COPY states (id, abbr, name, country_id) FROM stdin;
 
 
 --
--- Data for Name: taggings; Type: TABLE DATA; Schema: public; Owner: zone
+-- Data for Name: taggings; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
 COPY taggings (id, tag_id, taggable_id, taggable_type, tagger_id, tagger_type, context, created_at) FROM stdin;
@@ -6077,7 +6115,7 @@ COPY taggings (id, tag_id, taggable_id, taggable_type, tagger_id, tagger_type, c
 
 
 --
--- Data for Name: tags; Type: TABLE DATA; Schema: public; Owner: zone
+-- Data for Name: tags; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
 COPY tags (id, name) FROM stdin;
@@ -6085,35 +6123,35 @@ COPY tags (id, name) FROM stdin;
 
 
 --
--- Data for Name: tax_method_values; Type: TABLE DATA; Schema: public; Owner: zone
+-- Data for Name: tax_method_values; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
 COPY tax_method_values (id, tax_method_id, key, value) FROM stdin;
-1	1	state_abbr	NC
 2	1	rate	0.0675
+1	1	state_id	6907
 \.
 
 
 --
--- Data for Name: tax_methods; Type: TABLE DATA; Schema: public; Owner: zone
+-- Data for Name: tax_methods; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
 COPY tax_methods (id, description, klass, active) FROM stdin;
-1	NC State Tax	Piggybak::TaxCalculator::Percent	t
+1	NC State Tax	::Piggybak::TaxCalculator::Percent	t
 \.
 
 
 --
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: zone
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
 COPY users (id, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, display_name, created_at, updated_at) FROM stdin;
-10	test@endpoint.com	$2a$10$eq.pXquV5s1nQcQNnEpM6.rdsK5x8H7gAHbaTHBe/YhzxjMLQbd96	\N	\N	\N	34	2012-01-06 16:45:48.631517	2012-01-06 16:42:47.326797	174.111.14.48	174.111.14.48	Testy Tester	2012-01-03 20:26:41.571741	2012-01-06 16:45:48.633001
+10	test@endpoint.com	$2a$10$eq.pXquV5s1nQcQNnEpM6.rdsK5x8H7gAHbaTHBe/YhzxjMLQbd96	\N	\N	\N	38	2012-01-10 16:19:54.590404	2012-01-10 16:07:38.298993	174.111.11.143	174.111.11.143	Testy Tester	2012-01-03 20:26:41.571741	2012-01-10 16:19:54.591347
 \.
 
 
 --
--- Data for Name: variants; Type: TABLE DATA; Schema: public; Owner: zone
+-- Data for Name: variants; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
 COPY variants (id, sku, description, price, quantity, item_id, item_type, active, unlimited_inventory) FROM stdin;
@@ -6124,7 +6162,6 @@ COPY variants (id, sku, description, price, quantity, item_id, item_type, active
 13	puppy	4"x6" Print of Tired Puppy	19.99	20	14	Image	t	f
 14	beach-dog	4"x6" Print of Beach Dog	19.99	20	15	Image	t	f
 10	fall-leaves	4"x6" Print of Fall Leaves	19.99	100	11	Image	t	t
-15	nature	4"x6" Print of Nature	19.0	100	16	Image	t	t
 19	Green Bokeh	4"x6" Print of Green Bokeh	9.99	100	20	Image	t	f
 20	car-window	4"x6" Print of Car Window	24.99	10	21	Image	t	f
 21	dog-lookout	4"x6" Print of Dog Lookout	19.99	7	22	Image	t	t
@@ -6155,11 +6192,12 @@ COPY variants (id, sku, description, price, quantity, item_id, item_type, active
 29	pollination	4"x6" Print of Pollination	19.99	99	30	Image	t	t
 44	relaxing-puppy	4"x6" Print of Relaxing Puppy	24.99	3	45	Image	t	f
 11	dog-sunglasses	4"x6" Print of Dog in Sunglasses	19.99	3	12	Image	t	t
+15	nature	4"x6" Print of Nature	19.0	98	16	Image	t	t
 \.
 
 
 --
--- Name: addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+-- Name: addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 ALTER TABLE ONLY addresses
@@ -6167,7 +6205,7 @@ ALTER TABLE ONLY addresses
 
 
 --
--- Name: categories_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+-- Name: categories_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 ALTER TABLE ONLY categories
@@ -6175,7 +6213,7 @@ ALTER TABLE ONLY categories
 
 
 --
--- Name: countries_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+-- Name: countries_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 ALTER TABLE ONLY countries
@@ -6183,7 +6221,7 @@ ALTER TABLE ONLY countries
 
 
 --
--- Name: credits_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+-- Name: credits_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 ALTER TABLE ONLY credits
@@ -6191,7 +6229,7 @@ ALTER TABLE ONLY credits
 
 
 --
--- Name: images_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+-- Name: images_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 ALTER TABLE ONLY images
@@ -6199,7 +6237,7 @@ ALTER TABLE ONLY images
 
 
 --
--- Name: line_items_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+-- Name: line_items_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 ALTER TABLE ONLY line_items
@@ -6207,7 +6245,7 @@ ALTER TABLE ONLY line_items
 
 
 --
--- Name: orders_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+-- Name: orders_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 ALTER TABLE ONLY orders
@@ -6215,7 +6253,7 @@ ALTER TABLE ONLY orders
 
 
 --
--- Name: pages_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+-- Name: pages_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 ALTER TABLE ONLY pages
@@ -6223,7 +6261,7 @@ ALTER TABLE ONLY pages
 
 
 --
--- Name: payment_method_values_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+-- Name: payment_method_values_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 ALTER TABLE ONLY payment_method_values
@@ -6231,7 +6269,7 @@ ALTER TABLE ONLY payment_method_values
 
 
 --
--- Name: payment_methods_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+-- Name: payment_methods_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 ALTER TABLE ONLY payment_methods
@@ -6239,7 +6277,7 @@ ALTER TABLE ONLY payment_methods
 
 
 --
--- Name: payments_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+-- Name: payments_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 ALTER TABLE ONLY payments
@@ -6247,7 +6285,7 @@ ALTER TABLE ONLY payments
 
 
 --
--- Name: posts_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+-- Name: posts_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 ALTER TABLE ONLY posts
@@ -6255,7 +6293,7 @@ ALTER TABLE ONLY posts
 
 
 --
--- Name: products_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+-- Name: products_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 ALTER TABLE ONLY variants
@@ -6263,7 +6301,7 @@ ALTER TABLE ONLY variants
 
 
 --
--- Name: rails_admin_histories_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+-- Name: rails_admin_histories_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 ALTER TABLE ONLY rails_admin_histories
@@ -6271,7 +6309,7 @@ ALTER TABLE ONLY rails_admin_histories
 
 
 --
--- Name: roles_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+-- Name: roles_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 ALTER TABLE ONLY roles
@@ -6279,7 +6317,7 @@ ALTER TABLE ONLY roles
 
 
 --
--- Name: shipments_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+-- Name: shipments_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 ALTER TABLE ONLY shipments
@@ -6287,7 +6325,7 @@ ALTER TABLE ONLY shipments
 
 
 --
--- Name: shipping_method_values_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+-- Name: shipping_method_values_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 ALTER TABLE ONLY shipping_method_values
@@ -6295,7 +6333,7 @@ ALTER TABLE ONLY shipping_method_values
 
 
 --
--- Name: shipping_methods_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+-- Name: shipping_methods_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 ALTER TABLE ONLY shipping_methods
@@ -6303,7 +6341,7 @@ ALTER TABLE ONLY shipping_methods
 
 
 --
--- Name: states_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+-- Name: states_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 ALTER TABLE ONLY states
@@ -6311,7 +6349,7 @@ ALTER TABLE ONLY states
 
 
 --
--- Name: taggings_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+-- Name: taggings_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 ALTER TABLE ONLY taggings
@@ -6319,7 +6357,7 @@ ALTER TABLE ONLY taggings
 
 
 --
--- Name: tags_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+-- Name: tags_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 ALTER TABLE ONLY tags
@@ -6327,7 +6365,7 @@ ALTER TABLE ONLY tags
 
 
 --
--- Name: tax_method_values_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+-- Name: tax_method_values_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 ALTER TABLE ONLY tax_method_values
@@ -6335,7 +6373,7 @@ ALTER TABLE ONLY tax_method_values
 
 
 --
--- Name: tax_methods_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+-- Name: tax_methods_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 ALTER TABLE ONLY tax_methods
@@ -6343,7 +6381,7 @@ ALTER TABLE ONLY tax_methods
 
 
 --
--- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: zone; Tablespace: 
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 ALTER TABLE ONLY users
@@ -6351,42 +6389,42 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: index_rails_admin_histories; Type: INDEX; Schema: public; Owner: zone; Tablespace: 
+-- Name: index_rails_admin_histories; Type: INDEX; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE INDEX index_rails_admin_histories ON rails_admin_histories USING btree (item, "table", month, year);
 
 
 --
--- Name: index_taggings_on_tag_id; Type: INDEX; Schema: public; Owner: zone; Tablespace: 
+-- Name: index_taggings_on_tag_id; Type: INDEX; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE INDEX index_taggings_on_tag_id ON taggings USING btree (tag_id);
 
 
 --
--- Name: index_taggings_on_taggable_id_and_taggable_type_and_context; Type: INDEX; Schema: public; Owner: zone; Tablespace: 
+-- Name: index_taggings_on_taggable_id_and_taggable_type_and_context; Type: INDEX; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE INDEX index_taggings_on_taggable_id_and_taggable_type_and_context ON taggings USING btree (taggable_id, taggable_type, context);
 
 
 --
--- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: zone; Tablespace: 
+-- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
 
 
 --
--- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: zone; Tablespace: 
+-- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (reset_password_token);
 
 
 --
--- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: zone; Tablespace: 
+-- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);

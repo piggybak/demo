@@ -1,15 +1,14 @@
 Demo::Application.routes.draw do
-  mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
-  mount Piggybak::Engine => '/checkout', :as => 'piggybak'
-  mount Bloggybak::Engine => '/blog', :as => 'bloggybak'
+  mount RailsAdmin::Engine => '/demo/admin', :as => 'rails_admin'
+  mount Piggybak::Engine => '/demo/checkout', :as => 'piggybak'
+  # mount Bloggybak::Engine => '/demo/blog', :as => 'bloggybak'
 
   devise_for :users
 
-  root :to => 'home#index'
-  
-  match 'image/:id' => 'images#show', :as => :image
-  match 'c/:id' => 'categories#show', :as => :category
-  match ':slug' => 'pages#show'
+  match "/demo/" => 'home#index', :as => :root
+  match '/demo/image/:id' => 'images#show', :as => :image
+  match '/demo/c/:id' => 'categories#show', :as => :category
+  match '/demo/:slug' => 'pages#show'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

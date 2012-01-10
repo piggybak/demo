@@ -3,7 +3,7 @@ class Ability
   def initialize(user)
     if user && user.roles.include?(Role.find_by_name("admin"))
       can :access, :rails_admin
-      can :manage, [Category,
+      can [:read, :export, :history], [Category,
                     Image,
                     Page,
                     Role,
@@ -13,12 +13,8 @@ class Ability
                     ::Piggybak::PaymentMethod,
                     ::Piggybak::TaxMethod,
                     ::Piggybak::State,
-                    ::Piggybak::Country]
-
-      # can't delete orders
-      can [:email, :download, :cancel, :read, :create, :update, :history, :export], ::Piggybak::Order
-
-      can :refund, ::Piggybak::Payment
+                    ::Piggybak::Country,
+                    ::Piggybak::Order]
     end
   end
 end

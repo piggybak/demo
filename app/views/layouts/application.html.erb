@@ -5,6 +5,20 @@
   <%= stylesheet_link_tag    "application" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-525312-15']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
 </head>
 
 <body>
@@ -14,18 +28,19 @@
 		<div class="container">
 			<div id="top">
 				<div id="logo" class="four columns">
-					<%= link_to image_tag("logo2.png"), root_path %>
+					<%= link_to image_tag("logo2.png"), root_url %>
 				</div><!--#logo-->
 				<div id="nav" class="eight columns">
 					<ul id="topnav" class="sf-menu">
-						<li><a href="/">Shop</a>
+						<li><a href="/">Piggybak Home</a></li>
+						<li><a href="/demo/">Shop</a>
 							<ul>
 								<% Category.all.each do |category| %>
 								<li><%= link_to category.title, category_url(category.slug) %></li>
 								<% end -%>
 							</ul>
 						</li>
-						<li><a href="/about/">About</a></li>
+						<li><a href="/demo/about/">About</a></li>
 						<% if current_user -%>
 						<% if current_user.piggybak_orders.any? -%>
 						<li>
@@ -34,7 +49,7 @@
 						<% end -%>
 						<% if current_user.roles.size > 0 -%>
 						<li>
-							<%= link_to 'ADMIN', "/admin" %>
+							<%= link_to 'ADMIN', "/demo/admin" %>
 						</li>
 						<% end -%>
 						<li>
@@ -102,7 +117,7 @@
 			<span id="copyright">Copyright &copy;<%= Time.now.year.to_s %> Steph Skardal.  All Rights Reserved.</span>
 			<ul id="footnav">
 				<% Page.all.each do |page| -%>
-				<li><%= link_to page.title, "/#{page.slug}/" %></li>
+				<li><%= link_to page.title, "/demo/#{page.slug}/" %></li>
 				<% end -%>
 			</ul><!-- #footnav -->
 		</div><!--#footer-->
@@ -111,50 +126,3 @@
 </div><!--#wrapper-->
 </body>
 </html>
-
-<% if false -%>
-<script type="text/javascript">
-jQuery(document).ready(function(){
-
-	//Menu
-	jQuery("ul.sf-menu").supersubs({ 
-	minWidth		: 12,		// requires em unit.
-	maxWidth		: 27,		// requires em unit.
-	extraWidth		: 1	// extra width can ensure lines don't sometimes turn over due to slight browser differences in how they round-off values
-						   // due to slight rounding differences and font-family 
-	}).superfish();  // call supersubs first, then superfish, so that subs are 
-					 // not display:none when measuring. Call before initialising 
-					 // containing tabs for same reason. 
-					 
-
-	// Create the dropdown base
-	jQuery("<select />").appendTo("#nav");
-	
-	// Create default option "Go to..."
-	jQuery("<option />", {
-	   "selected": "selected",
-	   "value"   : "",
-	   "text"    : "Go to..."
-	}).appendTo("nav select");
-	
-	// Populate dropdown with menu items
-	jQuery("#nav a").each(function() {
-	 var el = jQuery(this);
-	 jQuery("<option />", {
-		 "value"   : el.attr("href"),
-		 "text"    : el.text()
-	 }).appendTo("#nav select");
-	});
-	
-	jQuery("#nav select").change(function() {
-	  window.location = jQuery(this).find("option:selected").val();
-	});
-	
-	/* portfolio gallery */
-	jQuery("a[rel^='prettyPhoto']").prettyPhoto({animationSpeed:'slow',theme:'facebook',slideshow:2000});	
-});
-</script>
-</head>
-
-<script type="text/javascript">jQuery('#noscript').remove();</script><!-- if javascript disable -->
-<% end -%>

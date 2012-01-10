@@ -1,15 +1,15 @@
 class Pickup
-  KEYS = ["state_abbr", "rate"]
+  KEYS = ["state_id", "rate"]
 
   def self.available?(method, object)
-    abbr = method.metadata.detect { |t| t.key == "state_abbr" }.value
+    id = method.metadata.detect { |t| t.key == "state_id" }.value
 
     if object.is_a?(Piggybak::Cart)
       state = Piggybak::State.find(object.extra_data["state_id"])
-      return true if state && state.abbr == abbr
+      return true if state && state.id == id
     else
       if object.billing_address && object.billing_address.state 
-        return object.billing_address.state.abbr == abbr
+        return object.billing_address.state.id == id
       end
     end
     return false
