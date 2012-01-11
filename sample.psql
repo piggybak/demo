@@ -523,13 +523,11 @@ CREATE TABLE payments (
     payment_method_id integer,
     status character varying(255) DEFAULT 'paid'::character varying NOT NULL,
     total numeric DEFAULT 0.0 NOT NULL,
-    number character varying(255),
     month integer,
     year integer,
-    verification_value character varying(255),
+    transaction_id character varying(255),
     created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    transaction_id character varying(255)
+    updated_at timestamp without time zone
 );
 
 
@@ -1750,9 +1748,9 @@ COPY payment_methods (id, description, klass, active, created_at, updated_at) FR
 -- Data for Name: payments; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
-COPY payments (id, order_id, payment_method_id, status, total, number, month, year, verification_value, created_at, updated_at, transaction_id) FROM stdin;
-15	16	1	paid	29.0	hidden	1	2012	hidden	2012-01-10 16:16:13.121248	2012-01-10 16:16:13.121248	N/A
-16	17	1	paid	39.0	hidden	1	2012	hidden	2012-01-10 16:19:25.751568	2012-01-10 16:19:25.751568	N/A
+COPY payments (id, order_id, payment_method_id, status, total, month, year, created_at, updated_at, transaction_id) FROM stdin;
+15	16	1	paid	29.0	1	2012	2012-01-10 16:16:13.121248	2012-01-10 16:16:13.121248	N/A
+16	17	1	paid	39.0	1	2012	2012-01-10 16:19:25.751568	2012-01-10 16:19:25.751568	N/A
 \.
 
 
