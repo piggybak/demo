@@ -23,8 +23,9 @@ GIT
       devise
       rails_admin
 
-PATH
-  remote: ../piggybak
+GIT
+  remote: git://github.com/stephskardal/piggybak.git
+  revision: 11f35f7f6f1280fbd65740eff9d2ff9e31219ccf
   specs:
     piggybak (0.3.0)
       activemerchant
