@@ -186,6 +186,7 @@ code {
 /* TOP AREA & MENU
 -------------------------------------------------------------- */
 #logo{float:left;}
+#logo img { height: 58px; margin-top: 2px; }
 #nav{position:relative;	z-index:200;float:left;padding:0;}
 #nav select {  display: none; }
 #topnav{
@@ -579,3 +580,5 @@ pre {
 	margin-bottom: 15px; 
 	padding: 5px 10px;
 }
+
+#topnav a#demo { font-size: 15px; text-decoration: underline; color: #fc8607; font-weight: bold; }

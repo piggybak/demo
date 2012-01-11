@@ -15,6 +15,34 @@ SET default_tablespace = '';
 
 SET default_with_oids = false;
 
+DROP TABLE addresses CASCADE;
+DROP TABLE categories CASCADE;
+DROP TABLE countries CASCADE;
+DROP TABLE categories_images;
+DROP TABLE credits CASCADE;
+DROP TABLE images CASCADE;
+DROP TABLE line_items CASCADE;
+DROP TABLE orders CASCADE;
+DROP TABLE pages CASCADE;
+DROP TABLE payment_methods CASCADE;
+DROP TABLE payments CASCADE;
+DROP TABLE posts CASCADE;
+DROP TABLE rails_admin_histories CASCADE;
+DROP TABLE roles CASCADE;
+DROP TABLE roles_users;
+DROP TABLE schema_migrations;
+DROP TABLE shipments CASCADE;
+DROP TABLE shipping_method_values CASCADE;
+DROP TABLE shipping_methods CASCADE;
+DROP TABLE states CASCADE;
+DROP TABLE taggings CASCADE;
+DROP TABLE payment_method_values CASCADE;
+DROP TABLE tags CASCADE;
+DROP TABLE tax_method_values CASCADE;
+DROP TABLE tax_methods CASCADE;
+DROP TABLE users CASCADE;
+DROP TABLE variants CASCADE;
+
 --
 -- Name: addresses; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
@@ -41,7 +69,7 @@ ALTER TABLE public.addresses OWNER TO piggybak;
 --
 
 CREATE SEQUENCE addresses_id_seq
-    START WITH 1
+    START WITH 50
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -85,7 +113,7 @@ ALTER TABLE public.categories OWNER TO piggybak;
 --
 
 CREATE SEQUENCE categories_id_seq
-    START WITH 1
+    START WITH 10
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -140,7 +168,7 @@ ALTER TABLE public.countries OWNER TO piggybak;
 --
 
 CREATE SEQUENCE countries_id_seq
-    START WITH 1
+    START WITH 1000
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -185,7 +213,7 @@ ALTER TABLE public.credits OWNER TO piggybak;
 --
 
 CREATE SEQUENCE credits_id_seq
-    START WITH 1
+    START WITH 5
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -239,7 +267,7 @@ ALTER TABLE public.images OWNER TO piggybak;
 --
 
 CREATE SEQUENCE images_id_seq
-    START WITH 1
+    START WITH 100
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -282,7 +310,7 @@ ALTER TABLE public.line_items OWNER TO piggybak;
 --
 
 CREATE SEQUENCE line_items_id_seq
-    START WITH 1
+    START WITH 30
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -332,7 +360,7 @@ ALTER TABLE public.orders OWNER TO piggybak;
 --
 
 CREATE SEQUENCE orders_id_seq
-    START WITH 1
+    START WITH 30
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -376,7 +404,7 @@ ALTER TABLE public.pages OWNER TO piggybak;
 --
 
 CREATE SEQUENCE pages_id_seq
-    START WITH 1
+    START WITH 5
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -462,7 +490,7 @@ ALTER TABLE public.payment_methods OWNER TO piggybak;
 --
 
 CREATE SEQUENCE payment_methods_id_seq
-    START WITH 1
+    START WITH 5
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -512,7 +540,7 @@ ALTER TABLE public.payments OWNER TO piggybak;
 --
 
 CREATE SEQUENCE payments_id_seq
-    START WITH 1
+    START WITH 50
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -557,7 +585,7 @@ ALTER TABLE public.posts OWNER TO piggybak;
 --
 
 CREATE SEQUENCE posts_id_seq
-    START WITH 1
+    START WITH 10
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -600,31 +628,31 @@ CREATE TABLE variants (
 ALTER TABLE public.variants OWNER TO piggybak;
 
 --
--- Name: products_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+-- Name: variants_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
-CREATE SEQUENCE products_id_seq
-    START WITH 1
+CREATE SEQUENCE variants_id_seq
+    START WITH 100
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE public.products_id_seq OWNER TO piggybak;
+ALTER TABLE public.variants_id_seq OWNER TO piggybak;
 
 --
--- Name: products_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+-- Name: variants_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
-ALTER SEQUENCE products_id_seq OWNED BY variants.id;
+ALTER SEQUENCE variants_id_seq OWNED BY variants.id;
 
 
 --
--- Name: products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+-- Name: variants_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-SELECT pg_catalog.setval('products_id_seq', 44, true);
+SELECT pg_catalog.setval('variants_id_seq', 44, true);
 
 
 --
@@ -691,7 +719,7 @@ ALTER TABLE public.roles OWNER TO piggybak;
 --
 
 CREATE SEQUENCE roles_id_seq
-    START WITH 1
+    START WITH 20
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -759,7 +787,7 @@ ALTER TABLE public.shipments OWNER TO piggybak;
 --
 
 CREATE SEQUENCE shipments_id_seq
-    START WITH 1
+    START WITH 20
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -801,7 +829,7 @@ ALTER TABLE public.shipping_method_values OWNER TO piggybak;
 --
 
 CREATE SEQUENCE shipping_method_values_id_seq
-    START WITH 1
+    START WITH 20
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -843,7 +871,7 @@ ALTER TABLE public.shipping_methods OWNER TO piggybak;
 --
 
 CREATE SEQUENCE shipping_methods_id_seq
-    START WITH 1
+    START WITH 10
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -885,7 +913,7 @@ ALTER TABLE public.states OWNER TO piggybak;
 --
 
 CREATE SEQUENCE states_id_seq
-    START WITH 1
+    START WITH 1000
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -1013,7 +1041,7 @@ ALTER TABLE public.tax_method_values OWNER TO piggybak;
 --
 
 CREATE SEQUENCE tax_method_values_id_seq
-    START WITH 1
+    START WITH 10
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -1055,7 +1083,7 @@ ALTER TABLE public.tax_methods OWNER TO piggybak;
 --
 
 CREATE SEQUENCE tax_methods_id_seq
-    START WITH 1
+    START WITH 10
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -1107,7 +1135,7 @@ ALTER TABLE public.users OWNER TO piggybak;
 --
 
 CREATE SEQUENCE users_id_seq
-    START WITH 1
+    START WITH 20
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -1295,7 +1323,7 @@ ALTER TABLE users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE variants ALTER COLUMN id SET DEFAULT nextval('products_id_seq'::regclass);
+ALTER TABLE variants ALTER COLUMN id SET DEFAULT nextval('variants_id_seq'::regclass);
 
 
 --
