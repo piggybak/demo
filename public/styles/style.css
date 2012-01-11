@@ -186,7 +186,7 @@ code {
 /* TOP AREA & MENU
 -------------------------------------------------------------- */
 #logo{float:left;}
-#logo img { height: 58px; margin-top: 2px; }
+#logo img { height: 63px; margin: 1px 0px 0px 1px; }
 #nav{position:relative;	z-index:200;float:left;padding:0;}
 #nav select {  display: none; }
 #topnav{
