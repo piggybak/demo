@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/sferik/rails_admin.git
-  revision: 5579332f8a58bf3aa8d61535aa09441af5edbaca
+  revision: 629e9fd9d4df25528e84d31afdc8ebeb0f56fbb3
   specs:
     rails_admin (0.0.1)
       bbenezech-nested_form (~> 0.0)
@@ -23,9 +23,8 @@ GIT
       devise
       rails_admin
 
-GIT
-  remote: git://github.com/stephskardal/piggybak.git
-  revision: a63919fd76aaa15a31ebf68355c022e0f0374df8
+PATH
+  remote: ../piggybak
   specs:
     piggybak (0.3.0)
       activemerchant

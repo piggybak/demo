@@ -152,6 +152,8 @@ jQuery(document).ready(function(){
 								<p>The cart_link helper displays a link with total number of items and price to the user's shopping cart.</p>
 								<pre><%= orders_link("Order History") %></pre>
 								<p>The orders_link helper renders a link to a logged in user's orders, with an argument to control the link anchor text.</p>
+								<pre><%= piggybak_track_order("Piggybak Demo") %></pre>
+								<p>The piggybak_track_order helper renders Google Analytics order tracking, with an argument to control the store name.</p>
 							</div>
 							<div id="tab2" class="tab-content">
 								<p>Piggybak views may be overridden to present custom appearances for the shopping cart, checkout, receipt, and order history pages. To do this, simply copy over views directly from the gem source into the primary application to mirror the directory structure.</p>
