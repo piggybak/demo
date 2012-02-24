@@ -2,6 +2,7 @@ class Ability
   include CanCan::Ability
   def initialize(user)
     if user && user.roles.include?(Role.find_by_name("admin"))
+      can :dashboard
       can :access, :rails_admin
       can [:read, :export, :history], [Category,
                     Image,
