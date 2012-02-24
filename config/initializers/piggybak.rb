@@ -6,7 +6,7 @@ Piggybak.config do |config|
 
   #config.tax_calculators = ["..."]
 
-  config.default_country = "CA"
+  config.default_country = "US"
 
   config.activemerchant_mode = :test
 end
