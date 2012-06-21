@@ -115,7 +115,10 @@
 	<div id="wrapper-footer">
 		<div class="container">
 		<div id="footer" class="twelve columns">
-			<span id="copyright">Copyright &copy;<%= Time.now.year.to_s %> Steph Skardal.  All Rights Reserved.</span>
+			<span id="copyright">
+				Copyright &copy;<%= Time.now.year.to_s %> Steph Skardal.  All Rights Reserved.<br />
+				This demo is running on Ruby v<%= RUBY_VERSION %>, Rails v<%= Rails::VERSION::STRING %>
+			</span>
 			<ul id="footnav">
 				<% Page.all.each do |page| -%>
 				<li><%= link_to page.title, "/demo/#{page.slug}/" %></li>
