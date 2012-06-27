@@ -8,7 +8,7 @@
 <meta name="keywords" content="" />
 <meta name="title" content="Piggybak: A Mountable Ruby on Rails Ecommerce Solution" />
 <meta name="description" content="" />
-<title>Piggybak: A Mountable Ruby on Rails Ecommerce Solution</title>
+<title>Piggybak Support</title>
 <link rel="shortcut icon" href="images/favicon.ico" />
 
 <!--CSS-->
@@ -17,17 +17,30 @@
 <!--Javascript-->
 <script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
 <script type="text/javascript" src="js/jquery.easing.1.3.js"></script> 
-<script type="text/javascript" src="js/jquery.nivo.slider.js"></script>
 <script type="text/javascript">
-jQuery(window).load(function() {
-	jQuery('#slider').nivoSlider({
-	pauseTime: 5000,
-	prevText: '',
-	nextText: '',
-	directionNavHide:false, // Only show on hover
-	controlNavThumbs:true,
-	controlNavThumbsReplace: '_thumb.jpg'
+jQuery(document).ready(function(){
+	//jQuery tab
+	jQuery(".tab-content,.tab2-content").hide(); //Hide all content
+	jQuery("ul.tabs li:first, ul.tabs2 li:first").addClass("active").show(); //Activate first tab
+	jQuery(".tab-content:first,.tab2-content:first").show(); //Show first tab content
+	//On Click Event
+	jQuery("ul.tabs li").click(function() {
+		jQuery("ul.tabs li").removeClass("active"); //Remove any "active" class
+		jQuery(this).addClass("active"); //Add "active" class to selected tab
+		jQuery(".tab-content").hide(); //Hide all tab content
+		var activeTab = jQuery(this).find("a").attr("href"); //Find the rel attribute value to identify the active tab + content
+		jQuery(activeTab).fadeIn(200); //Fade in the active content
+		return false;
 	});
+	jQuery("ul.tabs2 li").click(function() {
+		jQuery("ul.tabs2 li").removeClass("active"); //Remove any "active" class
+		jQuery(this).addClass("active"); //Add "active" class to selected tab
+		jQuery(".tab2-content").hide(); //Hide all tab content
+		var activeTab = jQuery(this).find("a").attr("href"); //Find the rel attribute value to identify the active tab + content
+		jQuery(activeTab).fadeIn(200); //Fade in the active content
+		return false;
+	});
+	
 });
 </script>
 <script type="text/javascript">
@@ -43,6 +56,7 @@ jQuery(window).load(function() {
   })();
 
 </script>
+	
 </head>
 <body>
 <div id="wrapper">
@@ -55,10 +69,10 @@ jQuery(window).load(function() {
 				</div><!--#logo-->
 				<div id="nav" class="eight columns">
 					<ul id="topnav" class="sf-menu">
-						<li class="current"><a href="index.html">Home</a></li>
+						<li><a href="index.html">Home</a></li>
 						<li><a href="features.html">Features</a></li>
 						<li><a href="documentation.html">Documentation</a></li>
-						<li><a href="support.html">Support</a></li>
+						<li class="current"><a href="support.html">Support</a></li>
 						<li><a id="demo" href="demo_details.html">Visit the Demo</a></li>
 					</ul><!-- #topnav -->
 				</div><!--#nav-->
@@ -72,7 +86,7 @@ jQuery(window).load(function() {
 			<div id="sn" class="six columns">
 			</div><!--#sn-->
 			<div id="toptext" class="six columns">
-				<span>Welcome!</span>
+				<span><a href="index.html">Home</a> &raquo; Support</span>
 			</div><!--#toptext-->
 			<div class="clearfix"></div>
 		</div><!--container-->
@@ -85,53 +99,25 @@ jQuery(window).load(function() {
 					<h1>Piggybak: A Mountable Ruby on Rails Ecommerce Solution</h1>
 					<p><a href="https://github.com/stephskardal/piggybak">Piggybak</a> is a Ruby on Rails 3 Engine with basic shopping cart and one page checkout functionality. It uses <a href="https://github.com/sferik/rails_admin">Rails Admin</a> to provide an admin interface to work with orders, products, shipping methods, payment methods, and tax methods. It is not an ecommerce turn-key solution, but is intended to be mounted on existing Rails applications.</p>
 				</div><!-- #header-text -->
-				<div id="slider-container">
-					<span class="opacity-top"></span>
-					<div id="slider">
-						<img src="images/home.jpg" alt="" />
-						<img src="images/product.jpg" alt="" />
-						<img src="images/cart.jpg" alt="" />
-						<img src="images/checkout.jpg" alt="" />
-						<img src="images/admin_dashboard.jpg" alt="" />
-						<img src="images/nested_product.jpg" alt="" />
-						<img src="images/shipping_method.jpg" alt="" />
-						<img src="images/orders_admin.jpg" alt="" />
-					</div><!-- #slider -->
-					<span class="opacity-bottom"></span>
-				</div><!-- #slider-container -->
 			</div><!--#header-->
 		</div><!--container-->
 	</div><!--#wrapper-header-->
 	
-	
 	<div id="wrapper-content">
 		<div class="container">
 			<div id="content" class="twelve columns">
-			
-			<div id="row2">
 				<div class="title">
-					<h1><span class="f-left"></span><span class="titletext">Features</span><span class="f-right"></span></h1>
+					<h1><span class="f-left"></span><span class="titletext">Support</span><span class="f-right"></span></h1>
 				</div>
-				<div class="three columns alpha">
-					<h3><a href="features.html">Mountability</a></h3>
-					<p>Piggybak is designed to be mounted on your existing Ruby on Rails application. This gives you the freedom to build out your own custom web application to fit your needs perfectly.</p>
-				</div>
-				<div class="three columns">
-					<h3><a href="features.html">Sleek Admin Interface</a></h3>
-					<p>Piggybak includes a sleek and easy-to-use interface for managing your data. Combined with CanCan, this gives a flexible and powerful way to manage data by various users and roles.</p>
-				</div>
-				<div class="three columns">
-					<h3><a href="features.html">One Page Checkout</a></h3>
-					<p>Piggybak comes with one page checkout, which allows users to check out as guests or registered users. One page checkout makes on-page updates for shipping and tax calculations.</p>
-				</div>
-				<div class="three columns omega">
-					<h3><a href="features.html">Configurability</a></h3>
-					<p>Piggybak allows for users to configure, extend, and manage payment, shipping, and tax calculators. A strong foundation with extensibility allows users to develop custom sites to suit custom needs.</p>
-				</div>
-			</div><!--#row2-->
-			
-			<div class="clearfix"></div><br />
-			
+				<div id="maincontent" class="twelve columns alpha">
+					<p>Looking for support? You've come to the right place. Get in touch with support several ways:</p>
+					<ul>
+						<li><a href="https://groups.google.com/forum/?fromgroups#!forum/piggybak">Join or Email the Piggybak Google Group</a></li>
+						<li><a href="https://github.com/stephskardal/piggybak">Jump on Github to comment or file project issues</a></li>
+						<li><a href="http://www.endpoint.com/#contact">Contact End Point directy with a development request.</li>
+					</ul>
+				</div><!--#maincontent-->
+				<div class="clearfix"></div>
 			</div><!--#content-->
 		</div><!--container-->
 	</div><!--#wrapper-content-->
@@ -150,12 +136,12 @@ jQuery(window).load(function() {
 	<div id="wrapper-footer">
 		<div class="container">
 		<div id="footer" class="twelve columns">
-			<span id="copyright">Copyright &copy;2012 Piggybak.  All Rights Reserved.</span>
+			<span id="copyright">Copyright &copy;2012 End Point.  All Rights Reserved.</span>
 			<ul id="footnav">
-				<li class="current"><a href="index.html" >Home</a></li>
+				<li><a href="index.html" >Home</a></li>
 				<li><a href="features.html">Features</a></li>
 				<li><a href="documentation.html">Documentation</a></li>
-				<li><a href="support.html">Support</a></li>
+				<li class="current"><a href="support.html">Support</a></li>
 				<li><a href="demo_details.html">Demo</a></li>
 			</ul><!-- #footnav -->
 		</div><!--#footer-->
