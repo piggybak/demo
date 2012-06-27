@@ -115,7 +115,7 @@ GEM
       mime-types
     pg (0.12.0)
       rake-compiler (~> 0.7)
-    piggybak (0.4.3)
+    piggybak (0.4.4)
       activemerchant
       countries
       countries
@@ -205,7 +205,7 @@ DEPENDENCIES
   json
   paperclip
   pg (= 0.12.0)
-  piggybak (= 0.4.3)
+  piggybak (= 0.4.4)
   rails (= 3.2.6)
   rails_admin
   sass-rails (~> 3.2.3)
