@@ -15,6 +15,35 @@ SET default_tablespace = '';
 
 SET default_with_oids = false;
 
+DROP TABLE addresses CASCADE;
+DROP TABLE ajustments CASCADE;
+DROP TABLE categories CASCADE;
+DROP TABLE countries CASCADE;
+DROP TABLE categories_images;
+DROP TABLE credits CASCADE;
+DROP TABLE images CASCADE;
+DROP TABLE line_items CASCADE;
+DROP TABLE orders CASCADE;
+DROP TABLE pages CASCADE;
+DROP TABLE payment_methods CASCADE;
+DROP TABLE payments CASCADE;
+DROP TABLE posts CASCADE;
+DROP TABLE rails_admin_histories CASCADE;
+DROP TABLE roles CASCADE;
+DROP TABLE roles_users;
+DROP TABLE schema_migrations;
+DROP TABLE shipments CASCADE;
+DROP TABLE shipping_method_values CASCADE;
+DROP TABLE shipping_methods CASCADE;
+DROP TABLE states CASCADE;
+DROP TABLE taggings CASCADE;
+DROP TABLE payment_method_values CASCADE;
+DROP TABLE tags CASCADE;
+DROP TABLE tax_method_values CASCADE;
+DROP TABLE tax_methods CASCADE;
+DROP TABLE users CASCADE;
+DROP TABLE variants CASCADE;
+
 --
 -- Name: addresses; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
