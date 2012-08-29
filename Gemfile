@@ -21,5 +21,5 @@ group :assets do
 end
 
 gem 'jquery-rails'
-gem "piggybak", '0.5.0'
+gem "piggybak", '0.5.1'
 gem "bloggybak", :git => "git://github.com/stephskardal/bloggybak.git"

@@ -18,33 +18,6 @@
 <script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
 <script type="text/javascript" src="js/jquery.easing.1.3.js"></script> 
 <script type="text/javascript">
-jQuery(document).ready(function(){
-	//jQuery tab
-	jQuery(".tab-content,.tab2-content").hide(); //Hide all content
-	jQuery("ul.tabs li:first, ul.tabs2 li:first").addClass("active").show(); //Activate first tab
-	jQuery(".tab-content:first,.tab2-content:first").show(); //Show first tab content
-	//On Click Event
-	jQuery("ul.tabs li").click(function() {
-		jQuery("ul.tabs li").removeClass("active"); //Remove any "active" class
-		jQuery(this).addClass("active"); //Add "active" class to selected tab
-		jQuery(".tab-content").hide(); //Hide all tab content
-		var activeTab = jQuery(this).find("a").attr("href"); //Find the rel attribute value to identify the active tab + content
-		jQuery(activeTab).fadeIn(200); //Fade in the active content
-		return false;
-	});
-	jQuery("ul.tabs2 li").click(function() {
-		jQuery("ul.tabs2 li").removeClass("active"); //Remove any "active" class
-		jQuery(this).addClass("active"); //Add "active" class to selected tab
-		jQuery(".tab2-content").hide(); //Hide all tab content
-		var activeTab = jQuery(this).find("a").attr("href"); //Find the rel attribute value to identify the active tab + content
-		jQuery(activeTab).fadeIn(200); //Fade in the active content
-		return false;
-	});
-	
-});
-</script>
-<script type="text/javascript">
-
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-525312-15']);
   _gaq.push(['_trackPageview']);

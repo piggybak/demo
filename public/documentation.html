@@ -17,34 +17,8 @@
 <!--Javascript-->
 <script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
 <script type="text/javascript" src="js/jquery.easing.1.3.js"></script> 
+<script type="text/javascript" src="js/tabs.js"></script>
 <script type="text/javascript">
-jQuery(document).ready(function(){
-	//jQuery tab
-	jQuery(".tab-content,.tab2-content").hide(); //Hide all content
-	jQuery("ul.tabs li:first, ul.tabs2 li:first").addClass("active").show(); //Activate first tab
-	jQuery(".tab-content:first,.tab2-content:first").show(); //Show first tab content
-	//On Click Event
-	jQuery("ul.tabs li").click(function() {
-		jQuery("ul.tabs li").removeClass("active"); //Remove any "active" class
-		jQuery(this).addClass("active"); //Add "active" class to selected tab
-		jQuery(".tab-content").hide(); //Hide all tab content
-		var activeTab = jQuery(this).find("a").attr("href"); //Find the rel attribute value to identify the active tab + content
-		jQuery(activeTab).fadeIn(200); //Fade in the active content
-		return false;
-	});
-	jQuery("ul.tabs2 li").click(function() {
-		jQuery("ul.tabs2 li").removeClass("active"); //Remove any "active" class
-		jQuery(this).addClass("active"); //Add "active" class to selected tab
-		jQuery(".tab2-content").hide(); //Hide all tab content
-		var activeTab = jQuery(this).find("a").attr("href"); //Find the rel attribute value to identify the active tab + content
-		jQuery(activeTab).fadeIn(200); //Fade in the active content
-		return false;
-	});
-	
-});
-</script>
-<script type="text/javascript">
-
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-525312-15']);
   _gaq.push(['_trackPageview']);
@@ -54,7 +28,6 @@ jQuery(document).ready(function(){
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
-
 </script>
 	
 </head>
@@ -113,19 +86,19 @@ jQuery(document).ready(function(){
 				<div id="maincontent" class="twelve columns alpha">
 					<div class="tabcontainer">
 						<ul class="tabs">
-							<li><a href="#tab5">Base Application</a></li>
-							<li><a href="#tab0">Installation</a></li>
-							<li><a href="#tab1">Integration</a></li>
-							<li><a href="#tab6">Configuration</a></li>
-							<li><a href="#tab2">Appearance Overrides</a></li>
-							<li><a href="#tab3">Recipes</a></li>
-							<li><a href="#tab4">Road Map</a></li>
+							<li><a class="bbase" href="#bbase">Base Application</a></li>
+							<li><a class="installation" href="#installation">Installation</a></li>
+							<li><a class="integration" href="#integration">Integration</a></li>
+							<li><a class="configuration" href="#configuration">Configuration</a></li>
+							<li><a class="appearance" href="#appearance">Appearance Overrides</a></li>
+							<li><a class="recipes" href="#recipes">Recipes</a></li>
+							<li><a class="roadmap" href="#roadmap">Road Map</a></li>
 						</ul>
 						<div id="tab-body">
-							<div id="tab5" class="tab-content">
-								<p>The parent Ruby on Rails application must be on Rails 3.1.*. Piggybak has shown to be compatible with both Ruby 1.8 and Ruby 1.9. While it is not a requirement that the parent application be using <a href="https://github.com/sferik/rails_admin">RailsAdmin</a>, it is a recommendtion. RailsAdmin depends on <a href="https://github.com/plataformatec/devise">Devise</a> for user authentication. <a href="https://github.com/ryanb/cancan">CanCan</a> is also used for authorization by RailsAdmin. It is highly recommended that you be familiar with RailsAdmin, Devise, and CanCan while working with Piggybak.</p>
+							<div id="tab_bbase" class="tab-content">
+								<p>The parent Ruby on Rails application must be on Rails 3.2.*. Piggybak has shown to be compatible with both Ruby 1.8 and Ruby 1.9. While it is not a requirement that the parent application be using <a href="https://github.com/sferik/rails_admin">RailsAdmin</a>, it is a recommendtion. RailsAdmin depends on <a href="https://github.com/plataformatec/devise">Devise</a> for user authentication. <a href="https://github.com/ryanb/cancan">CanCan</a> is also used for authorization by RailsAdmin. It is highly recommended that you be familiar with RailsAdmin, Devise, and CanCan while working with Piggybak.</p>
 							</div>
-							<div id="tab0" class="tab-content">
+							<div id="tab_installation" class="tab-content">
 								<p>Installation is similar to installation of other Rails gems. First, install the gem by adding the following line to your Gemfile:</p>
 								<pre>gem "piggybak"</pre>
 								<p>Install the gem:</p>
@@ -148,7 +121,7 @@ jQuery(document).ready(function(){
                                 ensure that it is served via SSL if there are SSL redirects on JS).
 								<pre>config.assets.precopile += %w( piggybak-application.js )</pre>
 							</div>
-							<div id="tab1" class="tab-content">
+							<div id="tab_integration" class="tab-content">
 								<p>After installation, Piggybak has several integration points:</p>
 								<pre>acts_as_variant</pre>
 								<p>acts_as_variant can be added inside any ActiveRecord models in your application to make tha item become sellable. This results in a nested form for variant data in the admin interface.</p>
@@ -163,7 +136,7 @@ jQuery(document).ready(function(){
 								<pre><%= piggybak_track_order("Piggybak Demo") %></pre>
 								<p>The piggybak_track_order helper renders Google Analytics order tracking, with an argument to control the store name.</p>
 							</div>
-							<div id="tab2" class="tab-content">
+							<div id="tab_appearance" class="tab-content">
 								<p>Piggybak views may be overridden to present custom appearances for the shopping cart, checkout, receipt, and order history pages. To do this, simply copy over views directly from the gem source into the primary application to mirror the directory structure.</p>
 								<p>Overridable views include:</p>
 								<ul>
@@ -179,7 +152,7 @@ jQuery(document).ready(function(){
 									<li>Order email notification view</li>
 								</ul>
 							</div>
-							<div id="tab3" class="tab-content">
+							<div id="tab_recipes" class="tab-content">
 								<p>Looking for a few tips on integration in the parent application? Here they are.</p>
 								<h3>Redirect After Log In and Log Out</h3>
 								<p>The one page checkout has functionality to allow users to log in and log out. This must be coordinated in the parent application to handle redirects on log in and log out. Using Devise's callbacks for these actions, the following can be added to the ApplicationController to handle redirects.</p>
@@ -222,13 +195,13 @@ class Ability
 end
 </pre>
 							</div>
-							<div id="tab4" class="tab-content">
+							<div id="tab_roadmap" class="tab-content">
 								<p>What's on the road map for this gem? Here are the current priorities:</p>
 								<ul>
 									<li>Add testing support, and possibly integration tests</li>
 								</ul>
 							</div>
-							<div id="tab6" class="tab-content">
+							<div id="tab_configuration" class="tab-content">
 								<p>The parent application can override Piggybak's configuration options with a standard config initializer.</p>
 <pre>
 Piggybak.config do |config|

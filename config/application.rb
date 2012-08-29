@@ -50,6 +50,6 @@ module Demo
     Demo::Application.config.middleware.use ExceptionNotifier,
       :email_prefix => "Piggybak Exception",
       :sender_address => %{"notifier" <notifier@piggybak.org>},
-      :exception_recipients => %w{steph@endpoint.com}
+      :exception_recipients => %w{piggybak@endpoint.com}
   end
 end
