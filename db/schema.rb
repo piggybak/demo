@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120627175044) do
+ActiveRecord::Schema.define(:version => 20120829140529) do
 
   create_table "addresses", :force => true do |t|
     t.string   "firstname",  :null => false
@@ -24,6 +24,16 @@ ActiveRecord::Schema.define(:version => 20120627175044) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "country_id"
+  end
+
+  create_table "adjustments", :force => true do |t|
+    t.integer  "order_id"
+    t.string   "source_type"
+    t.integer  "source_id"
+    t.decimal  "total"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "note"
   end
 
   create_table "categories", :force => true do |t|
@@ -46,7 +56,8 @@ ActiveRecord::Schema.define(:version => 20120627175044) do
     t.boolean "active_billing",  :default => false
   end
 
-  create_table "credits", :force => true do |t|
+  create_table "credits", :id => false, :force => true do |t|
+    t.integer  "id",          :null => false
     t.integer  "order_id"
     t.string   "source_type"
     t.integer  "source_id"
@@ -82,18 +93,29 @@ ActiveRecord::Schema.define(:version => 20120627175044) do
     t.string  "description", :default => "",  :null => false
   end
 
+  create_table "order_notes", :force => true do |t|
+    t.integer  "order_id",   :null => false
+    t.integer  "user_id",    :null => false
+    t.text     "note"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "orders", :force => true do |t|
-    t.integer  "billing_address_id",  :null => false
-    t.integer  "shipping_address_id", :null => false
+    t.integer  "billing_address_id",                     :null => false
+    t.integer  "shipping_address_id",                    :null => false
     t.integer  "user_id"
-    t.string   "email",               :null => false
-    t.string   "phone",               :null => false
-    t.decimal  "total",               :null => false
-    t.decimal  "total_due",           :null => false
-    t.decimal  "tax_charge",          :null => false
-    t.string   "status",              :null => false
+    t.string   "email",                                  :null => false
+    t.string   "phone",                                  :null => false
+    t.decimal  "total",                                  :null => false
+    t.decimal  "total_due",                              :null => false
+    t.decimal  "tax_charge",                             :null => false
+    t.string   "status",                                 :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "ip_address"
+    t.string   "user_agent"
+    t.boolean  "to_be_cancelled",     :default => false
   end
 
   create_table "pages", :force => true do |t|
@@ -128,6 +150,7 @@ ActiveRecord::Schema.define(:version => 20120627175044) do
     t.string   "transaction_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "masked_number"
   end
 
   create_table "posts", :force => true do |t|

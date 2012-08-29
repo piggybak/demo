@@ -12,6 +12,7 @@ gem 'paperclip'
 gem 'devise'
 gem 'acts-as-taggable-on'
 gem 'cancan'
+gem 'exception_notification'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
@@ -20,5 +21,5 @@ group :assets do
 end
 
 gem 'jquery-rails'
-gem "piggybak", '0.4.5'
+gem "piggybak", '0.5.0'
 gem "bloggybak", :git => "git://github.com/stephskardal/bloggybak.git"

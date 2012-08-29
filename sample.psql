@@ -15,34 +15,6 @@ SET default_tablespace = '';
 
 SET default_with_oids = false;
 
-DROP TABLE addresses CASCADE;
-DROP TABLE categories CASCADE;
-DROP TABLE countries CASCADE;
-DROP TABLE categories_images;
-DROP TABLE credits CASCADE;
-DROP TABLE images CASCADE;
-DROP TABLE line_items CASCADE;
-DROP TABLE orders CASCADE;
-DROP TABLE pages CASCADE;
-DROP TABLE payment_methods CASCADE;
-DROP TABLE payments CASCADE;
-DROP TABLE posts CASCADE;
-DROP TABLE rails_admin_histories CASCADE;
-DROP TABLE roles CASCADE;
-DROP TABLE roles_users;
-DROP TABLE schema_migrations;
-DROP TABLE shipments CASCADE;
-DROP TABLE shipping_method_values CASCADE;
-DROP TABLE shipping_methods CASCADE;
-DROP TABLE states CASCADE;
-DROP TABLE taggings CASCADE;
-DROP TABLE payment_method_values CASCADE;
-DROP TABLE tags CASCADE;
-DROP TABLE tax_method_values CASCADE;
-DROP TABLE tax_methods CASCADE;
-DROP TABLE users CASCADE;
-DROP TABLE variants CASCADE;
-
 --
 -- Name: addresses; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
@@ -91,6 +63,69 @@ ALTER SEQUENCE addresses_id_seq OWNED BY addresses.id;
 
 SELECT pg_catalog.setval('addresses_id_seq', 44, true);
 
+
+--
+-- Name: credits; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE credits (
+    id integer NOT NULL,
+    order_id integer,
+    source_type character varying(255),
+    source_id integer,
+    total numeric,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.credits OWNER TO piggybak;
+
+--
+-- Name: credits_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE credits_id_seq
+    START WITH 5
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.credits_id_seq OWNER TO piggybak;
+
+--
+-- Name: credits_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE credits_id_seq OWNED BY credits.id;
+
+
+--
+-- Name: credits_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('credits_id_seq', 2, true);
+
+
+--
+-- Name: adjustments; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE adjustments (
+    id integer DEFAULT nextval('credits_id_seq'::regclass) NOT NULL,
+    order_id integer,
+    source_type character varying(255),
+    source_id integer,
+    total numeric,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    note text
+);
+
+
+ALTER TABLE public.adjustments OWNER TO piggybak;
 
 --
 -- Name: categories; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
@@ -192,51 +227,6 @@ SELECT pg_catalog.setval('countries_id_seq', 421, true);
 
 
 --
--- Name: credits; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE credits (
-    id integer NOT NULL,
-    order_id integer,
-    source_type character varying(255),
-    source_id integer,
-    total numeric,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
-ALTER TABLE public.credits OWNER TO piggybak;
-
---
--- Name: credits_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE credits_id_seq
-    START WITH 5
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.credits_id_seq OWNER TO piggybak;
-
---
--- Name: credits_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE credits_id_seq OWNED BY credits.id;
-
-
---
--- Name: credits_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('credits_id_seq', 2, true);
-
-
---
 -- Name: images; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
@@ -299,7 +289,9 @@ CREATE TABLE line_items (
     order_id integer NOT NULL,
     quantity integer NOT NULL,
     variant_id integer NOT NULL,
-    total numeric
+    total numeric,
+    price numeric DEFAULT 0.0 NOT NULL,
+    description character varying(255) DEFAULT ''::character varying NOT NULL
 );
 
 
@@ -334,6 +326,50 @@ SELECT pg_catalog.setval('line_items_id_seq', 20, true);
 
 
 --
+-- Name: order_notes; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE order_notes (
+    id integer NOT NULL,
+    order_id integer NOT NULL,
+    user_id integer NOT NULL,
+    note text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.order_notes OWNER TO piggybak;
+
+--
+-- Name: order_notes_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE order_notes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.order_notes_id_seq OWNER TO piggybak;
+
+--
+-- Name: order_notes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE order_notes_id_seq OWNED BY order_notes.id;
+
+
+--
+-- Name: order_notes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('order_notes_id_seq', 1, false);
+
+
+--
 -- Name: orders; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
@@ -349,7 +385,10 @@ CREATE TABLE orders (
     tax_charge numeric NOT NULL,
     status character varying(255) NOT NULL,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    ip_address character varying(255),
+    user_agent character varying(255),
+    to_be_cancelled boolean DEFAULT false
 );
 
 
@@ -527,7 +566,8 @@ CREATE TABLE payments (
     year integer,
     transaction_id character varying(255),
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    masked_number character varying(255)
 );
 
 
@@ -604,53 +644,6 @@ ALTER SEQUENCE posts_id_seq OWNED BY posts.id;
 --
 
 SELECT pg_catalog.setval('posts_id_seq', 4, true);
-
-
---
--- Name: variants; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE variants (
-    id integer NOT NULL,
-    sku character varying(255) NOT NULL,
-    description character varying(255) NOT NULL,
-    price numeric NOT NULL,
-    quantity integer DEFAULT 0 NOT NULL,
-    item_id integer NOT NULL,
-    item_type character varying(255) NOT NULL,
-    active boolean DEFAULT false NOT NULL,
-    unlimited_inventory boolean DEFAULT false NOT NULL
-);
-
-
-ALTER TABLE public.variants OWNER TO piggybak;
-
---
--- Name: variants_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE variants_id_seq
-    START WITH 100
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.variants_id_seq OWNER TO piggybak;
-
---
--- Name: variants_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE variants_id_seq OWNED BY variants.id;
-
-
---
--- Name: variants_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('variants_id_seq', 44, true);
 
 
 --
@@ -1157,171 +1150,225 @@ SELECT pg_catalog.setval('users_id_seq', 10, true);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+-- Name: variants; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE addresses ALTER COLUMN id SET DEFAULT nextval('addresses_id_seq'::regclass);
+CREATE TABLE variants (
+    id integer NOT NULL,
+    sku character varying(255) NOT NULL,
+    description character varying(255) NOT NULL,
+    price numeric NOT NULL,
+    quantity integer DEFAULT 0 NOT NULL,
+    item_id integer NOT NULL,
+    item_type character varying(255) NOT NULL,
+    active boolean DEFAULT false NOT NULL,
+    unlimited_inventory boolean DEFAULT false NOT NULL
+);
 
 
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
-ALTER TABLE categories ALTER COLUMN id SET DEFAULT nextval('categories_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
-ALTER TABLE countries ALTER COLUMN id SET DEFAULT nextval('countries_id_seq'::regclass);
-
+ALTER TABLE public.variants OWNER TO piggybak;
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+-- Name: variants_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE credits ALTER COLUMN id SET DEFAULT nextval('credits_id_seq'::regclass);
+CREATE SEQUENCE variants_id_seq
+    START WITH 100
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
 
+
+ALTER TABLE public.variants_id_seq OWNER TO piggybak;
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+-- Name: variants_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE images ALTER COLUMN id SET DEFAULT nextval('images_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
-ALTER TABLE line_items ALTER COLUMN id SET DEFAULT nextval('line_items_id_seq'::regclass);
+ALTER SEQUENCE variants_id_seq OWNED BY variants.id;
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+-- Name: variants_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE orders ALTER COLUMN id SET DEFAULT nextval('orders_id_seq'::regclass);
+SELECT pg_catalog.setval('variants_id_seq', 44, true);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE pages ALTER COLUMN id SET DEFAULT nextval('pages_id_seq'::regclass);
+ALTER TABLE ONLY addresses ALTER COLUMN id SET DEFAULT nextval('addresses_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE payment_method_values ALTER COLUMN id SET DEFAULT nextval('payment_method_values_id_seq'::regclass);
+ALTER TABLE ONLY categories ALTER COLUMN id SET DEFAULT nextval('categories_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE payment_methods ALTER COLUMN id SET DEFAULT nextval('payment_methods_id_seq'::regclass);
+ALTER TABLE ONLY countries ALTER COLUMN id SET DEFAULT nextval('countries_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE payments ALTER COLUMN id SET DEFAULT nextval('payments_id_seq'::regclass);
+ALTER TABLE ONLY credits ALTER COLUMN id SET DEFAULT nextval('credits_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE posts ALTER COLUMN id SET DEFAULT nextval('posts_id_seq'::regclass);
+ALTER TABLE ONLY images ALTER COLUMN id SET DEFAULT nextval('images_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE rails_admin_histories ALTER COLUMN id SET DEFAULT nextval('rails_admin_histories_id_seq'::regclass);
+ALTER TABLE ONLY line_items ALTER COLUMN id SET DEFAULT nextval('line_items_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE roles ALTER COLUMN id SET DEFAULT nextval('roles_id_seq'::regclass);
+ALTER TABLE ONLY order_notes ALTER COLUMN id SET DEFAULT nextval('order_notes_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE shipments ALTER COLUMN id SET DEFAULT nextval('shipments_id_seq'::regclass);
+ALTER TABLE ONLY orders ALTER COLUMN id SET DEFAULT nextval('orders_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE shipping_method_values ALTER COLUMN id SET DEFAULT nextval('shipping_method_values_id_seq'::regclass);
+ALTER TABLE ONLY pages ALTER COLUMN id SET DEFAULT nextval('pages_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE shipping_methods ALTER COLUMN id SET DEFAULT nextval('shipping_methods_id_seq'::regclass);
+ALTER TABLE ONLY payment_method_values ALTER COLUMN id SET DEFAULT nextval('payment_method_values_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE states ALTER COLUMN id SET DEFAULT nextval('states_id_seq'::regclass);
+ALTER TABLE ONLY payment_methods ALTER COLUMN id SET DEFAULT nextval('payment_methods_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE taggings ALTER COLUMN id SET DEFAULT nextval('taggings_id_seq'::regclass);
+ALTER TABLE ONLY payments ALTER COLUMN id SET DEFAULT nextval('payments_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE tags ALTER COLUMN id SET DEFAULT nextval('tags_id_seq'::regclass);
+ALTER TABLE ONLY posts ALTER COLUMN id SET DEFAULT nextval('posts_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE tax_method_values ALTER COLUMN id SET DEFAULT nextval('tax_method_values_id_seq'::regclass);
+ALTER TABLE ONLY rails_admin_histories ALTER COLUMN id SET DEFAULT nextval('rails_admin_histories_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE tax_methods ALTER COLUMN id SET DEFAULT nextval('tax_methods_id_seq'::regclass);
+ALTER TABLE ONLY roles ALTER COLUMN id SET DEFAULT nextval('roles_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+ALTER TABLE ONLY shipments ALTER COLUMN id SET DEFAULT nextval('shipments_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE variants ALTER COLUMN id SET DEFAULT nextval('variants_id_seq'::regclass);
+ALTER TABLE ONLY shipping_method_values ALTER COLUMN id SET DEFAULT nextval('shipping_method_values_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY shipping_methods ALTER COLUMN id SET DEFAULT nextval('shipping_methods_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY states ALTER COLUMN id SET DEFAULT nextval('states_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY taggings ALTER COLUMN id SET DEFAULT nextval('taggings_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY tags ALTER COLUMN id SET DEFAULT nextval('tags_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY tax_method_values ALTER COLUMN id SET DEFAULT nextval('tax_method_values_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY tax_methods ALTER COLUMN id SET DEFAULT nextval('tax_methods_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY variants ALTER COLUMN id SET DEFAULT nextval('variants_id_seq'::regclass);
 
 
 --
@@ -1333,6 +1380,16 @@ COPY addresses (id, firstname, lastname, address1, address2, city, state_id, zip
 42	Testy	Tester	12360 West Carolina Dr.		Lakewood	6883	80228	2012-01-10 16:16:13.066987	2012-01-10 16:16:13.066987	405
 43	Steph	Skardal	54 Elizabeth St.		Salt Lake City	6926	84105	2012-01-10 16:19:25.728466	2012-01-10 16:19:25.728466	405
 44	Steph	Skardal	54 Elizabeth St.		Salt Lake City	6926	84105	2012-01-10 16:19:25.731399	2012-01-10 16:19:25.731399	405
+\.
+
+
+--
+-- Data for Name: adjustments; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY adjustments (id, order_id, source_type, source_id, total, created_at, updated_at, note) FROM stdin;
+1	\N	\N	\N	5.0	2012-01-06 01:17:24.133173	2012-01-06 01:17:24.133173	\N
+2	14	\N	\N	5.0	2012-01-06 01:17:37.748389	2012-01-06 01:17:37.748389	\N
 \.
 
 
@@ -1701,9 +1758,17 @@ COPY images (id, title, slug, description, user_id, gallery_file_name, gallery_c
 -- Data for Name: line_items; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
-COPY line_items (id, order_id, quantity, variant_id, total) FROM stdin;
-19	16	1	15	19.0
-20	17	1	15	19.0
+COPY line_items (id, order_id, quantity, variant_id, total, price, description) FROM stdin;
+19	16	1	15	19.0	0.0	
+20	17	1	15	19.0	0.0	
+\.
+
+
+--
+-- Data for Name: order_notes; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY order_notes (id, order_id, user_id, note, created_at, updated_at) FROM stdin;
 \.
 
 
@@ -1711,9 +1776,9 @@ COPY line_items (id, order_id, quantity, variant_id, total) FROM stdin;
 -- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
-COPY orders (id, billing_address_id, shipping_address_id, user_id, email, phone, total, total_due, tax_charge, status, created_at, updated_at) FROM stdin;
-16	41	42	10	test@endpoint.com	6304844834	29.0	0.0	0.0	paid	2012-01-10 16:16:12.691295	2012-01-10 16:16:13.081443
-17	43	44	\N	steph@endpoint.com	6304844834	39.0	0.0	0.0	paid	2012-01-10 16:19:25.541916	2012-01-10 16:19:25.745341
+COPY orders (id, billing_address_id, shipping_address_id, user_id, email, phone, total, total_due, tax_charge, status, created_at, updated_at, ip_address, user_agent, to_be_cancelled) FROM stdin;
+16	41	42	10	test@endpoint.com	6304844834	29.0	0.0	0.0	paid	2012-01-10 16:16:12.691295	2012-01-10 16:16:13.081443	\N	\N	f
+17	43	44	\N	steph@endpoint.com	6304844834	39.0	0.0	0.0	paid	2012-01-10 16:19:25.541916	2012-01-10 16:19:25.745341	\N	\N	f
 \.
 
 
@@ -1748,9 +1813,9 @@ COPY payment_methods (id, description, klass, active, created_at, updated_at) FR
 -- Data for Name: payments; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
-COPY payments (id, order_id, payment_method_id, status, total, month, year, created_at, updated_at, transaction_id) FROM stdin;
-15	16	1	paid	29.0	1	2012	2012-01-10 16:16:13.121248	2012-01-10 16:16:13.121248	N/A
-16	17	1	paid	39.0	1	2012	2012-01-10 16:19:25.751568	2012-01-10 16:19:25.751568	N/A
+COPY payments (id, order_id, payment_method_id, status, total, month, year, transaction_id, created_at, updated_at, masked_number) FROM stdin;
+15	16	1	paid	29.0	1	2012	N/A	2012-01-10 16:16:13.121248	2012-01-10 16:16:13.121248	\N
+16	17	1	paid	39.0	1	2012	N/A	2012-01-10 16:19:25.751568	2012-01-10 16:19:25.751568	\N
 \.
 
 
@@ -1833,6 +1898,14 @@ COPY schema_migrations (version) FROM stdin;
 20120106010846
 20120106034634
 20120107140039
+20120111195717
+20120627151032
+20120627175044
+20120829140525
+20120829140526
+20120829140527
+20120829140528
+20120829140529
 \.
 
 
@@ -6172,7 +6245,7 @@ COPY tax_methods (id, description, klass, active) FROM stdin;
 --
 
 COPY users (id, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, display_name, created_at, updated_at) FROM stdin;
-10	test@endpoint.com	$2a$10$eq.pXquV5s1nQcQNnEpM6.rdsK5x8H7gAHbaTHBe/YhzxjMLQbd96	\N	\N	\N	39	2012-01-10 21:17:14.613089	2012-01-10 16:19:54.590404	174.111.11.143	174.111.11.143	Testy Tester	2012-01-03 20:26:41.571741	2012-01-10 21:17:14.614052
+10	test@endpoint.com	$2a$10$eq.pXquV5s1nQcQNnEpM6.rdsK5x8H7gAHbaTHBe/YhzxjMLQbd96	\N	\N	\N	40	2012-08-29 14:12:39.019391	2012-01-10 21:17:14.613089	174.111.11.143	174.111.11.143	Testy Tester	2012-01-03 20:26:41.571741	2012-08-29 14:12:39.020228
 \.
 
 
@@ -6250,7 +6323,7 @@ ALTER TABLE ONLY countries
 -- Name: credits_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY credits
+ALTER TABLE ONLY adjustments
     ADD CONSTRAINT credits_pkey PRIMARY KEY (id);
 
 
@@ -6268,6 +6341,14 @@ ALTER TABLE ONLY images
 
 ALTER TABLE ONLY line_items
     ADD CONSTRAINT line_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: order_notes_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+ALTER TABLE ONLY order_notes
+    ADD CONSTRAINT order_notes_pkey PRIMARY KEY (id);
 
 
 --
