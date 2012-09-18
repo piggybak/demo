@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.6'
+gem 'rails', '3.2.8'
 gem 'fastercsv'
 gem 'rails_admin'
 gem 'pg', '0.12.0'
@@ -21,5 +21,5 @@ group :assets do
 end
 
 gem 'jquery-rails'
-gem "piggybak", '0.5.1'
+gem "piggybak", '0.5.3'
 gem "bloggybak", :git => "git://github.com/stephskardal/bloggybak.git"
