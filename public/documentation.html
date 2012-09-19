@@ -110,6 +110,11 @@
 								<p>Mount the Engine to your config/routes.rb file. This may look like:</p>
 								<pre>mount Piggybak::Engine => '/checkout', :as => 'piggybak'" to config/routes</pre>
 								<p>The engine may be mounted anywhere without affecting it's functionality.</p>
+								<p>Add acts_as_variant to any model that will become a sellable item:</p>
+								<pre>
+class Product < ActiveRecord::Base
+  acts_as_variant
+end</pre>
 								<p>You must include jquery_ujs in your application.js file to get the remove item from cart functionality to work:</p>
 								<pre>//= require jquery_ujs</pre>
 								<p>You must add the following to your application layout, or the layout used by the checkout page:</p>
