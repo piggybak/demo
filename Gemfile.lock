@@ -116,13 +116,12 @@ GEM
       mime-types
     pg (0.12.0)
       rake-compiler (~> 0.7)
-    piggybak (0.5.3)
+    piggybak (0.5.4)
       activemerchant
       countries
       countries
       devise
       rails_admin
-      whois
     polyglot (0.3.3)
     rack (1.4.1)
     rack-cache (1.2)
@@ -190,7 +189,6 @@ GEM
       multi_json (~> 1.0, >= 1.0.2)
     warden (1.2.1)
       rack (>= 1.0)
-    whois (2.6.4)
 
 PLATFORMS
   ruby
@@ -209,7 +207,7 @@ DEPENDENCIES
   json
   paperclip
   pg (= 0.12.0)
-  piggybak (= 0.5.3)
+  piggybak (= 0.5.4)
   rails (= 3.2.8)
   rails_admin
   sass-rails (~> 3.2.3)

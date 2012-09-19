@@ -9,4 +9,6 @@ Piggybak.config do |config|
   config.default_country = "US"
 
   config.activemerchant_mode = :test
+
+  config.whois_url = "http://www.infosniper.net/index.php?ip_address="
 end
