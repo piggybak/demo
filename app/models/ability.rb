@@ -4,7 +4,7 @@ class Ability
     if user && user.roles.include?(Role.find_by_name("admin"))
       can :dashboard
       can :access, :rails_admin
-      can [:read, :export, :history], [Category,
+      can [:read, :destroy, :edit, :new, :export, :history], [Category,
                     Image,
                     Page,
                     Role,
