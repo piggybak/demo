@@ -14,4 +14,8 @@ class Image < ActiveRecord::Base
   belongs_to :user
 
   acts_as_variant
+
+  def weight
+    10
+  end
 end

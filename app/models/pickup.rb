@@ -1,6 +1,10 @@
 class Pickup
   KEYS = ["state_id", "rate"]
 
+  def self.description
+    "Pickup"
+  end
+
   def self.available?(method, object)
     id = method.metadata.detect { |t| t.key == "state_id" }.value.to_i
 
