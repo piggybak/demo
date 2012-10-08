@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120829140529) do
+ActiveRecord::Schema.define(:version => 20121008195802) do
 
   create_table "addresses", :force => true do |t|
     t.string   "firstname",  :null => false
@@ -85,12 +85,16 @@ ActiveRecord::Schema.define(:version => 20120829140529) do
   end
 
   create_table "line_items", :force => true do |t|
-    t.integer "order_id",                     :null => false
-    t.integer "quantity",                     :null => false
-    t.integer "variant_id",                   :null => false
-    t.decimal "total"
-    t.decimal "price",       :default => 0.0, :null => false
-    t.string  "description", :default => "",  :null => false
+    t.integer  "order_id",                                        :null => false
+    t.integer  "quantity",                                        :null => false
+    t.decimal  "price"
+    t.string   "description",    :default => "",                  :null => false
+    t.integer  "reference_id"
+    t.integer  "sort",           :default => 0,                   :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.decimal  "unit_price"
+    t.string   "reference_type", :default => "Piggybak::Variant", :null => false
   end
 
   create_table "order_notes", :force => true do |t|
@@ -184,6 +188,17 @@ ActiveRecord::Schema.define(:version => 20120829140529) do
     t.integer "user_id"
   end
 
+  create_table "sellables", :force => true do |t|
+    t.string  "sku",                                    :null => false
+    t.string  "description",                            :null => false
+    t.decimal "price",                                  :null => false
+    t.integer "quantity",            :default => 0,     :null => false
+    t.integer "item_id",                                :null => false
+    t.string  "item_type",                              :null => false
+    t.boolean "active",              :default => false, :null => false
+    t.boolean "unlimited_inventory", :default => false, :null => false
+  end
+
   create_table "shipments", :force => true do |t|
     t.integer  "order_id",                              :null => false
     t.integer  "shipping_method_id",                    :null => false
@@ -258,16 +273,5 @@ ActiveRecord::Schema.define(:version => 20120829140529) do
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
-
-  create_table "variants", :force => true do |t|
-    t.string  "sku",                                    :null => false
-    t.string  "description",                            :null => false
-    t.decimal "price",                                  :null => false
-    t.integer "quantity",            :default => 0,     :null => false
-    t.integer "item_id",                                :null => false
-    t.string  "item_type",                              :null => false
-    t.boolean "active",              :default => false, :null => false
-    t.boolean "unlimited_inventory", :default => false, :null => false
-  end
 
 end
