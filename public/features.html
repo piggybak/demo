@@ -125,30 +125,29 @@
 				<div class="clearfix"></div>
 				<br /><br />
 				<div class="title">
-					<h1><span class="f-left"></span><span class="titletext">Anti-Features</span><span class="f-right"></span></h1>
+					<h1><span class="f-left"></span><span class="titletext">Features by Extension</span><span class="f-right"></span></h1>
 				</div>
-				<p>As a mountable ecommerce solution, this gem chooses to not make several decisions that the primary (parent) Rails application will make. This gives complete control to business owners to build a web application off of the strong base of Ruby on Rails to meet custom business needs perfectly.</p>
+				<p>The core Piggybak gem chooses to be lightweight, but there are a growing number of supported features through extensions. A few are summarized below.</p>
 				<div id="maincontent2" class="twelve columns alpha">
 					<div class="tabcontainer">
 						<ul class="tabs2">
-							<li><a class="navigation" href="#navigation">Product Navigation</a></li>
-							<li><a class="ssl" href="#ssl">No SSL Decisions</a></li>
-							<li><a class="authorization" href="#authorization">No Authorization Decisions</a></li>
-							<li><a class="coupons" href="#coupons">Coupons and Gift Certificates</a></li>
+							<li><a class="shipping_lookup" href="#shipping_lookup">Real-time Shipping Lookup</a></li>
+							<li><a class="coupons" href="#coupons">Coupons</a></li>
+							<li><a class="variants" href="#variants">Advanced Variants</a></li>
+							<li><a class="stay_tuned" href="#stay_tuned">Stay Tuned</a></li>
 						</ul>
 						<div id="tab2-body">
-							<div id="tab_navigation" class="tab2-content">
-								<p>Traditional ecommerce product finding methods include product navigation and product search. In both product navigation and product search, the underlying business logic can vary significantly across ecommerce applications. As a gem, Piggybak allows for the parent Rails application to control navigation to sellable items. A method for adding an "Add to Cart" from on any page is included in the gem.</p>
-								<p>In some cases, a significant amount of time must be spent customizing search integration. In other cases, a web application may want to display multiple add to cart forms on one page. Piggybak supports both of these options and more.</p>
-							</div>
-							<div id="tab_ssl" class="tab2-content">
-								<p>SSL configuration can vary across web applications. In some cases, SSL is forced throughout the website. In other cases, SSL is required during the checkout process only. The Piggybak gem delegates the choice to the parent application.</p>
-							</div>
-							<div id="tab_authorization" class="tab2-content">
-								<p>Authorization can be a tricky thing. Which admin users should be allowed to read orders? Which admin users should be allowed to edit orders? Which users should be allowed to send email confirmations for users? Integrated with <a href="https://github.com/ryanb/cancan">CanCan</a>, Piggybak gives full control to the parent application for determining the rights associated with orders, products, payment methods, shipping methods, tax methods, countries and states. This opens the door for building out a custom role management and authorization system to suit the needs of the business owners.</p>
+							<div id="tab_shipping_lookup" class="tab2-content">
+								<p>The <a href="https://github.com/piggybak/piggybak_realtime_shipping">Piggybak Real-time Shipping Lookup</a> extension leverages <a href="https://github.com/Shopify/active_shipping">ActiveShipping</a>, a popular Ruby open-source tool to enable shipping rate lookup with Fedex, UPS, and USPS.</p>
 							</div>
 							<div id="tab_coupons" class="tab2-content">
-								<p>While the Piggybak gems allows for the capability to add credits to orders, coupon and gift certificate business logic varies across ecommerce applications significantly. The Piggybak gem doesn't add bloat to the application by trying to solve every problem for coupon and gift certificate integration, but does open the door to be included as a custom business need.</p>
+								<p>The <a href="https://github.com/piggybak/piggybak_coupons">Piggybak Coupons</a> extension introduces coupon/discount functionality in the form of percent, dollar, and free shipping deductions from order charges. Each coupon has a unique code, and has attributes such as discount type and amount, expiration date, and number of allowed uses.</p>
+							</div>
+							<div id="tab_variants" class="tab2-content">
+								<p>While the Piggybak core makes no strong assumptions about variant support required, the <a href="https://github.com/piggybak/piggybak_variants">Piggybak Variant</a> gem includes functionality to create and manage variants and variant types on your application models.</p>
+							</div>
+							<div id="tab_stay_tuned" class="tab2-content">
+								<p>Stay tuned for upcoming extension releases that introduce popular ecommerce features, including gift certificate support, a Heroku tutorial, advanced taxonomy (or navigation), and product reviews and ratings.</p>
 							</div>
 						</div>
 					</div>

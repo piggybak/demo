@@ -103,33 +103,13 @@
 								<pre>gem "piggybak"</pre>
 								<p>Install the gem:</p>
 								<pre>bundle install</pre>
-								<p>Copy over migrations from the Piggybak gem to your application.</p>
-								<pre>rake piggybak_engine:install:migrations</pre>
-								<p>Apply the migrations. Note that Piggybak creates several tables that are not namespaced. They will fail if there is conflict in table names.</p>
-								<pre>rake db:migrate</pre>
-								<p>Mount the Engine to your config/routes.rb file. This may look like:</p>
-								<pre>mount Piggybak::Engine => '/checkout', :as => 'piggybak'" to config/routes</pre>
-								<p>The engine may be mounted anywhere without affecting it's functionality.</p>
-								<p>Add acts_as_variant to any model that will become a sellable item:</p>
-								<pre>
-class Product < ActiveRecord::Base
-  acts_as_variant
-end</pre>
-								<p>You must include jquery_ujs in your application.js file to get the remove item from cart functionality to work:</p>
-								<pre>//= require jquery_ujs</pre>
-								<p>You must add the following to your application layout, or the layout used by the checkout page:</p>
-								<pre>&lt;% if "#{params[:controller]}##{params[:action]}" == "piggybak/orders#submit" -%&gt;
-&lt;%= javascript_include_tag "piggybak-application" %&gt;
-&lt;% end -%&gt;
-</pre>
-								<p>And you must add this to your production configuration, to precompile this asset (and in some cases,
-                                ensure that it is served via SSL if there are SSL redirects on JS).
-								<pre>config.assets.precopile += %w( piggybak-application.js )</pre>
+								<p>Next, run the piggybak install command:</p>
+								<pre>piggybak install</pre>
 							</div>
 							<div id="tab_integration" class="tab-content">
 								<p>After installation, Piggybak has several integration points:</p>
-								<pre>acts_as_variant</pre>
-								<p>acts_as_variant can be added inside any ActiveRecord models in your application to make tha item become sellable. This results in a nested form for variant data in the admin interface.</p>
+								<pre>acts_as_sellable</pre>
+								<p>acts_as_sellable can be added inside any ActiveRecord models in your application to make tha item become sellable. This results in a nested form for variant data in the admin interface.</p>
 								<pre>acts_as_orderer</pre>
 								<p>acts_as_orderer must be added to the Devise user model. This creates the Ruby on Rails association between user and orders.</p>
 								<pre><%= cart_form(@some_item) %></pre>
@@ -203,7 +183,11 @@ end
 							<div id="tab_roadmap" class="tab-content">
 								<p>What's on the road map for this gem? Here are the current priorities:</p>
 								<ul>
-									<li>Add testing support, and possibly integration tests</li>
+									<li>Testing support</li>
+									<li>Gift certificate support</li>
+									<li>Advanced variant support</li>
+									<li>Heroku support</li>
+									<li>Minor technical debt cleanup</li>
 								</ul>
 							</div>
 							<div id="tab_configuration" class="tab-content">

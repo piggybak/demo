@@ -46,7 +46,6 @@ DROP TABLE tags CASCADE;
 DROP TABLE tax_method_values CASCADE;
 DROP TABLE tax_methods CASCADE;
 DROP TABLE users CASCADE;
-DROP TABLE variants CASCADE;
 
 --
 -- Name: addresses; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
@@ -148,10 +147,8 @@ SELECT pg_catalog.setval('credits_id_seq', 2, true);
 
 CREATE TABLE adjustments (
     id integer DEFAULT nextval('credits_id_seq'::regclass) NOT NULL,
-    order_id integer,
     source_type character varying(255),
     source_id integer,
-    total numeric,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     note text
@@ -260,6 +257,92 @@ SELECT pg_catalog.setval('countries_id_seq', 421, true);
 
 
 --
+-- Name: coupon_applications; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE coupon_applications (
+    id integer NOT NULL,
+    line_item_id integer,
+    coupon_id integer
+);
+
+
+ALTER TABLE public.coupon_applications OWNER TO piggybak;
+
+--
+-- Name: coupon_applications_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE coupon_applications_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.coupon_applications_id_seq OWNER TO piggybak;
+
+--
+-- Name: coupon_applications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE coupon_applications_id_seq OWNED BY coupon_applications.id;
+
+
+--
+-- Name: coupon_applications_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('coupon_applications_id_seq', 1, false);
+
+
+--
+-- Name: coupons; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE coupons (
+    id integer NOT NULL,
+    code character varying(255) NOT NULL,
+    amount numeric NOT NULL,
+    discount_type character varying(255) NOT NULL,
+    min_cart_total numeric NOT NULL,
+    expiration_date date,
+    allowed_applications integer
+);
+
+
+ALTER TABLE public.coupons OWNER TO piggybak;
+
+--
+-- Name: coupons_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE coupons_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.coupons_id_seq OWNER TO piggybak;
+
+--
+-- Name: coupons_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE coupons_id_seq OWNED BY coupons.id;
+
+
+--
+-- Name: coupons_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('coupons_id_seq', 1, false);
+
+
+--
 -- Name: images; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
@@ -321,10 +404,14 @@ CREATE TABLE line_items (
     id integer NOT NULL,
     order_id integer NOT NULL,
     quantity integer NOT NULL,
-    variant_id integer NOT NULL,
-    total numeric,
-    price numeric DEFAULT 0.0 NOT NULL,
-    description character varying(255) DEFAULT ''::character varying NOT NULL
+    sellable_id integer,
+    price numeric,
+    unit_price numeric DEFAULT 0.0 NOT NULL,
+    description character varying(255) DEFAULT ''::character varying NOT NULL,
+    line_item_type character varying(255) DEFAULT 'sellable'::character varying NOT NULL,
+    sort integer DEFAULT 0 NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
 );
 
 
@@ -355,7 +442,7 @@ ALTER SEQUENCE line_items_id_seq OWNED BY line_items.id;
 -- Name: line_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-SELECT pg_catalog.setval('line_items_id_seq', 20, true);
+SELECT pg_catalog.setval('line_items_id_seq', 24, true);
 
 
 --
@@ -415,7 +502,6 @@ CREATE TABLE orders (
     phone character varying(255) NOT NULL,
     total numeric NOT NULL,
     total_due numeric NOT NULL,
-    tax_charge numeric NOT NULL,
     status character varying(255) NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
@@ -591,16 +677,15 @@ SELECT pg_catalog.setval('payment_methods_id_seq', 2, true);
 
 CREATE TABLE payments (
     id integer NOT NULL,
-    order_id integer,
     payment_method_id integer,
     status character varying(255) DEFAULT 'paid'::character varying NOT NULL,
-    total numeric DEFAULT 0.0 NOT NULL,
     month integer,
     year integer,
     transaction_id character varying(255),
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    masked_number character varying(255)
+    masked_number character varying(255),
+    line_item_id integer
 );
 
 
@@ -790,17 +875,63 @@ CREATE TABLE schema_migrations (
 ALTER TABLE public.schema_migrations OWNER TO piggybak;
 
 --
+-- Name: sellables; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE sellables (
+    id integer NOT NULL,
+    sku character varying(255) NOT NULL,
+    description character varying(255) NOT NULL,
+    price numeric NOT NULL,
+    quantity integer DEFAULT 0 NOT NULL,
+    item_id integer NOT NULL,
+    item_type character varying(255) NOT NULL,
+    active boolean DEFAULT false NOT NULL,
+    unlimited_inventory boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE public.sellables OWNER TO piggybak;
+
+--
+-- Name: sellables_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE sellables_id_seq
+    START WITH 100
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.sellables_id_seq OWNER TO piggybak;
+
+--
+-- Name: sellables_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE sellables_id_seq OWNED BY sellables.id;
+
+
+--
+-- Name: sellables_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('sellables_id_seq', 44, true);
+
+
+--
 -- Name: shipments; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 CREATE TABLE shipments (
     id integer NOT NULL,
-    order_id integer NOT NULL,
     shipping_method_id integer NOT NULL,
     status character varying(255) DEFAULT 'new'::character varying NOT NULL,
-    total numeric DEFAULT 0.0 NOT NULL,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    line_item_id integer
 );
 
 
@@ -1183,53 +1314,6 @@ SELECT pg_catalog.setval('users_id_seq', 10, true);
 
 
 --
--- Name: variants; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE variants (
-    id integer NOT NULL,
-    sku character varying(255) NOT NULL,
-    description character varying(255) NOT NULL,
-    price numeric NOT NULL,
-    quantity integer DEFAULT 0 NOT NULL,
-    item_id integer NOT NULL,
-    item_type character varying(255) NOT NULL,
-    active boolean DEFAULT false NOT NULL,
-    unlimited_inventory boolean DEFAULT false NOT NULL
-);
-
-
-ALTER TABLE public.variants OWNER TO piggybak;
-
---
--- Name: variants_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE variants_id_seq
-    START WITH 100
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.variants_id_seq OWNER TO piggybak;
-
---
--- Name: variants_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE variants_id_seq OWNED BY variants.id;
-
-
---
--- Name: variants_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('variants_id_seq', 44, true);
-
-
---
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
@@ -1248,6 +1332,20 @@ ALTER TABLE ONLY categories ALTER COLUMN id SET DEFAULT nextval('categories_id_s
 --
 
 ALTER TABLE ONLY countries ALTER COLUMN id SET DEFAULT nextval('countries_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY coupon_applications ALTER COLUMN id SET DEFAULT nextval('coupon_applications_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY coupons ALTER COLUMN id SET DEFAULT nextval('coupons_id_seq'::regclass);
 
 
 --
@@ -1338,6 +1436,13 @@ ALTER TABLE ONLY roles ALTER COLUMN id SET DEFAULT nextval('roles_id_seq'::regcl
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
+ALTER TABLE ONLY sellables ALTER COLUMN id SET DEFAULT nextval('sellables_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
 ALTER TABLE ONLY shipments ALTER COLUMN id SET DEFAULT nextval('shipments_id_seq'::regclass);
 
 
@@ -1398,13 +1503,6 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
-ALTER TABLE ONLY variants ALTER COLUMN id SET DEFAULT nextval('variants_id_seq'::regclass);
-
-
---
 -- Data for Name: addresses; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
@@ -1413,6 +1511,14 @@ COPY addresses (id, firstname, lastname, address1, address2, city, state_id, zip
 42	Testy	Tester	12360 West Carolina Dr.		Lakewood	6883	80228	2012-01-10 16:16:13.066987	2012-01-10 16:16:13.066987	405
 43	Steph	Skardal	54 Elizabeth St.		Salt Lake City	6926	84105	2012-01-10 16:19:25.728466	2012-01-10 16:19:25.728466	405
 44	Steph	Skardal	54 Elizabeth St.		Salt Lake City	6926	84105	2012-01-10 16:19:25.731399	2012-01-10 16:19:25.731399	405
+\.
+
+
+--
+-- Data for Name: adjustments; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY adjustments (id, source_type, source_id, created_at, updated_at, note) FROM stdin;
 \.
 
 
@@ -1726,6 +1832,22 @@ COPY countries (id, name, abbr, active_shipping, active_billing) FROM stdin;
 
 
 --
+-- Data for Name: coupon_applications; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY coupon_applications (id, line_item_id, coupon_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: coupons; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY coupons (id, code, amount, discount_type, min_cart_total, expiration_date, allowed_applications) FROM stdin;
+\.
+
+
+--
 -- Data for Name: credits; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
@@ -1781,9 +1903,21 @@ COPY images (id, title, slug, description, user_id, gallery_file_name, gallery_c
 -- Data for Name: line_items; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
-COPY line_items (id, order_id, quantity, variant_id, total, price, description) FROM stdin;
-19	16	1	15	19.0	0.0	
-20	17	1	15	19.0	0.0	
+COPY line_items (id, order_id, quantity, sellable_id, price, unit_price, description, line_item_type, sort, created_at, updated_at) FROM stdin;
+19	16	1	15	19.0	0.0		sellable	0	\N	\N
+20	17	1	15	19.0	0.0		sellable	0	\N	\N
+21	16	1	\N	10.0	0.0	Shipping	shipment	0	2012-10-17 15:39:00.951104	2012-10-17 15:39:01.082012
+22	17	1	\N	20.0	0.0	Shipping	shipment	0	2012-10-17 15:39:01.084616	2012-10-17 15:39:01.089901
+23	16	1	\N	29.0	0.0	Payment	payment	0	2012-10-17 15:39:01.106489	2012-10-17 15:39:01.114213
+24	17	1	\N	39.0	0.0	Payment	payment	0	2012-10-17 15:39:01.11578	2012-10-17 15:39:01.121287
+\.
+
+
+--
+-- Data for Name: order_notes; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY order_notes (id, order_id, user_id, note, created_at, updated_at) FROM stdin;
 \.
 
 
@@ -1791,9 +1925,9 @@ COPY line_items (id, order_id, quantity, variant_id, total, price, description) 
 -- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
-COPY orders (id, billing_address_id, shipping_address_id, user_id, email, phone, total, total_due, tax_charge, status, created_at, updated_at, ip_address, user_agent, to_be_cancelled) FROM stdin;
-16	41	42	10	test@endpoint.com	6304844834	29.0	0.0	0.0	paid	2012-01-10 16:16:12.691295	2012-01-10 16:16:13.081443	174.111.11.143	\N	f
-17	43	44	\N	steph@endpoint.com	6304844834	39.0	0.0	0.0	paid	2012-01-10 16:19:25.541916	2012-01-10 16:19:25.745341	174.111.11.143	\N	f
+COPY orders (id, billing_address_id, shipping_address_id, user_id, email, phone, total, total_due, status, created_at, updated_at, ip_address, user_agent, to_be_cancelled) FROM stdin;
+16	41	42	10	test@endpoint.com	6304844834	29.0	0.0	paid	2012-01-10 16:16:12.691295	2012-01-10 16:16:13.081443	174.111.11.143	\N	f
+17	43	44	\N	steph@endpoint.com	6304844834	39.0	0.0	paid	2012-01-10 16:19:25.541916	2012-01-10 16:19:25.745341	174.111.11.143	\N	f
 \.
 
 
@@ -1828,9 +1962,9 @@ COPY payment_methods (id, description, klass, active, created_at, updated_at) FR
 -- Data for Name: payments; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
-COPY payments (id, order_id, payment_method_id, status, total, month, year, transaction_id, created_at, updated_at, masked_number) FROM stdin;
-15	16	1	paid	29.0	1	2012	N/A	2012-01-10 16:16:13.121248	2012-01-10 16:16:13.121248	\N
-16	17	1	paid	39.0	1	2012	N/A	2012-01-10 16:19:25.751568	2012-01-10 16:19:25.751568	\N
+COPY payments (id, payment_method_id, status, month, year, transaction_id, created_at, updated_at, masked_number, line_item_id) FROM stdin;
+15	1	paid	1	2012	N/A	2012-01-10 16:16:13.121248	2012-10-17 15:39:01.112282	\N	23
+16	1	paid	1	2012	N/A	2012-01-10 16:19:25.751568	2012-10-17 15:39:01.12037	\N	24
 \.
 
 
@@ -1921,6 +2055,55 @@ COPY schema_migrations (version) FROM stdin;
 20120829140527
 20120829140528
 20120829140529
+20121008195802
+20121012220537
+20121017151401
+\.
+
+
+--
+-- Data for Name: sellables; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY sellables (id, sku, description, price, quantity, item_id, item_type, active, unlimited_inventory) FROM stdin;
+9	test-3	Print of Test #3	19.99	8	10	Image	t	f
+7	1	Sample Product	19.99	8	8	Image	t	f
+8	test-2	Print of Test #2	19.99	6	9	Image	t	f
+12	havanese-smile	4"x6" Print of Havanese Smile	19.99	0	13	Image	t	t
+13	puppy	4"x6" Print of Tired Puppy	19.99	20	14	Image	t	f
+14	beach-dog	4"x6" Print of Beach Dog	19.99	20	15	Image	t	f
+10	fall-leaves	4"x6" Print of Fall Leaves	19.99	100	11	Image	t	t
+19	Green Bokeh	4"x6" Print of Green Bokeh	9.99	100	20	Image	t	f
+20	car-window	4"x6" Print of Car Window	24.99	10	21	Image	t	f
+21	dog-lookout	4"x6" Print of Dog Lookout	19.99	7	22	Image	t	t
+22	spider	4"x6" Print of Spider	19.99	100	23	Image	t	f
+24	puppy-pals	4"x6" Print of Puppy Pals	19.99	100	25	Image	t	f
+25	slug	4"x6" Print of Slug	19.99	100	26	Image	t	t
+26	happy-beagle	4"x6" Print of Happy Beagle	19.99	100	27	Image	t	t
+27	puppy-pile	4"x6" Print of Puppy Pile	39.99	20	28	Image	t	t
+28	purple-flowers	4"x6" Print of Purple Flowers	19.99	100	29	Image	t	t
+30	polination-2	4"x6" Print of Pollination #2	19.99	100	31	Image	t	t
+31	beach-dog-2	4"x6" Print of Beach Dog #2	19.99	100	32	Image	t	t
+32	spiderweb	4"x6" Print of Spiderweb	24.99	100	33	Image	t	t
+33	tug-of-war	4"x6" Print of Tug Of War	24.99	100	34	Image	t	f
+34	nature-2	4"x6" Print of Nature #2	24.99	100	35	Image	t	t
+35	nature-3	4"x6" Print of Nature #3	24.99	100	36	Image	t	t
+36	floor-dog	4"x6" Print of Floor Dog	24.99	100	37	Image	t	t
+37	nature-4	4"x6" Print of Nature #4	24.99	100	38	Image	t	t
+38	make-a-wish	4"x6" Print of Make a Wish	24.99	100	39	Image	t	t
+39	best-friends	4"x6" Print of Best Friends	24.99	100	40	Image	t	t
+41	fall-colors	4"x6" Print of Fall Colors	24.99	100	42	Image	t	t
+42	spider-2	4"x6" Print of Spider #2	24.99	100	43	Image	f	f
+43	japanese-maple	4"x6" Print of Japanese Maple	24.99	100	44	Image	f	f
+16	murky-reflection	4"x6" Print of Murky Reflection	19.99	98	17	Image	t	t
+23	spider-duo	4"x6" Print of Spider Duo	19.99	99	24	Image	t	t
+40	street-cat	4"x6" Print of Street Cat	24.99	7	41	Image	t	t
+17	butterfly	4"x6" Print of Butterfly	30.0	94	18	Image	t	t
+18	backlit-fall-leaves	4"x6" Print of Backlit Fall Leaves	19.99	999	19	Image	t	f
+29	pollination	4"x6" Print of Pollination	19.99	99	30	Image	t	t
+44	relaxing-puppy	4"x6" Print of Relaxing Puppy	24.99	3	45	Image	t	f
+11	dog-sunglasses	4"x6" Print of Dog in Sunglasses	19.99	3	12	Image	t	t
+15	nature	4"x6" Print of Nature	19.0	98	16	Image	t	t
 \.
 
 
@@ -1928,9 +2111,9 @@ COPY schema_migrations (version) FROM stdin;
 -- Data for Name: shipments; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
-COPY shipments (id, order_id, shipping_method_id, status, total, created_at, updated_at) FROM stdin;
-15	16	4	new	10.0	2012-01-10 16:16:13.12503	2012-01-10 16:16:13.12503
-16	17	5	new	20.0	2012-01-10 16:19:25.753415	2012-01-10 16:19:25.753415
+COPY shipments (id, shipping_method_id, status, created_at, updated_at, line_item_id) FROM stdin;
+15	4	new	2012-01-10 16:16:13.12503	2012-10-17 15:39:01.079716	21
+16	5	new	2012-01-10 16:19:25.753415	2012-10-17 15:39:01.089099	22
 \.
 
 
@@ -6265,52 +6448,6 @@ COPY users (id, email, encrypted_password, reset_password_token, reset_password_
 
 
 --
--- Data for Name: variants; Type: TABLE DATA; Schema: public; Owner: piggybak
---
-
-COPY variants (id, sku, description, price, quantity, item_id, item_type, active, unlimited_inventory) FROM stdin;
-9	test-3	Print of Test #3	19.99	8	10	Image	t	f
-7	1	Sample Product	19.99	8	8	Image	t	f
-8	test-2	Print of Test #2	19.99	6	9	Image	t	f
-12	havanese-smile	4"x6" Print of Havanese Smile	19.99	0	13	Image	t	t
-13	puppy	4"x6" Print of Tired Puppy	19.99	20	14	Image	t	f
-14	beach-dog	4"x6" Print of Beach Dog	19.99	20	15	Image	t	f
-10	fall-leaves	4"x6" Print of Fall Leaves	19.99	100	11	Image	t	t
-19	Green Bokeh	4"x6" Print of Green Bokeh	9.99	100	20	Image	t	f
-20	car-window	4"x6" Print of Car Window	24.99	10	21	Image	t	f
-21	dog-lookout	4"x6" Print of Dog Lookout	19.99	7	22	Image	t	t
-22	spider	4"x6" Print of Spider	19.99	100	23	Image	t	f
-24	puppy-pals	4"x6" Print of Puppy Pals	19.99	100	25	Image	t	f
-25	slug	4"x6" Print of Slug	19.99	100	26	Image	t	t
-26	happy-beagle	4"x6" Print of Happy Beagle	19.99	100	27	Image	t	t
-27	puppy-pile	4"x6" Print of Puppy Pile	39.99	20	28	Image	t	t
-28	purple-flowers	4"x6" Print of Purple Flowers	19.99	100	29	Image	t	t
-30	polination-2	4"x6" Print of Pollination #2	19.99	100	31	Image	t	t
-31	beach-dog-2	4"x6" Print of Beach Dog #2	19.99	100	32	Image	t	t
-32	spiderweb	4"x6" Print of Spiderweb	24.99	100	33	Image	t	t
-33	tug-of-war	4"x6" Print of Tug Of War	24.99	100	34	Image	t	f
-34	nature-2	4"x6" Print of Nature #2	24.99	100	35	Image	t	t
-35	nature-3	4"x6" Print of Nature #3	24.99	100	36	Image	t	t
-36	floor-dog	4"x6" Print of Floor Dog	24.99	100	37	Image	t	t
-37	nature-4	4"x6" Print of Nature #4	24.99	100	38	Image	t	t
-38	make-a-wish	4"x6" Print of Make a Wish	24.99	100	39	Image	t	t
-39	best-friends	4"x6" Print of Best Friends	24.99	100	40	Image	t	t
-41	fall-colors	4"x6" Print of Fall Colors	24.99	100	42	Image	t	t
-42	spider-2	4"x6" Print of Spider #2	24.99	100	43	Image	f	f
-43	japanese-maple	4"x6" Print of Japanese Maple	24.99	100	44	Image	f	f
-16	murky-reflection	4"x6" Print of Murky Reflection	19.99	98	17	Image	t	t
-23	spider-duo	4"x6" Print of Spider Duo	19.99	99	24	Image	t	t
-40	street-cat	4"x6" Print of Street Cat	24.99	7	41	Image	t	t
-17	butterfly	4"x6" Print of Butterfly	30.0	94	18	Image	t	t
-18	backlit-fall-leaves	4"x6" Print of Backlit Fall Leaves	19.99	999	19	Image	t	f
-29	pollination	4"x6" Print of Pollination	19.99	99	30	Image	t	t
-44	relaxing-puppy	4"x6" Print of Relaxing Puppy	24.99	3	45	Image	t	f
-11	dog-sunglasses	4"x6" Print of Dog in Sunglasses	19.99	3	12	Image	t	t
-15	nature	4"x6" Print of Nature	19.0	98	16	Image	t	t
-\.
-
-
---
 -- Name: addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
@@ -6332,6 +6469,22 @@ ALTER TABLE ONLY categories
 
 ALTER TABLE ONLY countries
     ADD CONSTRAINT countries_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: coupon_applications_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+ALTER TABLE ONLY coupon_applications
+    ADD CONSTRAINT coupon_applications_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: coupons_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+ALTER TABLE ONLY coupons
+    ADD CONSTRAINT coupons_pkey PRIMARY KEY (id);
 
 
 --
@@ -6418,7 +6571,7 @@ ALTER TABLE ONLY posts
 -- Name: products_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY variants
+ALTER TABLE ONLY sellables
     ADD CONSTRAINT products_pkey PRIMARY KEY (id);
 
 
