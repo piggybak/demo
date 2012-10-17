@@ -19,6 +19,8 @@ DROP TABLE addresses CASCADE;
 DROP TABLE adjustments CASCADE;
 DROP TABLE categories CASCADE;
 DROP TABLE countries CASCADE;
+DROP TABLE coupons CASCADE;
+DROP TABLE coupon_applications CASCADE;
 DROP TABLE categories_images;
 DROP TABLE credits CASCADE;
 DROP TABLE images CASCADE;
