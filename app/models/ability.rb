@@ -17,6 +17,9 @@ class Ability
                     ::Piggybak::State,
                     ::Piggybak::Country,
                     ::Piggybak::Order]
+
+      # TODO: Figure out why this is throwing a RailsAdmin exception
+      cannot [:edit, :destroy, :new], Image
     end
   end
 end
