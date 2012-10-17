@@ -16,7 +16,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 DROP TABLE addresses CASCADE;
-DROP TABLE ajustments CASCADE;
+DROP TABLE adjustments CASCADE;
 DROP TABLE categories CASCADE;
 DROP TABLE countries CASCADE;
 DROP TABLE categories_images;
@@ -24,6 +24,7 @@ DROP TABLE credits CASCADE;
 DROP TABLE images CASCADE;
 DROP TABLE line_items CASCADE;
 DROP TABLE orders CASCADE;
+DROP TABLE order_notes CASCADE;
 DROP TABLE pages CASCADE;
 DROP TABLE payment_methods CASCADE;
 DROP TABLE payments CASCADE;
@@ -31,6 +32,7 @@ DROP TABLE posts CASCADE;
 DROP TABLE rails_admin_histories CASCADE;
 DROP TABLE roles CASCADE;
 DROP TABLE roles_users;
+DROP TABLE sellables CASCADE;
 DROP TABLE schema_migrations;
 DROP TABLE shipments CASCADE;
 DROP TABLE shipping_method_values CASCADE;
@@ -375,7 +377,7 @@ ALTER TABLE public.order_notes OWNER TO piggybak;
 --
 
 CREATE SEQUENCE order_notes_id_seq
-    START WITH 1
+    START WITH 30
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -1413,16 +1415,6 @@ COPY addresses (id, firstname, lastname, address1, address2, city, state_id, zip
 
 
 --
--- Data for Name: adjustments; Type: TABLE DATA; Schema: public; Owner: piggybak
---
-
-COPY adjustments (id, order_id, source_type, source_id, total, created_at, updated_at, note) FROM stdin;
-1	\N	\N	\N	5.0	2012-01-06 01:17:24.133173	2012-01-06 01:17:24.133173	\N
-2	14	\N	\N	5.0	2012-01-06 01:17:37.748389	2012-01-06 01:17:37.748389	\N
-\.
-
-
---
 -- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
@@ -1790,14 +1782,6 @@ COPY images (id, title, slug, description, user_id, gallery_file_name, gallery_c
 COPY line_items (id, order_id, quantity, variant_id, total, price, description) FROM stdin;
 19	16	1	15	19.0	0.0	
 20	17	1	15	19.0	0.0	
-\.
-
-
---
--- Data for Name: order_notes; Type: TABLE DATA; Schema: public; Owner: piggybak
---
-
-COPY order_notes (id, order_id, user_id, note, created_at, updated_at) FROM stdin;
 \.
 
 

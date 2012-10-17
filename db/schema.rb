@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121008195802) do
+ActiveRecord::Schema.define(:version => 20121012220537) do
 
   create_table "addresses", :force => true do |t|
     t.string   "firstname",  :null => false
@@ -27,10 +27,8 @@ ActiveRecord::Schema.define(:version => 20121008195802) do
   end
 
   create_table "adjustments", :force => true do |t|
-    t.integer  "order_id"
     t.string   "source_type"
     t.integer  "source_id"
-    t.decimal  "total"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "note"
@@ -54,6 +52,20 @@ ActiveRecord::Schema.define(:version => 20121008195802) do
     t.string  "abbr"
     t.boolean "active_shipping", :default => false
     t.boolean "active_billing",  :default => false
+  end
+
+  create_table "coupon_applications", :force => true do |t|
+    t.integer "line_item_id"
+    t.integer "coupon_id"
+  end
+
+  create_table "coupons", :force => true do |t|
+    t.string  "code",            :null => false
+    t.decimal "amount",          :null => false
+    t.string  "type",            :null => false
+    t.decimal "min_cart_total",  :null => false
+    t.date    "expiration_date"
+    t.integer "number_uses"
   end
 
   create_table "credits", :id => false, :force => true do |t|
@@ -85,16 +97,16 @@ ActiveRecord::Schema.define(:version => 20121008195802) do
   end
 
   create_table "line_items", :force => true do |t|
-    t.integer  "order_id",                                        :null => false
-    t.integer  "quantity",                                        :null => false
+    t.integer  "order_id",                               :null => false
+    t.integer  "quantity",                               :null => false
+    t.integer  "sellable_id"
     t.decimal  "price"
-    t.string   "description",    :default => "",                  :null => false
-    t.integer  "reference_id"
-    t.integer  "sort",           :default => 0,                   :null => false
+    t.decimal  "unit_price",     :default => 0.0,        :null => false
+    t.string   "description",    :default => "",         :null => false
+    t.string   "line_item_type", :default => "sellable", :null => false
+    t.integer  "sort",           :default => 0,          :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.decimal  "unit_price"
-    t.string   "reference_type", :default => "Piggybak::Variant", :null => false
   end
 
   create_table "order_notes", :force => true do |t|
@@ -113,7 +125,6 @@ ActiveRecord::Schema.define(:version => 20121008195802) do
     t.string   "phone",                                  :null => false
     t.decimal  "total",                                  :null => false
     t.decimal  "total_due",                              :null => false
-    t.decimal  "tax_charge",                             :null => false
     t.string   "status",                                 :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -145,16 +156,15 @@ ActiveRecord::Schema.define(:version => 20121008195802) do
   end
 
   create_table "payments", :force => true do |t|
-    t.integer  "order_id"
     t.integer  "payment_method_id"
     t.string   "status",            :default => "paid", :null => false
-    t.decimal  "total",             :default => 0.0,    :null => false
     t.integer  "month"
     t.integer  "year"
     t.string   "transaction_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "masked_number"
+    t.integer  "line_item_id"
   end
 
   create_table "posts", :force => true do |t|
@@ -200,12 +210,11 @@ ActiveRecord::Schema.define(:version => 20121008195802) do
   end
 
   create_table "shipments", :force => true do |t|
-    t.integer  "order_id",                              :null => false
     t.integer  "shipping_method_id",                    :null => false
     t.string   "status",             :default => "new", :null => false
-    t.decimal  "total",              :default => 0.0,   :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "line_item_id"
   end
 
   create_table "shipping_method_values", :force => true do |t|

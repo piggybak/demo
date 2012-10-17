@@ -1,7 +1,7 @@
 Demo::Application.routes.draw do
   mount RailsAdmin::Engine => '/demo/admin', :as => 'rails_admin'
   mount Piggybak::Engine => '/demo/checkout', :as => 'piggybak'
-  # mount Bloggybak::Engine => '/demo/blog', :as => 'bloggybak'
+  mount PiggybakCoupons::Engine => '/demo', :as => 'piggybak_coupons'
 
   devise_for :users
 

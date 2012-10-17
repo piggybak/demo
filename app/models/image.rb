@@ -13,7 +13,7 @@ class Image < ActiveRecord::Base
   has_and_belongs_to_many :categories
   belongs_to :user
 
-  acts_as_variant
+  acts_as_sellable
 
   def weight
     10

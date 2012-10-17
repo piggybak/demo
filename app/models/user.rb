@@ -12,5 +12,4 @@ class User < ActiveRecord::Base
   validates_presence_of :display_name
 
   acts_as_orderer
-  acts_as_blogger
 end
