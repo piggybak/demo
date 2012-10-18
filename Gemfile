@@ -22,4 +22,4 @@ end
 
 gem 'jquery-rails'
 gem "piggybak", '0.6.3'
-gem "piggybak_coupons", :git => "git://github.com/piggybak/piggybak_coupons.git"
+gem "piggybak_coupons", '0.0.3'
