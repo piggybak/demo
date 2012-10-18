@@ -21,7 +21,7 @@
 </script>
 
   <% if "#{params[:controller]}##{params[:action]}" == "piggybak/orders#submit" -%>
-  <%= javascript_include_tag "piggybak-application" %>
+  <%= javascript_include_tag "piggybak/piggybak-application" %>
   <% end -%>
 </head>
 
@@ -121,8 +121,8 @@
 			<span id="copyright">
 				Copyright &copy;<%= Time.now.year.to_s %> Steph Skardal.  All Rights Reserved.<br />
 				This demo is running on <a href="http://www.ruby-lang.org/en/">Ruby v<%= RUBY_VERSION %></a>,
-                <a href="http://rubyonrails.org/">Rails v<%= Rails::VERSION::STRING %></a>,
-                <a href="https://rubygems.org/gems/piggybak">Piggybak v0.6.1</a>.
+				<a href="http://rubyonrails.org/">Rails v<%= Rails::VERSION::STRING %></a>,
+				<a href="https://rubygems.org/gems/piggybak">Piggybak v0.6.3</a>.
 			</span>
 			<ul id="footnav">
 				<% Page.all.each do |page| -%>
