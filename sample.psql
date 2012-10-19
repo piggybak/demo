@@ -409,7 +409,6 @@ CREATE TABLE line_items (
     unit_price numeric DEFAULT 0.0 NOT NULL,
     description character varying(255) DEFAULT ''::character varying NOT NULL,
     line_item_type character varying(255) DEFAULT 'sellable'::character varying NOT NULL,
-    sort integer DEFAULT 0 NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 );
@@ -1903,13 +1902,13 @@ COPY images (id, title, slug, description, user_id, gallery_file_name, gallery_c
 -- Data for Name: line_items; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
-COPY line_items (id, order_id, quantity, sellable_id, price, unit_price, description, line_item_type, sort, created_at, updated_at) FROM stdin;
-19	16	1	15	19.0	0.0		sellable	0	\N	\N
-20	17	1	15	19.0	0.0		sellable	0	\N	\N
-21	16	1	\N	10.0	0.0	Shipping	shipment	0	2012-10-17 15:39:00.951104	2012-10-17 15:39:01.082012
-22	17	1	\N	20.0	0.0	Shipping	shipment	0	2012-10-17 15:39:01.084616	2012-10-17 15:39:01.089901
-23	16	1	\N	29.0	0.0	Payment	payment	0	2012-10-17 15:39:01.106489	2012-10-17 15:39:01.114213
-24	17	1	\N	39.0	0.0	Payment	payment	0	2012-10-17 15:39:01.11578	2012-10-17 15:39:01.121287
+COPY line_items (id, order_id, quantity, sellable_id, price, unit_price, description, line_item_type, created_at, updated_at) FROM stdin;
+19	16	1	15	19.0	0.0		sellable	\N	\N
+20	17	1	15	19.0	0.0		sellable	\N	\N
+21	16	1	\N	10.0	0.0	Shipping	shipment	2012-10-17 15:39:00.951104	2012-10-17 15:39:01.082012
+22	17	1	\N	20.0	0.0	Shipping	shipment	2012-10-17 15:39:01.084616	2012-10-17 15:39:01.089901
+23	16	1	\N	29.0	0.0	Payment	payment	2012-10-17 15:39:01.106489	2012-10-17 15:39:01.114213
+24	17	1	\N	39.0	0.0	Payment	payment	2012-10-17 15:39:01.11578	2012-10-17 15:39:01.121287
 \.
 
 

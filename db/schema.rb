@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121017151401) do
+ActiveRecord::Schema.define(:version => 20121018213421) do
 
   create_table "addresses", :force => true do |t|
     t.string   "firstname",  :null => false
@@ -104,7 +104,6 @@ ActiveRecord::Schema.define(:version => 20121017151401) do
     t.decimal  "unit_price",     :default => 0.0,        :null => false
     t.string   "description",    :default => "",         :null => false
     t.string   "line_item_type", :default => "sellable", :null => false
-    t.integer  "sort",           :default => 0,          :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

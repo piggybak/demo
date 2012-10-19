@@ -21,5 +21,5 @@ group :assets do
 end
 
 gem 'jquery-rails'
-gem "piggybak", '0.6.3'
+gem "piggybak", '0.6.4'
 gem "piggybak_coupons", '0.0.3'
