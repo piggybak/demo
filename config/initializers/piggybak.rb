@@ -11,4 +11,6 @@ Piggybak.config do |config|
   config.activemerchant_mode = :test
 
   config.whois_url = "http://www.infosniper.net/index.php?ip_address="
+
+  config.logging = true
 end

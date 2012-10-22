@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121022161614) do
+ActiveRecord::Schema.define(:version => 20121022165051) do
 
   create_table "addresses", :force => true do |t|
     t.string   "firstname",  :null => false
@@ -19,18 +19,18 @@ ActiveRecord::Schema.define(:version => 20121022161614) do
     t.string   "address1",   :null => false
     t.string   "address2"
     t.string   "city",       :null => false
-    t.string   "state_id",   :null => false
+    t.integer  "state_id",   :null => false
+    t.integer  "country_id", :null => false
     t.string   "zip",        :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "country_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "adjustments", :force => true do |t|
     t.string   "source_type"
     t.integer  "source_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
     t.text     "note"
   end
 
@@ -38,8 +38,8 @@ ActiveRecord::Schema.define(:version => 20121022161614) do
     t.string   "title"
     t.string   "slug"
     t.text     "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "categories_images", :id => false, :force => true do |t|
@@ -60,22 +60,12 @@ ActiveRecord::Schema.define(:version => 20121022161614) do
   end
 
   create_table "coupons", :force => true do |t|
-    t.string  "code",                 :null => false
-    t.decimal "amount",               :null => false
-    t.string  "discount_type",        :null => false
-    t.decimal "min_cart_total",       :null => false
+    t.string  "code",                                                :null => false
+    t.decimal "amount",               :precision => 10, :scale => 2, :null => false
+    t.string  "discount_type",                                       :null => false
+    t.decimal "min_cart_total",       :precision => 10, :scale => 2, :null => false
     t.date    "expiration_date"
     t.integer "allowed_applications"
-  end
-
-  create_table "credits", :id => false, :force => true do |t|
-    t.integer  "id",          :null => false
-    t.integer  "order_id"
-    t.string   "source_type"
-    t.integer  "source_id"
-    t.decimal  "total"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "images", :force => true do |t|
@@ -91,19 +81,19 @@ ActiveRecord::Schema.define(:version => 20121022161614) do
     t.string   "main_content_type"
     t.string   "main_file_size"
     t.datetime "main_updated_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.boolean  "is_featured",          :default => false, :null => false
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
   end
 
   create_table "line_items", :force => true do |t|
-    t.integer  "order_id",                               :null => false
-    t.integer  "quantity",                               :null => false
+    t.integer  "order_id",                                                              :null => false
+    t.integer  "quantity",                                                              :null => false
     t.integer  "sellable_id"
-    t.decimal  "price"
-    t.decimal  "unit_price",     :default => 0.0,        :null => false
-    t.string   "description",    :default => "",         :null => false
-    t.string   "line_item_type", :default => "sellable", :null => false
+    t.decimal  "price",          :precision => 10, :scale => 2
+    t.decimal  "unit_price",     :precision => 10, :scale => 2, :default => 0.0,        :null => false
+    t.string   "description",                                   :default => "",         :null => false
+    t.string   "line_item_type",                                :default => "sellable", :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -117,27 +107,27 @@ ActiveRecord::Schema.define(:version => 20121022161614) do
   end
 
   create_table "orders", :force => true do |t|
-    t.integer  "billing_address_id",                     :null => false
-    t.integer  "shipping_address_id",                    :null => false
+    t.integer  "billing_address_id",                                                    :null => false
+    t.integer  "shipping_address_id",                                                   :null => false
     t.integer  "user_id"
-    t.string   "email",                                  :null => false
-    t.string   "phone",                                  :null => false
-    t.decimal  "total",                                  :null => false
-    t.decimal  "total_due",                              :null => false
-    t.string   "status",                                 :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string   "email",                                                                 :null => false
+    t.string   "phone",                                                                 :null => false
+    t.decimal  "total",               :precision => 10, :scale => 2,                    :null => false
+    t.decimal  "total_due",           :precision => 10, :scale => 2,                    :null => false
+    t.string   "status",                                                                :null => false
+    t.datetime "created_at",                                                            :null => false
+    t.datetime "updated_at",                                                            :null => false
     t.string   "ip_address"
     t.string   "user_agent"
-    t.boolean  "to_be_cancelled",     :default => false
+    t.boolean  "to_be_cancelled",                                    :default => false
   end
 
   create_table "pages", :force => true do |t|
     t.string   "title"
     t.string   "slug"
     t.text     "content"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "payment_method_values", :force => true do |t|
@@ -150,8 +140,8 @@ ActiveRecord::Schema.define(:version => 20121022161614) do
     t.string   "description",                    :null => false
     t.string   "klass",                          :null => false
     t.boolean  "active",      :default => false, :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
   end
 
   create_table "payments", :force => true do |t|
@@ -160,8 +150,8 @@ ActiveRecord::Schema.define(:version => 20121022161614) do
     t.integer  "month"
     t.integer  "year"
     t.string   "transaction_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
     t.string   "masked_number"
     t.integer  "line_item_id"
   end
@@ -171,8 +161,8 @@ ActiveRecord::Schema.define(:version => 20121022161614) do
     t.string   "slug",       :null => false
     t.integer  "user_id"
     t.text     "content"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "rails_admin_histories", :force => true do |t|
@@ -182,8 +172,8 @@ ActiveRecord::Schema.define(:version => 20121022161614) do
     t.string   "table"
     t.integer  "month",      :limit => 2
     t.integer  "year",       :limit => 8
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",              :null => false
+    t.datetime "updated_at",              :null => false
   end
 
   add_index "rails_admin_histories", ["item", "table", "month", "year"], :name => "index_rails_admin_histories"
@@ -211,8 +201,8 @@ ActiveRecord::Schema.define(:version => 20121022161614) do
   create_table "shipments", :force => true do |t|
     t.integer  "shipping_method_id",                    :null => false
     t.string   "status",             :default => "new", :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
     t.integer  "line_item_id"
   end
 
@@ -229,8 +219,8 @@ ActiveRecord::Schema.define(:version => 20121022161614) do
   end
 
   create_table "states", :force => true do |t|
-    t.string  "abbr"
     t.string  "name"
+    t.string  "abbr"
     t.integer "country_id"
   end
 
@@ -264,19 +254,19 @@ ActiveRecord::Schema.define(:version => 20121022161614) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                                 :default => "", :null => false
-    t.string   "encrypted_password",     :limit => 128, :default => "", :null => false
+    t.string   "email",                  :default => "", :null => false
+    t.string   "encrypted_password",     :default => "", :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                         :default => 0
+    t.integer  "sign_in_count",          :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.string   "display_name",                                          :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string   "display_name",                           :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
