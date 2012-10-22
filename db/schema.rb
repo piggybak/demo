@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121018213421) do
+ActiveRecord::Schema.define(:version => 20121022161614) do
 
   create_table "addresses", :force => true do |t|
     t.string   "firstname",  :null => false
@@ -198,14 +198,14 @@ ActiveRecord::Schema.define(:version => 20121018213421) do
   end
 
   create_table "sellables", :force => true do |t|
-    t.string  "sku",                                    :null => false
-    t.string  "description",                            :null => false
-    t.decimal "price",                                  :null => false
-    t.integer "quantity",            :default => 0,     :null => false
-    t.integer "item_id",                                :null => false
-    t.string  "item_type",                              :null => false
-    t.boolean "active",              :default => false, :null => false
-    t.boolean "unlimited_inventory", :default => false, :null => false
+    t.string  "sku",                                                                   :null => false
+    t.string  "description",                                                           :null => false
+    t.decimal "price",               :precision => 10, :scale => 2,                    :null => false
+    t.integer "quantity",                                           :default => 0,     :null => false
+    t.integer "item_id",                                                               :null => false
+    t.string  "item_type",                                                             :null => false
+    t.boolean "active",                                             :default => false, :null => false
+    t.boolean "unlimited_inventory",                                :default => false, :null => false
   end
 
   create_table "shipments", :force => true do |t|
