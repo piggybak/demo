@@ -2,11 +2,13 @@ Demo::Application.routes.draw do
   mount RailsAdmin::Engine => '/demo/admin', :as => 'rails_admin'
   mount Piggybak::Engine => '/demo/checkout', :as => 'piggybak'
   mount PiggybakCoupons::Engine => '/demo', :as => 'piggybak_coupons'
+  mount PiggybakGiftcerts::Engine => '/demo', :as => 'piggybak_giftcerts'
 
   devise_for :users
 
   match "/demo/" => 'home#index', :as => :root
   match '/demo/image/:id' => 'images#show', :as => :image
+  match '/demo/frame/:id' => 'frames#show', :as => :frame
   match '/demo/c/:id' => 'categories#show', :as => :category
   match '/demo/:slug' => 'pages#show'
 

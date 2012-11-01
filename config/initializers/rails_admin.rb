@@ -46,7 +46,21 @@ RailsAdmin.config do |config|
       field :description
       field :main
       field :categories
-      field :user 
+      field :user
+      include_all_fields 
+    end
+  end
+  config.model Frame do
+    navigation_label "Demo Application"
+    list do
+      field :title
+      field :slug
+    end
+    edit do
+      field :title
+      field :slug
+      field :description
+      field :main
       include_all_fields
     end
   end

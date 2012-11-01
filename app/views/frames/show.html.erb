@@ -1,0 +1,24 @@
+<div id="single_image">
+	<div id="portfolio-gallery" class="eight columns alpha">
+		<div id="frame-slider-portfolio" >
+			<ul id="sliderportfolio">
+				<li><%= image_tag @frame.main.url %></li>
+			</ul><!-- end #slider -->
+			
+			<div id="slide-nav">
+				<div id="pager"></div>
+			</div><!-- end #slide-nav -->
+		</div><!-- end #farme-slider-portfolio -->
+		<div class="clear"></div>
+	</div> 
+	
+	<div class="four columns omega">
+		<h1 class="pagetitle"><%= @frame.title %></h1>
+		<p><%= @frame.description %></p>
+		<div id="cart_form">
+			<%= variant_cart_form(@frame) %>
+		</div>							 
+	</div>
+	
+	<div class="clear"></div>
+</div>

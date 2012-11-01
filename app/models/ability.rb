@@ -6,6 +6,10 @@ class Ability
       can :access, :rails_admin
       can [:read, :destroy, :edit, :new, :export, :history, :download, :cancel], [Category,
                     Image,
+                    Frame,
+                    ::PiggybakVariants::Option,
+                    ::PiggybakVariants::OptionConfiguration,
+                    ::PiggybakVariants::OptionValue,
                     Page,
                     Role,
                     User,
@@ -13,10 +17,12 @@ class Ability
                     ::Piggybak::ShippingMethod,
                     ::Piggybak::PaymentMethod,
                     ::PiggybakCoupons::Coupon,
+                    ::PiggybakGiftcerts::Giftcert,
                     ::Piggybak::TaxMethod,
                     ::Piggybak::State,
                     ::Piggybak::Country,
                     ::Piggybak::Order]
+      can [:read, :edit], ::PiggybakGiftcerts::BuyableGiftcert
     end
   end
 end
