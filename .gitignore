@@ -21,3 +21,4 @@ rails_admin/
 httpd/
 config/database.yml
 public/assets/
+public/system/frames/

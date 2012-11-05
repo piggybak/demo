@@ -4,10 +4,23 @@
 
 SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
-SET standard_conforming_strings = off;
+SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
-SET escape_string_warning = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
 
 SET search_path = public, pg_catalog;
 
@@ -29,7 +42,10 @@ DROP TABLE giftcert_applications CASCADE;
 DROP TABLE giftcerts CASCADE;
 DROP TABLE images CASCADE;
 DROP TABLE line_items CASCADE;
+DROP TABLE option_values CASCADE;
 DROP TABLE option_values_variants CASCADE;
+DROP TABLE options CASCADE;
+DROP TABLE option_configurations CASCADE;
 DROP TABLE orders CASCADE;
 DROP TABLE order_notes CASCADE;
 DROP TABLE pages CASCADE;
@@ -51,6 +67,7 @@ DROP TABLE tags CASCADE;
 DROP TABLE tax_method_values CASCADE;
 DROP TABLE tax_methods CASCADE;
 DROP TABLE users CASCADE;
+DROP TABLE variants;
 
 --
 -- Name: addresses; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
@@ -80,8 +97,8 @@ ALTER TABLE public.addresses OWNER TO piggybak;
 CREATE SEQUENCE addresses_id_seq
     START WITH 50
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -125,8 +142,8 @@ ALTER TABLE public.credits OWNER TO piggybak;
 CREATE SEQUENCE credits_id_seq
     START WITH 5
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -163,6 +180,45 @@ CREATE TABLE adjustments (
 ALTER TABLE public.adjustments OWNER TO piggybak;
 
 --
+-- Name: buyable_giftcerts; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE buyable_giftcerts (
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.buyable_giftcerts OWNER TO piggybak;
+
+--
+-- Name: buyable_giftcerts_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE buyable_giftcerts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.buyable_giftcerts_id_seq OWNER TO piggybak;
+
+--
+-- Name: buyable_giftcerts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE buyable_giftcerts_id_seq OWNED BY buyable_giftcerts.id;
+
+
+--
+-- Name: buyable_giftcerts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('buyable_giftcerts_id_seq', 1, true);
+
+
+--
 -- Name: categories; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
@@ -185,8 +241,8 @@ ALTER TABLE public.categories OWNER TO piggybak;
 CREATE SEQUENCE categories_id_seq
     START WITH 10
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -240,8 +296,8 @@ ALTER TABLE public.countries OWNER TO piggybak;
 CREATE SEQUENCE countries_id_seq
     START WITH 1000
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -281,8 +337,8 @@ ALTER TABLE public.coupon_applications OWNER TO piggybak;
 CREATE SEQUENCE coupon_applications_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -309,9 +365,9 @@ SELECT pg_catalog.setval('coupon_applications_id_seq', 1, false);
 CREATE TABLE coupons (
     id integer NOT NULL,
     code character varying(255) NOT NULL,
-    amount numeric NOT NULL,
+    amount numeric(10,2) NOT NULL,
     discount_type character varying(255) NOT NULL,
-    min_cart_total numeric NOT NULL,
+    min_cart_total numeric(10,2) NOT NULL,
     expiration_date date,
     allowed_applications integer
 );
@@ -326,8 +382,8 @@ ALTER TABLE public.coupons OWNER TO piggybak;
 CREATE SEQUENCE coupons_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -344,7 +400,143 @@ ALTER SEQUENCE coupons_id_seq OWNED BY coupons.id;
 -- Name: coupons_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-SELECT pg_catalog.setval('coupons_id_seq', 1, false);
+SELECT pg_catalog.setval('coupons_id_seq', 3, true);
+
+
+--
+-- Name: frames; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE frames (
+    id integer NOT NULL,
+    title character varying(255) NOT NULL,
+    slug character varying(255) NOT NULL,
+    description text,
+    main_file_name character varying(255),
+    main_content_type character varying(255),
+    main_file_size character varying(255),
+    main_updated_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.frames OWNER TO piggybak;
+
+--
+-- Name: frames_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE frames_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.frames_id_seq OWNER TO piggybak;
+
+--
+-- Name: frames_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE frames_id_seq OWNED BY frames.id;
+
+
+--
+-- Name: frames_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('frames_id_seq', 1, true);
+
+
+--
+-- Name: giftcert_applications; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE giftcert_applications (
+    id integer NOT NULL,
+    line_item_id integer,
+    giftcert_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.giftcert_applications OWNER TO piggybak;
+
+--
+-- Name: giftcert_applications_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE giftcert_applications_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.giftcert_applications_id_seq OWNER TO piggybak;
+
+--
+-- Name: giftcert_applications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE giftcert_applications_id_seq OWNED BY giftcert_applications.id;
+
+
+--
+-- Name: giftcert_applications_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('giftcert_applications_id_seq', 1, false);
+
+
+--
+-- Name: giftcerts; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE giftcerts (
+    id integer NOT NULL,
+    code character varying(255) NOT NULL,
+    amount numeric NOT NULL,
+    expiration_date date,
+    order_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.giftcerts OWNER TO piggybak;
+
+--
+-- Name: giftcerts_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE giftcerts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.giftcerts_id_seq OWNER TO piggybak;
+
+--
+-- Name: giftcerts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE giftcerts_id_seq OWNED BY giftcerts.id;
+
+
+--
+-- Name: giftcerts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('giftcerts_id_seq', 2, true);
 
 
 --
@@ -380,8 +572,8 @@ ALTER TABLE public.images OWNER TO piggybak;
 CREATE SEQUENCE images_id_seq
     START WITH 100
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -410,8 +602,8 @@ CREATE TABLE line_items (
     order_id integer NOT NULL,
     quantity integer NOT NULL,
     sellable_id integer,
-    price numeric,
-    unit_price numeric DEFAULT 0.0 NOT NULL,
+    price numeric(10,2),
+    unit_price numeric(10,2) DEFAULT 0.0 NOT NULL,
     description character varying(255) DEFAULT ''::character varying NOT NULL,
     line_item_type character varying(255) DEFAULT 'sellable'::character varying NOT NULL,
     created_at timestamp without time zone,
@@ -428,8 +620,8 @@ ALTER TABLE public.line_items OWNER TO piggybak;
 CREATE SEQUENCE line_items_id_seq
     START WITH 30
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -447,6 +639,148 @@ ALTER SEQUENCE line_items_id_seq OWNED BY line_items.id;
 --
 
 SELECT pg_catalog.setval('line_items_id_seq', 24, true);
+
+
+--
+-- Name: option_configurations; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE option_configurations (
+    id integer NOT NULL,
+    klass character varying(255) NOT NULL,
+    option_id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.option_configurations OWNER TO piggybak;
+
+--
+-- Name: option_configurations_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE option_configurations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.option_configurations_id_seq OWNER TO piggybak;
+
+--
+-- Name: option_configurations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE option_configurations_id_seq OWNED BY option_configurations.id;
+
+
+--
+-- Name: option_configurations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('option_configurations_id_seq', 3, true);
+
+
+--
+-- Name: option_values; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE option_values (
+    id integer NOT NULL,
+    option_id integer,
+    name character varying(255),
+    "position" integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.option_values OWNER TO piggybak;
+
+--
+-- Name: option_values_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE option_values_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.option_values_id_seq OWNER TO piggybak;
+
+--
+-- Name: option_values_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE option_values_id_seq OWNED BY option_values.id;
+
+
+--
+-- Name: option_values_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('option_values_id_seq', 10, true);
+
+
+--
+-- Name: option_values_variants; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE option_values_variants (
+    option_value_id integer,
+    variant_id integer
+);
+
+
+ALTER TABLE public.option_values_variants OWNER TO piggybak;
+
+--
+-- Name: options; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE options (
+    id integer NOT NULL,
+    name character varying(255),
+    "position" integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.options OWNER TO piggybak;
+
+--
+-- Name: options_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE options_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.options_id_seq OWNER TO piggybak;
+
+--
+-- Name: options_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE options_id_seq OWNED BY options.id;
+
+
+--
+-- Name: options_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('options_id_seq', 3, true);
 
 
 --
@@ -472,8 +806,8 @@ ALTER TABLE public.order_notes OWNER TO piggybak;
 CREATE SEQUENCE order_notes_id_seq
     START WITH 30
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -504,8 +838,8 @@ CREATE TABLE orders (
     user_id integer,
     email character varying(255) NOT NULL,
     phone character varying(255) NOT NULL,
-    total numeric NOT NULL,
-    total_due numeric NOT NULL,
+    total numeric(10,2) NOT NULL,
+    total_due numeric(10,2) NOT NULL,
     status character varying(255) NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
@@ -524,8 +858,8 @@ ALTER TABLE public.orders OWNER TO piggybak;
 CREATE SEQUENCE orders_id_seq
     START WITH 30
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -568,8 +902,8 @@ ALTER TABLE public.pages OWNER TO piggybak;
 CREATE SEQUENCE pages_id_seq
     START WITH 5
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -610,8 +944,8 @@ ALTER TABLE public.payment_method_values OWNER TO piggybak;
 CREATE SEQUENCE payment_method_values_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -654,8 +988,8 @@ ALTER TABLE public.payment_methods OWNER TO piggybak;
 CREATE SEQUENCE payment_methods_id_seq
     START WITH 5
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -702,8 +1036,8 @@ ALTER TABLE public.payments OWNER TO piggybak;
 CREATE SEQUENCE payments_id_seq
     START WITH 50
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -747,8 +1081,8 @@ ALTER TABLE public.posts OWNER TO piggybak;
 CREATE SEQUENCE posts_id_seq
     START WITH 10
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -794,8 +1128,8 @@ ALTER TABLE public.rails_admin_histories OWNER TO piggybak;
 CREATE SEQUENCE rails_admin_histories_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -834,8 +1168,8 @@ ALTER TABLE public.roles OWNER TO piggybak;
 CREATE SEQUENCE roles_id_seq
     START WITH 20
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -886,7 +1220,7 @@ CREATE TABLE sellables (
     id integer NOT NULL,
     sku character varying(255) NOT NULL,
     description character varying(255) NOT NULL,
-    price numeric NOT NULL,
+    price numeric(10,2) NOT NULL,
     quantity integer DEFAULT 0 NOT NULL,
     item_id integer NOT NULL,
     item_type character varying(255) NOT NULL,
@@ -904,8 +1238,8 @@ ALTER TABLE public.sellables OWNER TO piggybak;
 CREATE SEQUENCE sellables_id_seq
     START WITH 100
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -922,7 +1256,7 @@ ALTER SEQUENCE sellables_id_seq OWNED BY sellables.id;
 -- Name: sellables_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-SELECT pg_catalog.setval('sellables_id_seq', 44, true);
+SELECT pg_catalog.setval('sellables_id_seq', 55, true);
 
 
 --
@@ -948,8 +1282,8 @@ ALTER TABLE public.shipments OWNER TO piggybak;
 CREATE SEQUENCE shipments_id_seq
     START WITH 20
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -990,8 +1324,8 @@ ALTER TABLE public.shipping_method_values OWNER TO piggybak;
 CREATE SEQUENCE shipping_method_values_id_seq
     START WITH 20
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1032,8 +1366,8 @@ ALTER TABLE public.shipping_methods OWNER TO piggybak;
 CREATE SEQUENCE shipping_methods_id_seq
     START WITH 10
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1074,8 +1408,8 @@ ALTER TABLE public.states OWNER TO piggybak;
 CREATE SEQUENCE states_id_seq
     START WITH 1000
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1120,8 +1454,8 @@ ALTER TABLE public.taggings OWNER TO piggybak;
 CREATE SEQUENCE taggings_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1160,8 +1494,8 @@ ALTER TABLE public.tags OWNER TO piggybak;
 CREATE SEQUENCE tags_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1202,8 +1536,8 @@ ALTER TABLE public.tax_method_values OWNER TO piggybak;
 CREATE SEQUENCE tax_method_values_id_seq
     START WITH 10
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1244,8 +1578,8 @@ ALTER TABLE public.tax_methods OWNER TO piggybak;
 CREATE SEQUENCE tax_methods_id_seq
     START WITH 10
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1296,8 +1630,8 @@ ALTER TABLE public.users OWNER TO piggybak;
 CREATE SEQUENCE users_id_seq
     START WITH 20
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1318,10 +1652,60 @@ SELECT pg_catalog.setval('users_id_seq', 10, true);
 
 
 --
+-- Name: variants; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE variants (
+    id integer NOT NULL,
+    item_id integer NOT NULL,
+    item_type character varying(255) NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.variants OWNER TO piggybak;
+
+--
+-- Name: variants_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE variants_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.variants_id_seq OWNER TO piggybak;
+
+--
+-- Name: variants_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE variants_id_seq OWNED BY variants.id;
+
+
+--
+-- Name: variants_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('variants_id_seq', 11, true);
+
+
+--
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
 ALTER TABLE ONLY addresses ALTER COLUMN id SET DEFAULT nextval('addresses_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY buyable_giftcerts ALTER COLUMN id SET DEFAULT nextval('buyable_giftcerts_id_seq'::regclass);
 
 
 --
@@ -1363,6 +1747,27 @@ ALTER TABLE ONLY credits ALTER COLUMN id SET DEFAULT nextval('credits_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
+ALTER TABLE ONLY frames ALTER COLUMN id SET DEFAULT nextval('frames_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY giftcert_applications ALTER COLUMN id SET DEFAULT nextval('giftcert_applications_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY giftcerts ALTER COLUMN id SET DEFAULT nextval('giftcerts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
 ALTER TABLE ONLY images ALTER COLUMN id SET DEFAULT nextval('images_id_seq'::regclass);
 
 
@@ -1371,6 +1776,27 @@ ALTER TABLE ONLY images ALTER COLUMN id SET DEFAULT nextval('images_id_seq'::reg
 --
 
 ALTER TABLE ONLY line_items ALTER COLUMN id SET DEFAULT nextval('line_items_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY option_configurations ALTER COLUMN id SET DEFAULT nextval('option_configurations_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY option_values ALTER COLUMN id SET DEFAULT nextval('option_values_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY options ALTER COLUMN id SET DEFAULT nextval('options_id_seq'::regclass);
 
 
 --
@@ -1507,6 +1933,13 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 
 --
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY variants ALTER COLUMN id SET DEFAULT nextval('variants_id_seq'::regclass);
+
+
+--
 -- Data for Name: addresses; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
@@ -1523,6 +1956,15 @@ COPY addresses (id, firstname, lastname, address1, address2, city, state_id, zip
 --
 
 COPY adjustments (id, source_type, source_id, created_at, updated_at, note) FROM stdin;
+\.
+
+
+--
+-- Data for Name: buyable_giftcerts; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY buyable_giftcerts (id) FROM stdin;
+1
 \.
 
 
@@ -1848,6 +2290,9 @@ COPY coupon_applications (id, line_item_id, coupon_id) FROM stdin;
 --
 
 COPY coupons (id, code, amount, discount_type, min_cart_total, expiration_date, allowed_applications) FROM stdin;
+1	APOXPQAWHDRC	10.00	%	20.00	2013-12-31	10
+2	DAZWDHBPYTMP	0.00	ship	0.00	2013-12-31	10
+3	DWMIFNRBKTOZ	10.00	$	10.00	2013-12-31	10
 \.
 
 
@@ -1858,6 +2303,33 @@ COPY coupons (id, code, amount, discount_type, min_cart_total, expiration_date, 
 COPY credits (id, order_id, source_type, source_id, total, created_at, updated_at) FROM stdin;
 1	\N	\N	\N	5.0	2012-01-06 01:17:24.133173	2012-01-06 01:17:24.133173
 2	14	\N	\N	5.0	2012-01-06 01:17:37.748389	2012-01-06 01:17:37.748389
+\.
+
+
+--
+-- Data for Name: frames; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY frames (id, title, slug, description, main_file_name, main_content_type, main_file_size, main_updated_at, created_at, updated_at) FROM stdin;
+1	Professional Frame	frame	Purchase a frame to go with your print! Frames are available in two sizes (10" x 20" and 20" x 40") and four finishes. All frames include white matboard.	frames.jpg	image/jpeg	48501	2012-11-05 15:41:30.337191	2012-11-05 15:41:30.950787	2012-11-05 15:52:43.768192
+\.
+
+
+--
+-- Data for Name: giftcert_applications; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY giftcert_applications (id, line_item_id, giftcert_id, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: giftcerts; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY giftcerts (id, code, amount, expiration_date, order_id, created_at, updated_at) FROM stdin;
+1	XDELRGQFPNMN	100.0	2013-12-31	\N	2012-11-05 16:05:14.825879	2012-11-05 16:05:14.825879
+2	IEQGABUEKJGQ	10.0	2013-12-31	\N	2012-11-05 16:05:27.603879	2012-11-05 16:05:27.603879
 \.
 
 
@@ -1908,12 +2380,78 @@ COPY images (id, title, slug, description, user_id, gallery_file_name, gallery_c
 --
 
 COPY line_items (id, order_id, quantity, sellable_id, price, unit_price, description, line_item_type, created_at, updated_at) FROM stdin;
-19	16	1	15	19.0	0.0		sellable	\N	\N
-20	17	1	15	19.0	0.0		sellable	\N	\N
-21	16	1	\N	10.0	0.0	Shipping	shipment	2012-10-17 15:39:00.951104	2012-10-17 15:39:01.082012
-22	17	1	\N	20.0	0.0	Shipping	shipment	2012-10-17 15:39:01.084616	2012-10-17 15:39:01.089901
-23	16	1	\N	29.0	0.0	Payment	payment	2012-10-17 15:39:01.106489	2012-10-17 15:39:01.114213
-24	17	1	\N	39.0	0.0	Payment	payment	2012-10-17 15:39:01.11578	2012-10-17 15:39:01.121287
+19	16	1	15	19.00	0.00		sellable	\N	\N
+20	17	1	15	19.00	0.00		sellable	\N	\N
+21	16	1	\N	10.00	0.00	Shipping	shipment	2012-10-17 15:39:00.951104	2012-10-17 15:39:01.082012
+22	17	1	\N	20.00	0.00	Shipping	shipment	2012-10-17 15:39:01.084616	2012-10-17 15:39:01.089901
+23	16	1	\N	29.00	0.00	Payment	payment	2012-10-17 15:39:01.106489	2012-10-17 15:39:01.114213
+24	17	1	\N	39.00	0.00	Payment	payment	2012-10-17 15:39:01.11578	2012-10-17 15:39:01.121287
+\.
+
+
+--
+-- Data for Name: option_configurations; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY option_configurations (id, klass, option_id, created_at, updated_at) FROM stdin;
+1	PiggybakGiftcerts::BuyableGiftcert	1	2012-11-05 15:34:06.726083	2012-11-05 15:34:06.726083
+2	Frame	2	2012-11-05 15:37:25.949082	2012-11-05 15:37:25.949082
+3	Frame	3	2012-11-05 15:40:01.495028	2012-11-05 15:40:01.495028
+\.
+
+
+--
+-- Data for Name: option_values; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY option_values (id, option_id, name, "position", created_at, updated_at) FROM stdin;
+1	1	$10	1	2012-11-05 15:34:06.722342	2012-11-05 15:34:06.722342
+2	1	$20	1	2012-11-05 15:34:06.724104	2012-11-05 15:34:06.724104
+3	1	$40	1	2012-11-05 15:34:06.724941	2012-11-05 15:34:06.724941
+7	3	Black	3	2012-11-05 15:40:01.492447	2012-11-05 15:40:01.492447
+8	3	Cherry	1	2012-11-05 15:40:01.493127	2012-11-05 15:40:01.493127
+9	3	Bronze	4	2012-11-05 15:40:01.493752	2012-11-05 15:40:01.493752
+10	3	Iron	2	2012-11-05 15:40:01.494383	2012-11-05 15:40:01.494383
+4	2	10" x 20"	1	2012-11-05 15:38:08.010145	2012-11-05 15:42:49.640011
+5	2	20" x 40"	2	2012-11-05 15:38:08.011897	2012-11-05 15:42:49.641262
+\.
+
+
+--
+-- Data for Name: option_values_variants; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY option_values_variants (option_value_id, variant_id) FROM stdin;
+1	1
+2	2
+3	3
+4	4
+8	4
+4	5
+10	5
+4	6
+7	6
+4	7
+9	7
+5	8
+8	8
+5	9
+10	9
+5	10
+7	10
+5	11
+9	11
+\.
+
+
+--
+-- Data for Name: options; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY options (id, name, "position", created_at, updated_at) FROM stdin;
+1	Amount	1	2012-11-05 15:34:06.716901	2012-11-05 15:34:06.716901
+2	Frame Size	1	2012-11-05 15:37:25.947511	2012-11-05 15:37:25.947511
+3	Frame Finish	2	2012-11-05 15:40:01.491554	2012-11-05 15:40:01.491554
 \.
 
 
@@ -1930,8 +2468,8 @@ COPY order_notes (id, order_id, user_id, note, created_at, updated_at) FROM stdi
 --
 
 COPY orders (id, billing_address_id, shipping_address_id, user_id, email, phone, total, total_due, status, created_at, updated_at, ip_address, user_agent, to_be_cancelled) FROM stdin;
-16	41	42	10	test@endpoint.com	6304844834	29.0	0.0	paid	2012-01-10 16:16:12.691295	2012-01-10 16:16:13.081443	174.111.11.143	\N	f
-17	43	44	\N	steph@endpoint.com	6304844834	39.0	0.0	paid	2012-01-10 16:19:25.541916	2012-01-10 16:19:25.745341	174.111.11.143	\N	f
+16	41	42	10	test@endpoint.com	6304844834	29.00	0.00	paid	2012-01-10 16:16:12.691295	2012-01-10 16:16:13.081443	174.111.11.143	\N	f
+17	43	44	\N	steph@endpoint.com	6304844834	39.00	0.00	paid	2012-01-10 16:19:25.541916	2012-01-10 16:19:25.745341	174.111.11.143	\N	f
 \.
 
 
@@ -2062,6 +2600,16 @@ COPY schema_migrations (version) FROM stdin;
 20121008195802
 20121012220537
 20121017151401
+20121022161614
+20121022164235
+20121022165051
+20121022202530
+20121022202531
+20121022202532
+20121022202533
+20121022210041
+20121023225128
+20121026200953
 \.
 
 
@@ -2102,12 +2650,23 @@ COPY sellables (id, sku, description, price, quantity, item_id, item_type, activ
 16	murky-reflection	4"x6" Print of Murky Reflection	19.99	98	17	Image	t	t
 23	spider-duo	4"x6" Print of Spider Duo	19.99	99	24	Image	t	t
 40	street-cat	4"x6" Print of Street Cat	24.99	7	41	Image	t	t
-17	butterfly	4"x6" Print of Butterfly	30.0	94	18	Image	t	t
+17	butterfly	4"x6" Print of Butterfly	30.00	94	18	Image	t	t
 18	backlit-fall-leaves	4"x6" Print of Backlit Fall Leaves	19.99	999	19	Image	t	f
 29	pollination	4"x6" Print of Pollination	19.99	99	30	Image	t	t
 44	relaxing-puppy	4"x6" Print of Relaxing Puppy	24.99	3	45	Image	t	f
 11	dog-sunglasses	4"x6" Print of Dog in Sunglasses	19.99	3	12	Image	t	t
-15	nature	4"x6" Print of Nature	19.0	98	16	Image	t	t
+15	nature	4"x6" Print of Nature	19.00	98	16	Image	t	t
+45	giftcert-10	$10 Gift Certificate	10.00	0	1	PiggybakVariants::Variant	t	t
+46	giftcert-20	$20 Gift Certificate	20.00	0	2	PiggybakVariants::Variant	t	t
+47	giftcert-40	$40 Gift Certificate	40.00	0	3	PiggybakVariants::Variant	t	t
+48	10-cherry	10" x 20" Cherry Frame	24.99	0	4	PiggybakVariants::Variant	t	t
+49	10-iron	10" x 20" Iron Frame	24.99	0	5	PiggybakVariants::Variant	t	t
+50	10-black	10" x 20" Black Frame	19.99	0	6	PiggybakVariants::Variant	t	t
+51	10-bronze	10" x 20" Bronze Frame	29.99	0	7	PiggybakVariants::Variant	t	t
+52	20-cherry	20" x 40" Cherry Frame	39.99	0	8	PiggybakVariants::Variant	t	t
+53	20-iron	20" x 40" Iron Frame	39.99	0	9	PiggybakVariants::Variant	t	t
+54	20-black	20" x 40" Black Frame	34.99	0	10	PiggybakVariants::Variant	t	t
+55	20-bronze	20" x 40" Bronze Frame	44.99	0	11	PiggybakVariants::Variant	t	f
 \.
 
 
@@ -6452,11 +7011,38 @@ COPY users (id, email, encrypted_password, reset_password_token, reset_password_
 
 
 --
+-- Data for Name: variants; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY variants (id, item_id, item_type, created_at, updated_at) FROM stdin;
+1	1	PiggybakGiftcerts::BuyableGiftcert	2012-11-05 15:34:06.868555	2012-11-05 15:34:06.868555
+2	1	PiggybakGiftcerts::BuyableGiftcert	2012-11-05 15:34:06.874895	2012-11-05 15:34:06.874895
+3	1	PiggybakGiftcerts::BuyableGiftcert	2012-11-05 15:34:06.87849	2012-11-05 15:34:06.87849
+4	1	Frame	2012-11-05 15:43:17.188745	2012-11-05 15:43:17.188745
+5	1	Frame	2012-11-05 15:44:20.168242	2012-11-05 15:44:20.168242
+6	1	Frame	2012-11-05 15:44:58.08433	2012-11-05 15:44:58.08433
+7	1	Frame	2012-11-05 15:44:58.091345	2012-11-05 15:44:58.091345
+8	1	Frame	2012-11-05 15:48:40.259691	2012-11-05 15:48:40.259691
+9	1	Frame	2012-11-05 15:48:40.266903	2012-11-05 15:48:40.266903
+10	1	Frame	2012-11-05 15:49:31.196858	2012-11-05 15:49:31.196858
+11	1	Frame	2012-11-05 15:49:31.200294	2012-11-05 15:49:31.200294
+\.
+
+
+--
 -- Name: addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
 ALTER TABLE ONLY addresses
     ADD CONSTRAINT addresses_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: buyable_giftcerts_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+ALTER TABLE ONLY buyable_giftcerts
+    ADD CONSTRAINT buyable_giftcerts_pkey PRIMARY KEY (id);
 
 
 --
@@ -6500,6 +7086,30 @@ ALTER TABLE ONLY adjustments
 
 
 --
+-- Name: frames_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+ALTER TABLE ONLY frames
+    ADD CONSTRAINT frames_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: giftcert_applications_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+ALTER TABLE ONLY giftcert_applications
+    ADD CONSTRAINT giftcert_applications_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: giftcerts_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+ALTER TABLE ONLY giftcerts
+    ADD CONSTRAINT giftcerts_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: images_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
@@ -6513,6 +7123,30 @@ ALTER TABLE ONLY images
 
 ALTER TABLE ONLY line_items
     ADD CONSTRAINT line_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: option_configurations_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+ALTER TABLE ONLY option_configurations
+    ADD CONSTRAINT option_configurations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: option_values_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+ALTER TABLE ONLY option_values
+    ADD CONSTRAINT option_values_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: options_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+ALTER TABLE ONLY options
+    ADD CONSTRAINT options_pkey PRIMARY KEY (id);
 
 
 --
@@ -6665,6 +7299,14 @@ ALTER TABLE ONLY tax_methods
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: variants_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+ALTER TABLE ONLY variants
+    ADD CONSTRAINT variants_pkey PRIMARY KEY (id);
 
 
 --

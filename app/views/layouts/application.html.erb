@@ -41,6 +41,7 @@
 								<% Category.all.each do |category| %>
 								<li><%= link_to category.title, main_app.category_url(category.slug) %></li>
 								<% end -%>
+								<li><%= link_to "Professional Frames", main_app.frame_url %></li>
 								<li><%= link_to "Gift Certificates", piggybak_giftcerts.buy_giftcert_url %></li>
 							</ul>
 						</li>
@@ -123,7 +124,7 @@
 				Copyright &copy;<%= Time.now.year.to_s %> Steph Skardal.  All Rights Reserved.<br />
 				This demo is running on <a href="http://www.ruby-lang.org/en/">Ruby v<%= RUBY_VERSION %></a>,
 				<a href="http://rubyonrails.org/">Rails v<%= Rails::VERSION::STRING %></a>,
-				<a href="https://rubygems.org/gems/piggybak">Piggybak v0.6.12</a>.
+				<a href="https://rubygems.org/gems/piggybak">Piggybak v0.6.13</a>.
 			</span>
 			<ul id="footnav">
 				<% Page.all.each do |page| -%>
