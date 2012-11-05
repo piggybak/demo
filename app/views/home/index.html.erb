@@ -2,10 +2,12 @@
 <h1><span class="f-left"></span><span class="titletext">Featured Products</span><span class="f-right"></span></h1>
 </div>
 
+<% if @images.size > 0 -%>
 <div id="image-details">
 	<%= link_to @images.first.title, image_url(@images.first.slug) %>
 	<p><%= @images.first.description %></p>
 </div>
+<% end -%>
 
 <div id="slider-container">
 	<div id="slider-wrapper">
