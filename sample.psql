@@ -36,7 +36,6 @@ DROP TABLE countries CASCADE;
 DROP TABLE coupons CASCADE;
 DROP TABLE coupon_applications CASCADE;
 DROP TABLE categories_images;
-DROP TABLE credits CASCADE;
 DROP TABLE frames CASCADE;
 DROP TABLE giftcert_applications CASCADE;
 DROP TABLE giftcerts CASCADE;
