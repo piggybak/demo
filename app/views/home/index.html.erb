@@ -27,14 +27,13 @@
 
 <div id="ts-display-portfolio">
 <ul id="ts-display-pf-col-3">
-	<% @categories.each do |category| %>
+	<% @nodes.each do |node| %>
 	<li class="four columns alpha">
 		<div class="ts-display-pf-img">
-			<%= link_to image_tag(category.images.first.gallery.url(:thumb)), category_url(category.slug) %>
+			<%= link_to image_tag(node.recursive_sellables.first.item.gallery.url(:thumb)), piggybak_taxonomy.piggybak_taxonomy_url(:path => node.nav_path) %>
 		</div>
 		<div class="ts-display-pf-text">
-			<h3 class="posttitle"><%= link_to category.title, category_url(category.slug) %></h3>
-			<% if false -%><p>Additional Details here</p><% end -%>
+			<h3 class="posttitle"><%= link_to node.title, piggybak_taxonomy.piggybak_taxonomy_url(:path => node.nav_path) %></h3>
 		</div>
 		<div class="ts-display-clear"></div>
 	</li>

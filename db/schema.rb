@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121026200953) do
+ActiveRecord::Schema.define(:version => 20121113164416) do
 
   create_table "addresses", :force => true do |t|
     t.string   "firstname",  :null => false
@@ -35,19 +35,6 @@ ActiveRecord::Schema.define(:version => 20121026200953) do
   end
 
   create_table "buyable_giftcerts", :force => true do |t|
-  end
-
-  create_table "categories", :force => true do |t|
-    t.string   "title"
-    t.string   "slug"
-    t.text     "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "categories_images", :id => false, :force => true do |t|
-    t.integer "category_id"
-    t.integer "image_id"
   end
 
   create_table "countries", :force => true do |t|
@@ -139,13 +126,16 @@ ActiveRecord::Schema.define(:version => 20121026200953) do
     t.datetime "updated_at"
   end
 
-  create_table "option_assignments", :force => true do |t|
-    t.string   "item_type",  :null => false
-    t.integer  "item_id",    :null => false
-    t.integer  "option_id",  :null => false
+  create_table "navigation_nodes", :force => true do |t|
+    t.string   "title"
+    t.string   "slug"
+    t.string   "position"
+    t.string   "ancestry"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_index "navigation_nodes", ["ancestry"], :name => "index_navigation_nodes_on_ancestry"
 
   create_table "option_configurations", :force => true do |t|
     t.string   "klass",      :null => false
@@ -263,6 +253,12 @@ ActiveRecord::Schema.define(:version => 20121026200953) do
     t.integer "user_id"
   end
 
+  create_table "sellable_taxonomies", :force => true do |t|
+    t.integer "navigation_node_id",                :null => false
+    t.integer "sellable_id",                       :null => false
+    t.integer "sort",               :default => 0, :null => false
+  end
+
   create_table "sellables", :force => true do |t|
     t.string  "sku",                                                                   :null => false
     t.string  "description",                                                           :null => false
@@ -292,18 +288,6 @@ ActiveRecord::Schema.define(:version => 20121026200953) do
     t.string  "description",                    :null => false
     t.string  "klass",                          :null => false
     t.boolean "active",      :default => false, :null => false
-  end
-
-  create_table "shirts", :force => true do |t|
-    t.string   "title",             :null => false
-    t.string   "slug",              :null => false
-    t.text     "description"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
-    t.string   "main_file_name"
-    t.string   "main_content_type"
-    t.integer  "main_file_size"
-    t.datetime "main_updated_at"
   end
 
   create_table "states", :force => true do |t|

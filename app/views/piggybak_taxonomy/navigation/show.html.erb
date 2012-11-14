@@ -1,0 +1,28 @@
+<div class="title">
+<h1><span class="f-left"></span><span class="titletext"><%= @node.title %></span><span class="f-right"></span></h1>
+</div>
+<%= render :partial => "breadcrumb", :locals => { :final_node => @node, :link_last => false } %>
+
+<%= render :partial => "pagination", :locals => { :node => @nodes } %>
+<div class="clearfix"></div>
+
+<div id="ts-display-portfolio">
+<ul id="ts-display-pf-col-3">
+	<% @node.paginated_sellables(params[:page], 9).each do |sellable| %>
+	<li class="four columns alpha">
+		<div class="ts-display-pf-img">
+			<%= link_to image_tag(sellable.item.gallery.url(:thumb)), main_app.image_url(sellable.item) %>
+		</div>
+		<div class="ts-display-pf-text">
+			<h3 class="posttitle"><%= link_to sellable.item.title, main_app.image_url(sellable.item) %></h3>
+		</div>
+		<div class="ts-display-clear"></div>
+	</li>
+	<% end -%>
+</ul>
+<div class="clearfix"></div>
+</div><!-- end #ts-display-portfolio -->
+
+<%= render :partial => "pagination", :locals => { :node => @nodes } %>
+
+<div class="clearfix"></div>

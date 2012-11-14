@@ -8,6 +8,30 @@ RailsAdmin.config do |config|
   # require 'i18n'
   # I18n.default_locale = :de
 
+  config.actions do
+    # root actions
+    dashboard                     # mandatory
+    # collection actions
+    index                         # mandatory
+    new
+    export
+    history_index
+    bulk_delete
+    # member actions
+    show
+    edit
+    delete
+    history_show
+    show_in_app
+
+    # Add the nestable action for each model
+    nestable do
+      visible do
+        [::PiggybakTaxonomy::NavigationNode].include? bindings[:abstract_model].model
+      end
+    end
+  end
+
   config.current_user_method { current_user } # auto-generated
 
   # Set the admin name here (optional second array element will appear in a beautiful RailsAdmin red ©)
@@ -62,21 +86,6 @@ RailsAdmin.config do |config|
       field :description
       field :main
       include_all_fields
-    end
-  end
-  config.model Category do
-    navigation_label "Demo Application"
-    list do
-      field :title
-      field :slug
-    end
-    edit do
-      field :title
-      field :slug
-      field :description, :text do
-        ckeditor true
-      end
-      field :images
     end
   end
   config.model User do

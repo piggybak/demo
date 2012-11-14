@@ -31,16 +31,15 @@ SET default_with_oids = false;
 DROP TABLE addresses CASCADE;
 DROP TABLE adjustments CASCADE;
 DROP TABLE buyable_giftcerts CASCADE;
-DROP TABLE categories CASCADE;
 DROP TABLE countries CASCADE;
 DROP TABLE coupons CASCADE;
 DROP TABLE coupon_applications CASCADE;
-DROP TABLE categories_images;
 DROP TABLE frames CASCADE;
 DROP TABLE giftcert_applications CASCADE;
 DROP TABLE giftcerts CASCADE;
 DROP TABLE images CASCADE;
 DROP TABLE line_items CASCADE;
+DROP TABLE navigation_nodes;
 DROP TABLE option_values CASCADE;
 DROP TABLE option_values_variants CASCADE;
 DROP TABLE options CASCADE;
@@ -55,6 +54,7 @@ DROP TABLE rails_admin_histories CASCADE;
 DROP TABLE roles CASCADE;
 DROP TABLE roles_users;
 DROP TABLE sellables CASCADE;
+DROP TABLE sellable_taxonomies CASCADE;
 DROP TABLE schema_migrations;
 DROP TABLE shipments CASCADE;
 DROP TABLE shipping_method_values CASCADE;
@@ -216,62 +216,6 @@ ALTER SEQUENCE buyable_giftcerts_id_seq OWNED BY buyable_giftcerts.id;
 
 SELECT pg_catalog.setval('buyable_giftcerts_id_seq', 1, true);
 
-
---
--- Name: categories; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE categories (
-    id integer NOT NULL,
-    title character varying(255),
-    slug character varying(255),
-    description text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
-ALTER TABLE public.categories OWNER TO piggybak;
-
---
--- Name: categories_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE categories_id_seq
-    START WITH 10
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.categories_id_seq OWNER TO piggybak;
-
---
--- Name: categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE categories_id_seq OWNED BY categories.id;
-
-
---
--- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('categories_id_seq', 3, true);
-
-
---
--- Name: categories_images; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE categories_images (
-    category_id integer,
-    image_id integer
-);
-
-
-ALTER TABLE public.categories_images OWNER TO piggybak;
 
 --
 -- Name: countries; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
@@ -638,6 +582,51 @@ ALTER SEQUENCE line_items_id_seq OWNED BY line_items.id;
 --
 
 SELECT pg_catalog.setval('line_items_id_seq', 24, true);
+
+
+--
+-- Name: navigation_nodes; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE navigation_nodes (
+    id integer NOT NULL,
+    title character varying(255),
+    slug character varying(255),
+    "position" character varying(255),
+    ancestry character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.navigation_nodes OWNER TO piggybak;
+
+--
+-- Name: navigation_nodes_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE navigation_nodes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.navigation_nodes_id_seq OWNER TO piggybak;
+
+--
+-- Name: navigation_nodes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE navigation_nodes_id_seq OWNED BY navigation_nodes.id;
+
+
+--
+-- Name: navigation_nodes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('navigation_nodes_id_seq', 5, true);
 
 
 --
@@ -1212,6 +1201,48 @@ CREATE TABLE schema_migrations (
 ALTER TABLE public.schema_migrations OWNER TO piggybak;
 
 --
+-- Name: sellable_taxonomies; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE sellable_taxonomies (
+    id integer NOT NULL,
+    navigation_node_id integer NOT NULL,
+    sellable_id integer NOT NULL,
+    sort integer DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public.sellable_taxonomies OWNER TO piggybak;
+
+--
+-- Name: sellable_taxonomies_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE sellable_taxonomies_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.sellable_taxonomies_id_seq OWNER TO piggybak;
+
+--
+-- Name: sellable_taxonomies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE sellable_taxonomies_id_seq OWNED BY sellable_taxonomies.id;
+
+
+--
+-- Name: sellable_taxonomies_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('sellable_taxonomies_id_seq', 174, true);
+
+
+--
 -- Name: sellables; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
@@ -1711,13 +1742,6 @@ ALTER TABLE ONLY buyable_giftcerts ALTER COLUMN id SET DEFAULT nextval('buyable_
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE ONLY categories ALTER COLUMN id SET DEFAULT nextval('categories_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
 ALTER TABLE ONLY countries ALTER COLUMN id SET DEFAULT nextval('countries_id_seq'::regclass);
 
 
@@ -1775,6 +1799,13 @@ ALTER TABLE ONLY images ALTER COLUMN id SET DEFAULT nextval('images_id_seq'::reg
 --
 
 ALTER TABLE ONLY line_items ALTER COLUMN id SET DEFAULT nextval('line_items_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY navigation_nodes ALTER COLUMN id SET DEFAULT nextval('navigation_nodes_id_seq'::regclass);
 
 
 --
@@ -1859,6 +1890,13 @@ ALTER TABLE ONLY rails_admin_histories ALTER COLUMN id SET DEFAULT nextval('rail
 --
 
 ALTER TABLE ONLY roles ALTER COLUMN id SET DEFAULT nextval('roles_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY sellable_taxonomies ALTER COLUMN id SET DEFAULT nextval('sellable_taxonomies_id_seq'::regclass);
 
 
 --
@@ -1964,61 +2002,6 @@ COPY adjustments (id, source_type, source_id, created_at, updated_at, note) FROM
 
 COPY buyable_giftcerts (id) FROM stdin;
 1
-\.
-
-
---
--- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: piggybak
---
-
-COPY categories (id, title, slug, description, created_at, updated_at) FROM stdin;
-2	Nature	nature		2012-01-04 01:24:05.986606	2012-01-04 01:24:05.986606
-3	Insects	insects		2012-01-04 01:24:30.753077	2012-01-04 01:24:30.753077
-1	Cats & Dogs	cats-dogs		2012-01-03 21:32:06.552804	2012-01-04 02:12:31.858957
-\.
-
-
---
--- Data for Name: categories_images; Type: TABLE DATA; Schema: public; Owner: piggybak
---
-
-COPY categories_images (category_id, image_id) FROM stdin;
-2	11
-1	12
-1	13
-1	14
-1	15
-2	16
-2	17
-3	18
-2	19
-2	20
-1	21
-1	22
-3	23
-3	24
-1	25
-1	27
-1	28
-2	29
-3	30
-2	30
-3	31
-2	31
-1	32
-2	33
-1	34
-2	35
-2	36
-1	37
-2	38
-2	39
-1	40
-1	41
-2	42
-3	43
-2	44
-1	45
 \.
 
 
@@ -2302,6 +2285,18 @@ COPY coupons (id, code, amount, discount_type, min_cart_total, expiration_date, 
 COPY credits (id, order_id, source_type, source_id, total, created_at, updated_at) FROM stdin;
 1	\N	\N	\N	5.0	2012-01-06 01:17:24.133173	2012-01-06 01:17:24.133173
 2	14	\N	\N	5.0	2012-01-06 01:17:37.748389	2012-01-06 01:17:37.748389
+1	\N	\N	\N	5.0	2012-01-06 01:17:24.133173	2012-01-06 01:17:24.133173
+2	14	\N	\N	5.0	2012-01-06 01:17:37.748389	2012-01-06 01:17:37.748389
+1	\N	\N	\N	5.0	2012-01-06 01:17:24.133173	2012-01-06 01:17:24.133173
+2	14	\N	\N	5.0	2012-01-06 01:17:37.748389	2012-01-06 01:17:37.748389
+1	\N	\N	\N	5.0	2012-01-06 01:17:24.133173	2012-01-06 01:17:24.133173
+2	14	\N	\N	5.0	2012-01-06 01:17:37.748389	2012-01-06 01:17:37.748389
+1	\N	\N	\N	5.0	2012-01-06 01:17:24.133173	2012-01-06 01:17:24.133173
+2	14	\N	\N	5.0	2012-01-06 01:17:37.748389	2012-01-06 01:17:37.748389
+1	\N	\N	\N	5.0	2012-01-06 01:17:24.133173	2012-01-06 01:17:24.133173
+2	14	\N	\N	5.0	2012-01-06 01:17:37.748389	2012-01-06 01:17:37.748389
+1	\N	\N	\N	5.0	2012-01-06 01:17:24.133173	2012-01-06 01:17:24.133173
+2	14	\N	\N	5.0	2012-01-06 01:17:37.748389	2012-01-06 01:17:37.748389
 \.
 
 
@@ -2385,6 +2380,19 @@ COPY line_items (id, order_id, quantity, sellable_id, price, unit_price, descrip
 22	17	1	\N	20.00	0.00	Shipping	shipment	2012-10-17 15:39:01.084616	2012-10-17 15:39:01.089901
 23	16	1	\N	29.00	0.00	Payment	payment	2012-10-17 15:39:01.106489	2012-10-17 15:39:01.114213
 24	17	1	\N	39.00	0.00	Payment	payment	2012-10-17 15:39:01.11578	2012-10-17 15:39:01.121287
+\.
+
+
+--
+-- Data for Name: navigation_nodes; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY navigation_nodes (id, title, slug, "position", ancestry, created_at, updated_at) FROM stdin;
+1	Nature	nature	1	\N	2012-11-14 16:07:41.911049	2012-11-14 16:08:20.905353
+2	Animals	animals	2	\N	2012-11-14 16:07:49.98803	2012-11-14 16:08:20.90768
+3	Dogs	dogs	1	2	2012-11-14 16:07:55.139671	2012-11-14 16:08:20.909884
+4	Cats	cats	2	2	2012-11-14 16:07:58.843703	2012-11-14 16:08:20.913336
+5	Insects	insects	3	\N	2012-11-14 16:08:09.571068	2012-11-14 16:08:20.915373
 \.
 
 
@@ -2610,6 +2618,53 @@ COPY schema_migrations (version) FROM stdin;
 20121023225128
 20121026200953
 20121108204215
+20121109165416
+20121113143538
+20121113164416
+\.
+
+
+--
+-- Data for Name: sellable_taxonomies; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY sellable_taxonomies (id, navigation_node_id, sellable_id, sort) FROM stdin;
+1	1	10	1
+2	1	15	2
+6	1	16	3
+7	1	18	4
+8	1	19	5
+9	1	28	6
+10	1	29	7
+11	1	30	8
+12	1	32	9
+13	1	34	10
+14	1	35	11
+15	1	37	12
+16	1	38	13
+17	1	41	15
+18	1	43	16
+19	5	17	1
+20	5	22	2
+21	5	23	3
+22	5	29	4
+23	5	30	4
+24	5	42	6
+25	4	40	1
+26	3	11	1
+27	3	12	2
+28	3	13	3
+29	3	14	4
+30	3	20	5
+31	3	21	6
+32	3	24	7
+33	3	26	8
+34	3	27	9
+35	3	31	10
+36	3	33	11
+37	3	36	12
+38	3	39	13
+39	3	44	14
 \.
 
 
@@ -7046,14 +7101,6 @@ ALTER TABLE ONLY buyable_giftcerts
 
 
 --
--- Name: categories_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
---
-
-ALTER TABLE ONLY categories
-    ADD CONSTRAINT categories_pkey PRIMARY KEY (id);
-
-
---
 -- Name: countries_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
@@ -7123,6 +7170,14 @@ ALTER TABLE ONLY images
 
 ALTER TABLE ONLY line_items
     ADD CONSTRAINT line_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: navigation_nodes_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+ALTER TABLE ONLY navigation_nodes
+    ADD CONSTRAINT navigation_nodes_pkey PRIMARY KEY (id);
 
 
 --
@@ -7230,6 +7285,14 @@ ALTER TABLE ONLY roles
 
 
 --
+-- Name: sellable_taxonomies_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+ALTER TABLE ONLY sellable_taxonomies
+    ADD CONSTRAINT sellable_taxonomies_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: shipments_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
@@ -7307,6 +7370,13 @@ ALTER TABLE ONLY users
 
 ALTER TABLE ONLY variants
     ADD CONSTRAINT variants_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_navigation_nodes_on_ancestry; Type: INDEX; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE INDEX index_navigation_nodes_on_ancestry ON navigation_nodes USING btree (ancestry);
 
 
 --
