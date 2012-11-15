@@ -103,6 +103,13 @@
 								<pre>bundle install</pre>
 								<p>Next, run the piggybak install command:</p>
 								<pre>piggybak install</pre>
+                                <p>If you are using CanCan for Authorization in RailsAdmin, add the code below to your ability class to allow access to Piggybak's models. Refer to <a href="https://github.com/piggybak/demo/blob/master/app/models/ability.rb" target="_blank">the demo source code</a> for an example:</p>
+								<pre>
+can :manage, Piggybak.config.manage_classes.map(&:constantize)
+Piggybak.config.extra_abilities.each do |extra_ability|
+  can extra_ability[:abilities], extra_ability[:class_name].constantize
+end
+								</pre>
 							</div>
 							<div id="tab_integration" class="tab-content">
 								<p>After installation, Piggybak has several integration points:</p>
