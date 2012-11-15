@@ -4,27 +4,16 @@ class Ability
     if user && user.roles.include?(Role.find_by_name("admin"))
       can :dashboard
       can :access, :rails_admin
-      can [:read, :destroy, :edit, :new, :export, :history, :download, :cancel], [
+      can [:read, :edit], Frame
+      can :manage, [
                     Image,
-                    ::PiggybakVariants::Option,
-                    ::PiggybakVariants::OptionConfiguration,
-                    ::PiggybakVariants::OptionValue,
-                    ::PiggybakTaxonomy::NavigationNode,
                     Page,
                     Role,
-                    User,
-                    ::Piggybak::Sellable,
-                    ::Piggybak::ShippingMethod,
-                    ::Piggybak::PaymentMethod,
-                    ::PiggybakCoupons::Coupon,
-                    ::PiggybakGiftcerts::Giftcert,
-                    ::Piggybak::TaxMethod,
-                    ::Piggybak::State,
-                    ::Piggybak::Country,
-                    ::Piggybak::Order]
-      can [:read, :edit], ::PiggybakGiftcerts::BuyableGiftcert
-      can [:read, :edit], ::Frame
-      can [:nestable], ::PiggybakTaxonomy::NavigationNode
+                    User]
+      can :manage, Piggybak.config.manage_classes.map(&:constantize)
+      Piggybak.config.extra_abilities.each do |extra_ability|
+        can extra_ability[:abilities], extra_ability[:class_name].constantize
+      end
     end
   end
 end
