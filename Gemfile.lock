@@ -130,7 +130,7 @@ GEM
       rails (~> 3.2.8)
     piggybak_coupons (0.0.12)
       rails (~> 3.2.8)
-    piggybak_giftcerts (0.0.9)
+    piggybak_giftcerts (0.0.10)
       piggybak
       piggybak_variants
       rails (~> 3.2.8)
@@ -247,7 +247,7 @@ DEPENDENCIES
   piggybak (= 0.6.23)
   piggybak_bundle_discounts (= 0.0.4)
   piggybak_coupons (= 0.0.12)
-  piggybak_giftcerts (= 0.0.9)
+  piggybak_giftcerts (= 0.0.10)
   piggybak_taxonomy (= 0.0.5)
   piggybak_variants (= 0.0.8)
   rails (= 3.2.8)
