@@ -69,7 +69,6 @@ RailsAdmin.config do |config|
       field :slug
       field :description
       field :main
-      field :categories
       field :user
       include_all_fields 
     end
