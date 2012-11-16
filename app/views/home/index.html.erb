@@ -28,6 +28,7 @@
 <div id="ts-display-portfolio">
 <ul id="ts-display-pf-col-3">
 	<% @nodes.each do |node| %>
+    <% if node.recursive_sellables.any? && !node.recursive_sellables.first.item.nil? -%>
 	<li class="four columns alpha">
 		<div class="ts-display-pf-img">
 			<%= link_to image_tag(node.recursive_sellables.first.item.gallery.url(:thumb)), piggybak_taxonomy.piggybak_taxonomy_url(:path => node.nav_path) %>
@@ -37,6 +38,7 @@
 		</div>
 		<div class="ts-display-clear"></div>
 	</li>
+	<% end -%>
 	<% end -%>
 </ul>
 <div class="clearfix"></div>
