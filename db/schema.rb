@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121113164416) do
+ActiveRecord::Schema.define(:version => 20121115150733) do
 
   create_table "addresses", :force => true do |t|
     t.string   "firstname",  :null => false
@@ -26,12 +26,18 @@ ActiveRecord::Schema.define(:version => 20121113164416) do
     t.integer  "country_id"
   end
 
-  create_table "adjustments", :force => true do |t|
-    t.string   "source_type"
-    t.integer  "source_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "note"
+  create_table "bundle_discount_sellables", :force => true do |t|
+    t.integer "bundle_discount_id", :null => false
+    t.integer "sellable_id",        :null => false
+  end
+
+  create_table "bundle_discounts", :force => true do |t|
+    t.string   "name",                            :null => false
+    t.float    "discount",                        :null => false
+    t.boolean  "multiply",     :default => false, :null => false
+    t.datetime "active_until"
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
   end
 
   create_table "buyable_giftcerts", :force => true do |t|
@@ -56,16 +62,6 @@ ActiveRecord::Schema.define(:version => 20121113164416) do
     t.decimal "min_cart_total",       :precision => 10, :scale => 2, :null => false
     t.date    "expiration_date"
     t.integer "allowed_applications"
-  end
-
-  create_table "credits", :id => false, :force => true do |t|
-    t.integer  "id",          :null => false
-    t.integer  "order_id"
-    t.string   "source_type"
-    t.integer  "source_id"
-    t.decimal  "total"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "frames", :force => true do |t|

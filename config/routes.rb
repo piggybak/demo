@@ -4,6 +4,7 @@ Demo::Application.routes.draw do
   mount PiggybakCoupons::Engine => '/demo', :as => 'piggybak_coupons'
   mount PiggybakGiftcerts::Engine => '/demo', :as => 'piggybak_giftcerts'
   mount PiggybakTaxonomy::Engine => '/demo', :as => 'piggybak_taxonomy'
+  mount PiggybakBundleDiscounts::Engine => '/demo', :as => 'piggybak_bundle_discounts'
 
   devise_for :users
 

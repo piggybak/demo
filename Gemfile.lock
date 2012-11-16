@@ -119,13 +119,15 @@ GEM
       mime-types
     pg (0.12.0)
       rake-compiler (~> 0.7)
-    piggybak (0.6.20)
+    piggybak (0.6.22)
       activemerchant
       countries
       devise
       rack-ssl-enforcer
       rails (~> 3.2.8)
       rails_admin
+    piggybak_bundle_discounts (0.0.3)
+      rails (~> 3.2.8)
     piggybak_coupons (0.0.11)
       rails (~> 3.2.8)
     piggybak_giftcerts (0.0.9)
@@ -242,7 +244,8 @@ DEPENDENCIES
   json
   paperclip
   pg (= 0.12.0)
-  piggybak (= 0.6.20)
+  piggybak (= 0.6.22)
+  piggybak_bundle_discounts (= 0.0.3)
   piggybak_coupons (= 0.0.11)
   piggybak_giftcerts (= 0.0.9)
   piggybak_taxonomy (= 0.0.5)

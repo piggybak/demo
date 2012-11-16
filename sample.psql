@@ -29,8 +29,9 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 DROP TABLE addresses CASCADE;
-DROP TABLE adjustments CASCADE;
 DROP TABLE buyable_giftcerts CASCADE;
+DROP TABLE bundle_discounts CASCADE;
+DROP TABLE bundle_discount_sellables CASCADE;
 DROP TABLE countries CASCADE;
 DROP TABLE coupons CASCADE;
 DROP TABLE coupon_applications CASCADE;
@@ -118,65 +119,90 @@ SELECT pg_catalog.setval('addresses_id_seq', 44, true);
 
 
 --
--- Name: credits; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+-- Name: bundle_discount_sellables; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-CREATE TABLE credits (
+CREATE TABLE bundle_discount_sellables (
     id integer NOT NULL,
-    order_id integer,
-    source_type character varying(255),
-    source_id integer,
-    total numeric,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    bundle_discount_id integer NOT NULL,
+    sellable_id integer NOT NULL
 );
 
 
-ALTER TABLE public.credits OWNER TO piggybak;
+ALTER TABLE public.bundle_discount_sellables OWNER TO piggybak;
 
 --
--- Name: credits_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+-- Name: bundle_discount_sellables_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
-CREATE SEQUENCE credits_id_seq
-    START WITH 5
+CREATE SEQUENCE bundle_discount_sellables_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
 
 
-ALTER TABLE public.credits_id_seq OWNER TO piggybak;
+ALTER TABLE public.bundle_discount_sellables_id_seq OWNER TO piggybak;
 
 --
--- Name: credits_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+-- Name: bundle_discount_sellables_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
-ALTER SEQUENCE credits_id_seq OWNED BY credits.id;
-
-
---
--- Name: credits_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('credits_id_seq', 2, true);
+ALTER SEQUENCE bundle_discount_sellables_id_seq OWNED BY bundle_discount_sellables.id;
 
 
 --
--- Name: adjustments; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+-- Name: bundle_discount_sellables_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-CREATE TABLE adjustments (
-    id integer DEFAULT nextval('credits_id_seq'::regclass) NOT NULL,
-    source_type character varying(255),
-    source_id integer,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    note text
+SELECT pg_catalog.setval('bundle_discount_sellables_id_seq', 8, true);
+
+
+--
+-- Name: bundle_discounts; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE bundle_discounts (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    discount double precision NOT NULL,
+    multiply boolean DEFAULT false NOT NULL,
+    active_until timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
-ALTER TABLE public.adjustments OWNER TO piggybak;
+ALTER TABLE public.bundle_discounts OWNER TO piggybak;
+
+--
+-- Name: bundle_discounts_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE bundle_discounts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.bundle_discounts_id_seq OWNER TO piggybak;
+
+--
+-- Name: bundle_discounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE bundle_discounts_id_seq OWNED BY bundle_discounts.id;
+
+
+--
+-- Name: bundle_discounts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('bundle_discounts_id_seq', 3, true);
+
 
 --
 -- Name: buyable_giftcerts; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
@@ -1735,6 +1761,20 @@ ALTER TABLE ONLY addresses ALTER COLUMN id SET DEFAULT nextval('addresses_id_seq
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
+ALTER TABLE ONLY bundle_discount_sellables ALTER COLUMN id SET DEFAULT nextval('bundle_discount_sellables_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY bundle_discounts ALTER COLUMN id SET DEFAULT nextval('bundle_discounts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
 ALTER TABLE ONLY buyable_giftcerts ALTER COLUMN id SET DEFAULT nextval('buyable_giftcerts_id_seq'::regclass);
 
 
@@ -1757,13 +1797,6 @@ ALTER TABLE ONLY coupon_applications ALTER COLUMN id SET DEFAULT nextval('coupon
 --
 
 ALTER TABLE ONLY coupons ALTER COLUMN id SET DEFAULT nextval('coupons_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
-ALTER TABLE ONLY credits ALTER COLUMN id SET DEFAULT nextval('credits_id_seq'::regclass);
 
 
 --
@@ -1989,10 +2022,26 @@ COPY addresses (id, firstname, lastname, address1, address2, city, state_id, zip
 
 
 --
--- Data for Name: adjustments; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Data for Name: bundle_discount_sellables; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
-COPY adjustments (id, source_type, source_id, created_at, updated_at, note) FROM stdin;
+COPY bundle_discount_sellables (id, bundle_discount_id, sellable_id) FROM stdin;
+3	2	29
+4	2	30
+5	3	15
+6	3	34
+7	3	35
+8	3	37
+\.
+
+
+--
+-- Data for Name: bundle_discounts; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY bundle_discounts (id, name, discount, multiply, active_until, created_at, updated_at) FROM stdin;
+2	Pollination Bundle Discount	10	f	\N	2012-11-15 23:55:45.447528	2012-11-15 23:55:45.447528
+3	Nature Discount	20	f	\N	2012-11-15 23:56:13.221795	2012-11-15 23:56:13.221795
 \.
 
 
@@ -2275,28 +2324,6 @@ COPY coupons (id, code, amount, discount_type, min_cart_total, expiration_date, 
 1	APOXPQAWHDRC	10.00	%	20.00	2013-12-31	10
 2	DAZWDHBPYTMP	0.00	ship	0.00	2013-12-31	10
 3	DWMIFNRBKTOZ	10.00	$	10.00	2013-12-31	10
-\.
-
-
---
--- Data for Name: credits; Type: TABLE DATA; Schema: public; Owner: piggybak
---
-
-COPY credits (id, order_id, source_type, source_id, total, created_at, updated_at) FROM stdin;
-1	\N	\N	\N	5.0	2012-01-06 01:17:24.133173	2012-01-06 01:17:24.133173
-2	14	\N	\N	5.0	2012-01-06 01:17:37.748389	2012-01-06 01:17:37.748389
-1	\N	\N	\N	5.0	2012-01-06 01:17:24.133173	2012-01-06 01:17:24.133173
-2	14	\N	\N	5.0	2012-01-06 01:17:37.748389	2012-01-06 01:17:37.748389
-1	\N	\N	\N	5.0	2012-01-06 01:17:24.133173	2012-01-06 01:17:24.133173
-2	14	\N	\N	5.0	2012-01-06 01:17:37.748389	2012-01-06 01:17:37.748389
-1	\N	\N	\N	5.0	2012-01-06 01:17:24.133173	2012-01-06 01:17:24.133173
-2	14	\N	\N	5.0	2012-01-06 01:17:37.748389	2012-01-06 01:17:37.748389
-1	\N	\N	\N	5.0	2012-01-06 01:17:24.133173	2012-01-06 01:17:24.133173
-2	14	\N	\N	5.0	2012-01-06 01:17:37.748389	2012-01-06 01:17:37.748389
-1	\N	\N	\N	5.0	2012-01-06 01:17:24.133173	2012-01-06 01:17:24.133173
-2	14	\N	\N	5.0	2012-01-06 01:17:37.748389	2012-01-06 01:17:37.748389
-1	\N	\N	\N	5.0	2012-01-06 01:17:24.133173	2012-01-06 01:17:24.133173
-2	14	\N	\N	5.0	2012-01-06 01:17:37.748389	2012-01-06 01:17:37.748389
 \.
 
 
@@ -2621,6 +2648,7 @@ COPY schema_migrations (version) FROM stdin;
 20121109165416
 20121113143538
 20121113164416
+20121115150733
 \.
 
 
@@ -7093,6 +7121,22 @@ ALTER TABLE ONLY addresses
 
 
 --
+-- Name: bundle_discount_sellables_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+ALTER TABLE ONLY bundle_discount_sellables
+    ADD CONSTRAINT bundle_discount_sellables_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: bundle_discounts_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+ALTER TABLE ONLY bundle_discounts
+    ADD CONSTRAINT bundle_discounts_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: buyable_giftcerts_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
@@ -7122,14 +7166,6 @@ ALTER TABLE ONLY coupon_applications
 
 ALTER TABLE ONLY coupons
     ADD CONSTRAINT coupons_pkey PRIMARY KEY (id);
-
-
---
--- Name: credits_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
---
-
-ALTER TABLE ONLY adjustments
-    ADD CONSTRAINT credits_pkey PRIMARY KEY (id);
 
 
 --
