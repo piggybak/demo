@@ -3,6 +3,7 @@
 <head>
   <title><%= @title || "Piggybak Demo" %></title>
   <%= stylesheet_link_tag    "application" %>
+  <link rel="stylesheet" type="text/css" href="/styles/jtour.css" media="screen" />
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 <script type="text/javascript">
@@ -133,5 +134,7 @@
 		</div><!--container-->
 	</div><!--#wrapper-footer-->
 </div><!--#wrapper-->
+<script type="text/javascript" src="/js/jtour.js"></script>
+<script type="text/javascript" src="/js/jquery.cookie.js"></script>
 </body>
 </html>

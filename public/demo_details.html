@@ -12,10 +12,8 @@
 
 <!--CSS-->
 <link rel="stylesheet" type="text/css" href="styles/site.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="/styles/jtour.css" media="screen" />
 
-<!--Javascript-->
-<script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
-<script type="text/javascript" src="js/jquery.easing.1.3.js"></script> 
 <script type="text/javascript">
 
   var _gaq = _gaq || [];
@@ -31,7 +29,7 @@
 </script>
 	
 </head>
-<body>
+<body class="jtour-white">
 <div id="wrapper">
 
 	<div id="wrapper-top">
@@ -82,13 +80,13 @@
 				<div class="title">
 					<h1><span class="f-left"></span><span class="titletext">Demo</span><span class="f-right"></span></h1>
 				</div>
-				<p style="margin-bottom:15px;"><a href="/demo/" style="color:#FC8607;font-weight:bold;text-decoration:underline;">Visit the demo here</a>. The demo database is reset every hour, so please do not be alarmed if your data does not persist.</p>
+				<p style="margin-bottom:15px;"><a style="display:block;height:0px;width:0px;margin:0px;overflow:hidden;" class="jtour" href="#jTour/piggybak">Tour</a><a href="/demo/" style="color:#FC8607;font-weight:bold;text-decoration:underline;">Visit the demo here</a>. The demo database is reset every hour, so please do not be alarmed if your data does not persist.</p>
 				<p style="margin-bottom:15px;">To log in to the demo to view the admin, please use the credentials shown below. <b>Important Note:</b> All edit privileges have been revoked for the demo admin (read, export, history access only). Visit <a href="https://github.com/sferik/rails_admin">RailsAdmin</a> to gain access to an admin interface which allows editing data from the admin.</p>
-				<pre>
+				<pre id="username_details">
 username: test@endpoint.com
 password: foobar</pre>
 				<p style="margin-bottom:15px;">To check out, you may use the following payment credentials:</p>
-<pre>
+<pre id="creditcard_details">
 credit card: 4111111111111111
 expiration date: any non-expired date
 verification code: any 3 digit number
@@ -125,6 +123,11 @@ verification code: any 3 digit number
 		</div><!--container-->
 	</div><!--#wrapper-footer-->
 </div><!--#wrapper-->
+
+<!--Javascript-->
+<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="/js/jtour.js"></script>
+<script type="text/javascript" src="/js/jquery.cookie.js"></script>
 
 </body>
 </html>

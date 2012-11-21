@@ -21,3 +21,4 @@ httpd/
 config/database.yml
 public/assets/
 config/initializers/piggybak_live.rb
+jtour*
