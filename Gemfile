@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.2.8'
 gem 'fastercsv'
-gem 'rails_admin'
+gem 'rails_admin', '0.3.0'
 gem 'pg', '0.12.0'
 gem 'json'
 gem 'ckeditor'
@@ -21,9 +21,9 @@ group :assets do
 end
 
 gem 'jquery-rails'
-gem "piggybak", '0.6.23'
-gem "piggybak_taxonomy", '0.0.5'
+gem "piggybak", '0.6.24'
+gem "piggybak_taxonomy", '0.0.6'
 gem "piggybak_coupons", '0.0.12'
 gem "piggybak_bundle_discounts", '0.0.4'
-gem "piggybak_variants", '0.0.8'
+gem "piggybak_variants", '0.0.11'
 gem "piggybak_giftcerts", '0.0.10'
