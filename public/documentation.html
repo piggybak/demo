@@ -113,18 +113,30 @@ end
 							</div>
 							<div id="tab_integration" class="tab-content">
 								<p>After installation, Piggybak has several integration points:</p>
-								<pre>acts_as_sellable</pre>
 								<p>acts_as_sellable can be added inside any ActiveRecord models in your application to make tha item become sellable. This results in a nested form for variant data in the admin interface.</p>
-								<pre>acts_as_orderer</pre>
+								<pre>acts_as_sellable</pre>
+ 								<p>You may also need to make two changes to allow for the piggybak_sellable attributes to be accessible to your model depending on your application attribute settings. First, you may need to whitelist the piggybak_sellable_attributes in your model:</p>
+								<pre>attr_accessible :piggybak_sellable_attributes</pre>
+								<p>And you may also need to follow the <a href="https://github.com/sferik/rails_admin">RailsAdmin documentation</a> to allow the piggybak_sellable fields to show up on your model's edit page. This can be accomplished by adding the specific field, or including all fields:</p>
+								<pre>
+config.model YourModel do
+  edit do
+    #other fields
+    include_all_fields
+    # or field :piggybak_sellable
+  end
+end									
+								</pre>
 								<p>acts_as_orderer must be added to the Devise user model. This creates the Ruby on Rails association between user and orders.</p>
-								<pre><%= cart_form(@some_item) %></pre>
+								<pre>acts_as_orderer</pre>
 								<p>The cart_form helper renders a basic add to cart form.</p>
-								<pre><%= cart_link %></pre>
+								<pre><%= cart_form(@some_item) %></pre>
 								<p>The cart_link helper displays a link with total number of items and price to the user's shopping cart.</p>
-								<pre><%= orders_link("Order History") %></pre>
+								<pre><%= cart_link %></pre>
 								<p>The orders_link helper renders a link to a logged in user's orders, with an argument to control the link anchor text.</p>
-								<pre><%= piggybak_track_order("Piggybak Demo") %></pre>
+								<pre><%= orders_link("Order History") %></pre>
 								<p>The piggybak_track_order helper renders Google Analytics order tracking, with an argument to control the store name.</p>
+								<pre><%= piggybak_track_order("Piggybak Demo") %></pre>
 							</div>
 							<div id="tab_appearance" class="tab-content">
 								<p>Piggybak views may be overridden to present custom appearances for the shopping cart, checkout, receipt, and order history pages. To do this, simply copy over views directly from the gem source into the primary application to mirror the directory structure.</p>
