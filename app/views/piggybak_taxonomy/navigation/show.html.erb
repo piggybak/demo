@@ -9,7 +9,7 @@
 <div id="ts-display-portfolio">
 <ul id="ts-display-pf-col-3">
 	<% @node.paginated_sellables(params[:page], 9).each do |sellable| %>
-    <% if !sellable.item.nil? -%>
+	<% if sellable.item.present? && sellable.item.respond_to?(:gallery) -%>
 	<li class="four columns alpha">
 		<div class="ts-display-pf-img">
 			<%= link_to image_tag(sellable.item.gallery.url(:thumb)), main_app.image_url(sellable.item) %>
