@@ -22,7 +22,7 @@ end
 
 gem 'jquery-rails'
 gem "piggybak", '0.6.25'
-gem "piggybak_taxonomy", '0.0.6'
+gem "piggybak_taxonomy", '0.0.7'
 gem "piggybak_coupons", '0.0.12'
 gem "piggybak_bundle_discounts", '0.0.4'
 gem "piggybak_variants", '0.0.11'

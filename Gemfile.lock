@@ -138,7 +138,7 @@ GEM
     piggybak_rails_admin_nestable (0.0.4)
       rails (~> 3.2)
       rails_admin
-    piggybak_taxonomy (0.0.6)
+    piggybak_taxonomy (0.0.7)
       ancestry
       piggybak_rails_admin_nestable
       rails (~> 3.2.8)
@@ -250,7 +250,7 @@ DEPENDENCIES
   piggybak_bundle_discounts (= 0.0.4)
   piggybak_coupons (= 0.0.12)
   piggybak_giftcerts (= 0.0.10)
-  piggybak_taxonomy (= 0.0.6)
+  piggybak_taxonomy (= 0.0.7)
   piggybak_variants (= 0.0.11)
   rails (= 3.2.11)
   rails_admin (= 0.3.0)
