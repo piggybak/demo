@@ -2527,7 +2527,7 @@ COPY payment_method_values (id, payment_method_id, key, value) FROM stdin;
 --
 
 COPY payment_methods (id, description, klass, active, created_at, updated_at) FROM stdin;
-1	Fake Credit Card	Piggybak::PaymentCalculator::Fake	t	2012-01-03 21:47:03.052088	2012-01-05 21:04:27.193433
+1	Fake Credit Card	::Piggybak::PaymentCalculator::Fake	t	2012-01-03 21:47:03.052088	2012-01-05 21:04:27.193433
 \.
 
 

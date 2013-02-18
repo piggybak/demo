@@ -17,7 +17,7 @@ GEM
     active_utils (1.0.5)
       activesupport (>= 2.3.11)
       i18n
-    activemerchant (1.29.3)
+    activemerchant (1.30.0)
       active_utils (>= 1.0.2)
       activesupport (>= 2.3.14)
       builder (>= 2.0.0)
@@ -120,7 +120,7 @@ GEM
       mime-types
     pg (0.12.0)
       rake-compiler (~> 0.7)
-    piggybak (0.6.25)
+    piggybak (0.6.26)
       activemerchant
       countries
       devise
@@ -246,7 +246,7 @@ DEPENDENCIES
   json
   paperclip
   pg (= 0.12.0)
-  piggybak (= 0.6.25)
+  piggybak (= 0.6.26)
   piggybak_bundle_discounts (= 0.0.4)
   piggybak_coupons (= 0.0.12)
   piggybak_giftcerts (= 0.0.10)
