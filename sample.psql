@@ -855,7 +855,7 @@ CREATE TABLE orders (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     ip_address character varying(255),
-    user_agent character text,
+    user_agent text,
     to_be_cancelled boolean DEFAULT false,
     confirmation_sent boolean DEFAULT false
 );
