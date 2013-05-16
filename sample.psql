@@ -855,8 +855,9 @@ CREATE TABLE orders (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     ip_address character varying(255),
-    user_agent character varying(255),
-    to_be_cancelled boolean DEFAULT false
+    user_agent character text,
+    to_be_cancelled boolean DEFAULT false,
+    confirmation_sent boolean DEFAULT false
 );
 
 
@@ -2498,9 +2499,9 @@ COPY order_notes (id, order_id, user_id, note, created_at, updated_at) FROM stdi
 -- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
-COPY orders (id, billing_address_id, shipping_address_id, user_id, email, phone, total, total_due, status, created_at, updated_at, ip_address, user_agent, to_be_cancelled) FROM stdin;
-16	41	42	10	test@endpoint.com	6304844834	29.00	0.00	paid	2012-01-10 16:16:12.691295	2012-01-10 16:16:13.081443	174.111.11.143	\N	f
-17	43	44	\N	steph@endpoint.com	6304844834	39.00	0.00	paid	2012-01-10 16:19:25.541916	2012-01-10 16:19:25.745341	174.111.11.143	\N	f
+COPY orders (id, billing_address_id, shipping_address_id, user_id, email, phone, total, total_due, status, created_at, updated_at, ip_address, user_agent, to_be_cancelled, confirmation_sent) FROM stdin;
+16	41	42	10	test@endpoint.com	6304844834	29.00	0.00	paid	2012-01-10 16:16:12.691295	2012-01-10 16:16:13.081443	174.111.11.143	\N	f	f
+17	43	44	\N	steph@endpoint.com	6304844834	39.00	0.00	paid	2012-01-10 16:19:25.541916	2012-01-10 16:19:25.745341	174.111.11.143	\N	f	f
 \.
 
 
