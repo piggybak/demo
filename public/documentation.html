@@ -208,16 +208,9 @@ end
 								</ul>
 							</div>
 							<div id="tab_configuration" class="tab-content">
-								<p>The parent application can override Piggybak's configuration options with a standard config initializer.</p>
+								<p>The parent application can override Piggybak's configuration options with a standard config initializer. For an updated list of configuration options, view the <a href="https://github.com/piggybak/piggybak/blob/master/lib/piggybak/config.rb">config source code here</a>.</p>
 <pre>
 Piggybak.config do |config|
-  # Config attr_accessors are:
-  # shipping_calculators
-  # payment_calculators
-  # tax_calculators
-  # default_country
-  # activemerchant_test mode
-
   # Add calculators with the following method
   config.shipping_calculators << "Pickup"
 
@@ -229,6 +222,24 @@ Piggybak.config do |config|
 
   # Override the activemerchant billing mode
   config.activemerchant_mode = :test
+
+  # You may add additional order logging via the following configs
+  # logging (defaults to false)
+  # logging_file (defaults to /log/orders.log)
+
+  # Other configuration options include:
+  # activemerchant_mode
+  # email_sender
+  # order_cc
+  # whois_url
+
+  # The following options are advanced plugin configuration options:
+  # line_item_types
+  # secure_checkout
+  # secure_prefix
+  # extra_secure_paths
+  # manage_classes
+  # extra_abilities
 end
 </pre>
 							</div>
