@@ -1,0 +1,7 @@
+listen "unix:/home/piggybak/var/run/unicorn.sock"
+pid "/home/piggybak/var/run/unicorn.pid"
+stderr_path "/home/piggybak/var/log/unicorn.log"
+stdout_path "/home/piggybak/var/log/unicorn.log"
+timeout 15
+worker_processes 3
+working_directory "/home/piggybak/demo"
