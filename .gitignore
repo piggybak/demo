@@ -13,3 +13,8 @@ config/unicorn.rb
 public/assets/
 config/initializers/piggybak_live.rb
 jtour*
+public/system/galleries/46/
+public/system/galleries/47/
+public/system/galleries/48/
+public/system/galleries/49/
+public/system/galleries/5*/
