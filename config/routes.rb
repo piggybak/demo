@@ -6,7 +6,7 @@ Demo::Application.routes.draw do
   mount PiggybakTaxonomy::Engine => '/demo', :as => 'piggybak_taxonomy'
   mount PiggybakBundleDiscounts::Engine => '/demo', :as => 'piggybak_bundle_discounts'
 
-  devise_for :users
+  devise_for :users, :path => '/demo/users'
 
   match "/demo/" => 'home#index', :as => :root
   match '/demo/image/:id' => 'images#show', :as => :image

@@ -9,7 +9,7 @@ gem 'ckeditor'
 gem 'execjs'
 gem 'therubyracer'
 gem 'paperclip'
-gem 'devise'
+gem 'devise', '3.2.1'
 gem 'acts-as-taggable-on'
 gem 'cancan'
 gem 'exception_notification'
@@ -20,7 +20,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-gem 'jquery-rails'
+gem 'jquery-rails', '2.1.4'
 gem "piggybak", '0.6.32'
 gem "piggybak_taxonomy", '0.0.8'
 gem "piggybak_coupons", '0.0.12'
