@@ -47,6 +47,10 @@ module Demo
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
+    # Don't use TLS talking to local SMTP server!
+    ActionMailer::Base.smtp_settings[:enable_starttls_auto] = false
+    ActionMailer::Base.smtp_settings[:tls] = false
+
     Demo::Application.config.middleware.use ExceptionNotifier,
       :email_prefix => "Piggybak Exception",
       :sender_address => %{"notifier" <notifier@piggybak.org>},
