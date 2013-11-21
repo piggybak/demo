@@ -3,8 +3,8 @@ $(function() {
     	pauseTime: 25000,
     	prevText: '',
     	nextText: '',
-    	directionNavHide:false, // Only show on hover
-    	controlNavThumbs:false,
+    	directionNav: true,
+    	controlNavThumbs: false,
 		afterChange: function() {
 			var shown = $(this).find('.nivo-imageLink:visible');
 			$('#image-details > p').html(shown.data('desc'));
