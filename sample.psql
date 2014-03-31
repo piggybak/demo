@@ -3,6 +3,7 @@
 --
 
 SET statement_timeout = 0;
+SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -19,355 +20,55 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 -- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
 --
 
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
 SET search_path = public, pg_catalog;
 
 SET default_tablespace = '';
 
 SET default_with_oids = false;
 
-DROP TABLE addresses CASCADE;
-DROP TABLE buyable_giftcerts CASCADE;
-DROP TABLE bundle_discounts CASCADE;
-DROP TABLE bundle_discount_sellables CASCADE;
-DROP TABLE countries CASCADE;
-DROP TABLE coupons CASCADE;
-DROP TABLE coupon_applications CASCADE;
 DROP TABLE frames CASCADE;
-DROP TABLE giftcert_applications CASCADE;
-DROP TABLE giftcerts CASCADE;
 DROP TABLE images CASCADE;
-DROP TABLE line_items CASCADE;
-DROP TABLE navigation_nodes;
-DROP TABLE option_values CASCADE;
-DROP TABLE option_values_variants CASCADE;
-DROP TABLE options CASCADE;
-DROP TABLE option_configurations CASCADE;
-DROP TABLE orders CASCADE;
-DROP TABLE order_notes CASCADE;
 DROP TABLE pages CASCADE;
-DROP TABLE payment_methods CASCADE;
-DROP TABLE payments CASCADE;
+DROP TABLE piggybak_addresses CASCADE;
+DROP TABLE piggybak_bundle_discounts_bundle_discount_sellables CASCADE;
+DROP TABLE piggybak_bundle_discounts_bundle_discounts CASCADE;
+DROP TABLE piggybak_countries CASCADE;
+DROP TABLE piggybak_coupons_coupon_applications CASCADE;
+DROP TABLE piggybak_coupons_coupons CASCADE;
+DROP TABLE piggybak_giftcerts_buyable_giftcerts CASCADE;
+DROP TABLE piggybak_giftcerts_giftcert_applications CASCADE;
+DROP TABLE piggybak_giftcerts_giftcerts CASCADE;
+DROP TABLE piggybak_line_items CASCADE;
+DROP TABLE piggybak_order_notes CASCADE;
+DROP TABLE piggybak_orders CASCADE;
+DROP TABLE piggybak_payment_method_values CASCADE;
+DROP TABLE piggybak_payment_methods CASCADE;
+DROP TABLE piggybak_payments CASCADE;
+DROP TABLE piggybak_sellables CASCADE;
+DROP TABLE piggybak_shipments CASCADE;
+DROP TABLE piggybak_shipping_method_values CASCADE;
+DROP TABLE piggybak_shipping_methods CASCADE;
+DROP TABLE piggybak_states CASCADE;
+DROP TABLE piggybak_tax_method_values CASCADE;
+DROP TABLE piggybak_tax_methods CASCADE;
+DROP TABLE piggybak_taxonomy_navigation_nodes CASCADE;
+DROP TABLE piggybak_taxonomy_sellable_taxonomies CASCADE;
+DROP TABLE piggybak_variants_option_configurations CASCADE;
+DROP TABLE piggybak_variants_option_values CASCADE;
+DROP TABLE piggybak_variants_option_values_variants CASCADE;
+DROP TABLE piggybak_variants_options CASCADE;
+DROP TABLE piggybak_variants_variants CASCADE;
 DROP TABLE posts CASCADE;
 DROP TABLE rails_admin_histories CASCADE;
 DROP TABLE roles CASCADE;
-DROP TABLE roles_users;
-DROP TABLE sellables CASCADE;
-DROP TABLE sellable_taxonomies CASCADE;
-DROP TABLE schema_migrations;
-DROP TABLE shipments CASCADE;
-DROP TABLE shipping_method_values CASCADE;
-DROP TABLE shipping_methods CASCADE;
-DROP TABLE states CASCADE;
+DROP TABLE roles_users CASCADE;
+DROP TABLE schema_migrations CASCADE;
 DROP TABLE taggings CASCADE;
-DROP TABLE payment_method_values CASCADE;
 DROP TABLE tags CASCADE;
-DROP TABLE tax_method_values CASCADE;
-DROP TABLE tax_methods CASCADE;
 DROP TABLE users CASCADE;
-DROP TABLE variants;
-
---
--- Name: addresses; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE addresses (
-    id integer NOT NULL,
-    firstname character varying(255) NOT NULL,
-    lastname character varying(255) NOT NULL,
-    address1 character varying(255) NOT NULL,
-    address2 character varying(255),
-    city character varying(255) NOT NULL,
-    state_id character varying(255) NOT NULL,
-    zip character varying(255) NOT NULL,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    country_id integer
-);
-
-
-ALTER TABLE public.addresses OWNER TO piggybak;
-
---
--- Name: addresses_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE addresses_id_seq
-    START WITH 50
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.addresses_id_seq OWNER TO piggybak;
-
---
--- Name: addresses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE addresses_id_seq OWNED BY addresses.id;
-
-
---
--- Name: addresses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('addresses_id_seq', 44, true);
-
-
---
--- Name: bundle_discount_sellables; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE bundle_discount_sellables (
-    id integer NOT NULL,
-    bundle_discount_id integer NOT NULL,
-    sellable_id integer NOT NULL
-);
-
-
-ALTER TABLE public.bundle_discount_sellables OWNER TO piggybak;
-
---
--- Name: bundle_discount_sellables_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE bundle_discount_sellables_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.bundle_discount_sellables_id_seq OWNER TO piggybak;
-
---
--- Name: bundle_discount_sellables_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE bundle_discount_sellables_id_seq OWNED BY bundle_discount_sellables.id;
-
-
---
--- Name: bundle_discount_sellables_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('bundle_discount_sellables_id_seq', 8, true);
-
-
---
--- Name: bundle_discounts; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE bundle_discounts (
-    id integer NOT NULL,
-    name character varying(255) NOT NULL,
-    discount double precision NOT NULL,
-    multiply boolean DEFAULT false NOT NULL,
-    active_until timestamp without time zone,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
-ALTER TABLE public.bundle_discounts OWNER TO piggybak;
-
---
--- Name: bundle_discounts_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE bundle_discounts_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.bundle_discounts_id_seq OWNER TO piggybak;
-
---
--- Name: bundle_discounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE bundle_discounts_id_seq OWNED BY bundle_discounts.id;
-
-
---
--- Name: bundle_discounts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('bundle_discounts_id_seq', 3, true);
-
-
---
--- Name: buyable_giftcerts; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE buyable_giftcerts (
-    id integer NOT NULL
-);
-
-
-ALTER TABLE public.buyable_giftcerts OWNER TO piggybak;
-
---
--- Name: buyable_giftcerts_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE buyable_giftcerts_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.buyable_giftcerts_id_seq OWNER TO piggybak;
-
---
--- Name: buyable_giftcerts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE buyable_giftcerts_id_seq OWNED BY buyable_giftcerts.id;
-
-
---
--- Name: buyable_giftcerts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('buyable_giftcerts_id_seq', 1, true);
-
-
---
--- Name: countries; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE countries (
-    id integer NOT NULL,
-    name character varying(255),
-    abbr character varying(255),
-    active_shipping boolean DEFAULT false,
-    active_billing boolean DEFAULT false
-);
-
-
-ALTER TABLE public.countries OWNER TO piggybak;
-
---
--- Name: countries_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE countries_id_seq
-    START WITH 1000
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.countries_id_seq OWNER TO piggybak;
-
---
--- Name: countries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE countries_id_seq OWNED BY countries.id;
-
-
---
--- Name: countries_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('countries_id_seq', 421, true);
-
-
---
--- Name: coupon_applications; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE coupon_applications (
-    id integer NOT NULL,
-    line_item_id integer,
-    coupon_id integer
-);
-
-
-ALTER TABLE public.coupon_applications OWNER TO piggybak;
-
---
--- Name: coupon_applications_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE coupon_applications_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.coupon_applications_id_seq OWNER TO piggybak;
-
---
--- Name: coupon_applications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE coupon_applications_id_seq OWNED BY coupon_applications.id;
-
-
---
--- Name: coupon_applications_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('coupon_applications_id_seq', 1, false);
-
-
---
--- Name: coupons; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE coupons (
-    id integer NOT NULL,
-    code character varying(255) NOT NULL,
-    amount numeric(10,2) NOT NULL,
-    discount_type character varying(255) NOT NULL,
-    min_cart_total numeric(10,2) NOT NULL,
-    expiration_date date,
-    allowed_applications integer
-);
-
-
-ALTER TABLE public.coupons OWNER TO piggybak;
-
---
--- Name: coupons_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE coupons_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.coupons_id_seq OWNER TO piggybak;
-
---
--- Name: coupons_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE coupons_id_seq OWNED BY coupons.id;
-
-
---
--- Name: coupons_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('coupons_id_seq', 3, true);
-
 
 --
 -- Name: frames; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
@@ -408,101 +109,6 @@ ALTER TABLE public.frames_id_seq OWNER TO piggybak;
 --
 
 ALTER SEQUENCE frames_id_seq OWNED BY frames.id;
-
-
---
--- Name: frames_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('frames_id_seq', 1, true);
-
-
---
--- Name: giftcert_applications; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE giftcert_applications (
-    id integer NOT NULL,
-    line_item_id integer,
-    giftcert_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
-ALTER TABLE public.giftcert_applications OWNER TO piggybak;
-
---
--- Name: giftcert_applications_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE giftcert_applications_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.giftcert_applications_id_seq OWNER TO piggybak;
-
---
--- Name: giftcert_applications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE giftcert_applications_id_seq OWNED BY giftcert_applications.id;
-
-
---
--- Name: giftcert_applications_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('giftcert_applications_id_seq', 1, false);
-
-
---
--- Name: giftcerts; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE giftcerts (
-    id integer NOT NULL,
-    code character varying(255) NOT NULL,
-    amount numeric NOT NULL,
-    expiration_date date,
-    order_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
-ALTER TABLE public.giftcerts OWNER TO piggybak;
-
---
--- Name: giftcerts_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE giftcerts_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.giftcerts_id_seq OWNER TO piggybak;
-
---
--- Name: giftcerts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE giftcerts_id_seq OWNED BY giftcerts.id;
-
-
---
--- Name: giftcerts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('giftcerts_id_seq', 2, true);
 
 
 --
@@ -553,345 +159,6 @@ ALTER SEQUENCE images_id_seq OWNED BY images.id;
 
 
 --
--- Name: images_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('images_id_seq', 45, true);
-
-
---
--- Name: line_items; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE line_items (
-    id integer NOT NULL,
-    order_id integer NOT NULL,
-    quantity integer NOT NULL,
-    sellable_id integer,
-    price numeric(10,2),
-    unit_price numeric(10,2) DEFAULT 0.0 NOT NULL,
-    description character varying(255) DEFAULT ''::character varying NOT NULL,
-    line_item_type character varying(255) DEFAULT 'sellable'::character varying NOT NULL,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
-ALTER TABLE public.line_items OWNER TO piggybak;
-
---
--- Name: line_items_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE line_items_id_seq
-    START WITH 30
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.line_items_id_seq OWNER TO piggybak;
-
---
--- Name: line_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE line_items_id_seq OWNED BY line_items.id;
-
-
---
--- Name: line_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('line_items_id_seq', 24, true);
-
-
---
--- Name: navigation_nodes; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE navigation_nodes (
-    id integer NOT NULL,
-    title character varying(255),
-    slug character varying(255),
-    "position" character varying(255),
-    ancestry character varying(255),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
-ALTER TABLE public.navigation_nodes OWNER TO piggybak;
-
---
--- Name: navigation_nodes_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE navigation_nodes_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.navigation_nodes_id_seq OWNER TO piggybak;
-
---
--- Name: navigation_nodes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE navigation_nodes_id_seq OWNED BY navigation_nodes.id;
-
-
---
--- Name: navigation_nodes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('navigation_nodes_id_seq', 5, true);
-
-
---
--- Name: option_configurations; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE option_configurations (
-    id integer NOT NULL,
-    klass character varying(255) NOT NULL,
-    option_id integer NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
-ALTER TABLE public.option_configurations OWNER TO piggybak;
-
---
--- Name: option_configurations_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE option_configurations_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.option_configurations_id_seq OWNER TO piggybak;
-
---
--- Name: option_configurations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE option_configurations_id_seq OWNED BY option_configurations.id;
-
-
---
--- Name: option_configurations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('option_configurations_id_seq', 3, true);
-
-
---
--- Name: option_values; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE option_values (
-    id integer NOT NULL,
-    option_id integer,
-    name character varying(255),
-    "position" integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
-ALTER TABLE public.option_values OWNER TO piggybak;
-
---
--- Name: option_values_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE option_values_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.option_values_id_seq OWNER TO piggybak;
-
---
--- Name: option_values_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE option_values_id_seq OWNED BY option_values.id;
-
-
---
--- Name: option_values_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('option_values_id_seq', 10, true);
-
-
---
--- Name: option_values_variants; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE option_values_variants (
-    option_value_id integer,
-    variant_id integer
-);
-
-
-ALTER TABLE public.option_values_variants OWNER TO piggybak;
-
---
--- Name: options; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE options (
-    id integer NOT NULL,
-    name character varying(255),
-    "position" integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
-ALTER TABLE public.options OWNER TO piggybak;
-
---
--- Name: options_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE options_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.options_id_seq OWNER TO piggybak;
-
---
--- Name: options_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE options_id_seq OWNED BY options.id;
-
-
---
--- Name: options_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('options_id_seq', 3, true);
-
-
---
--- Name: order_notes; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE order_notes (
-    id integer NOT NULL,
-    order_id integer NOT NULL,
-    user_id integer NOT NULL,
-    note text,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
-ALTER TABLE public.order_notes OWNER TO piggybak;
-
---
--- Name: order_notes_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE order_notes_id_seq
-    START WITH 30
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.order_notes_id_seq OWNER TO piggybak;
-
---
--- Name: order_notes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE order_notes_id_seq OWNED BY order_notes.id;
-
-
---
--- Name: order_notes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('order_notes_id_seq', 1, false);
-
-
---
--- Name: orders; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE orders (
-    id integer NOT NULL,
-    billing_address_id integer NOT NULL,
-    shipping_address_id integer NOT NULL,
-    user_id integer,
-    email character varying(255) NOT NULL,
-    phone character varying(255) NOT NULL,
-    total numeric(10,2) NOT NULL,
-    total_due numeric(10,2) NOT NULL,
-    status character varying(255) NOT NULL,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    ip_address character varying(255),
-    user_agent text,
-    to_be_cancelled boolean DEFAULT false,
-    confirmation_sent boolean DEFAULT false
-);
-
-
-ALTER TABLE public.orders OWNER TO piggybak;
-
---
--- Name: orders_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE orders_id_seq
-    START WITH 30
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.orders_id_seq OWNER TO piggybak;
-
---
--- Name: orders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE orders_id_seq OWNED BY orders.id;
-
-
---
--- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('orders_id_seq', 17, true);
-
-
---
 -- Name: pages; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
@@ -929,31 +196,65 @@ ALTER SEQUENCE pages_id_seq OWNED BY pages.id;
 
 
 --
--- Name: pages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+-- Name: piggybak_addresses; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-SELECT pg_catalog.setval('pages_id_seq', 2, true);
-
-
---
--- Name: payment_method_values; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE payment_method_values (
+CREATE TABLE piggybak_addresses (
     id integer NOT NULL,
-    payment_method_id integer,
-    key character varying(255),
-    value character varying(255)
+    firstname character varying(255) NOT NULL,
+    lastname character varying(255) NOT NULL,
+    address1 character varying(255) NOT NULL,
+    address2 character varying(255),
+    city character varying(255) NOT NULL,
+    state_id character varying(255) NOT NULL,
+    zip character varying(255) NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    country_id integer
 );
 
 
-ALTER TABLE public.payment_method_values OWNER TO piggybak;
+ALTER TABLE public.piggybak_addresses OWNER TO piggybak;
 
 --
--- Name: payment_method_values_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+-- Name: piggybak_addresses_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
-CREATE SEQUENCE payment_method_values_id_seq
+CREATE SEQUENCE piggybak_addresses_id_seq
+    START WITH 50
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.piggybak_addresses_id_seq OWNER TO piggybak;
+
+--
+-- Name: piggybak_addresses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE piggybak_addresses_id_seq OWNED BY piggybak_addresses.id;
+
+
+--
+-- Name: piggybak_bundle_discounts_bundle_discount_sellables; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE piggybak_bundle_discounts_bundle_discount_sellables (
+    id integer NOT NULL,
+    bundle_discount_id integer NOT NULL,
+    sellable_id integer NOT NULL
+);
+
+
+ALTER TABLE public.piggybak_bundle_discounts_bundle_discount_sellables OWNER TO piggybak;
+
+--
+-- Name: piggybak_bundle_discounts_bundle_discount_sellables_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE piggybak_bundle_discounts_bundle_discount_sellables_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -961,27 +262,431 @@ CREATE SEQUENCE payment_method_values_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.payment_method_values_id_seq OWNER TO piggybak;
+ALTER TABLE public.piggybak_bundle_discounts_bundle_discount_sellables_id_seq OWNER TO piggybak;
 
 --
--- Name: payment_method_values_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+-- Name: piggybak_bundle_discounts_bundle_discount_sellables_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
-ALTER SEQUENCE payment_method_values_id_seq OWNED BY payment_method_values.id;
-
-
---
--- Name: payment_method_values_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('payment_method_values_id_seq', 2, true);
+ALTER SEQUENCE piggybak_bundle_discounts_bundle_discount_sellables_id_seq OWNED BY piggybak_bundle_discounts_bundle_discount_sellables.id;
 
 
 --
--- Name: payment_methods; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+-- Name: piggybak_bundle_discounts_bundle_discounts; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-CREATE TABLE payment_methods (
+CREATE TABLE piggybak_bundle_discounts_bundle_discounts (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    discount double precision NOT NULL,
+    multiply boolean DEFAULT false NOT NULL,
+    active_until timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.piggybak_bundle_discounts_bundle_discounts OWNER TO piggybak;
+
+--
+-- Name: piggybak_bundle_discounts_bundle_discounts_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE piggybak_bundle_discounts_bundle_discounts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.piggybak_bundle_discounts_bundle_discounts_id_seq OWNER TO piggybak;
+
+--
+-- Name: piggybak_bundle_discounts_bundle_discounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE piggybak_bundle_discounts_bundle_discounts_id_seq OWNED BY piggybak_bundle_discounts_bundle_discounts.id;
+
+
+--
+-- Name: piggybak_countries; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE piggybak_countries (
+    id integer NOT NULL,
+    name character varying(255),
+    abbr character varying(255),
+    active_shipping boolean DEFAULT false,
+    active_billing boolean DEFAULT false
+);
+
+
+ALTER TABLE public.piggybak_countries OWNER TO piggybak;
+
+--
+-- Name: piggybak_countries_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE piggybak_countries_id_seq
+    START WITH 1000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.piggybak_countries_id_seq OWNER TO piggybak;
+
+--
+-- Name: piggybak_countries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE piggybak_countries_id_seq OWNED BY piggybak_countries.id;
+
+
+--
+-- Name: piggybak_coupons_coupon_applications; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE piggybak_coupons_coupon_applications (
+    id integer NOT NULL,
+    line_item_id integer,
+    coupon_id integer
+);
+
+
+ALTER TABLE public.piggybak_coupons_coupon_applications OWNER TO piggybak;
+
+--
+-- Name: piggybak_coupons_coupon_applications_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE piggybak_coupons_coupon_applications_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.piggybak_coupons_coupon_applications_id_seq OWNER TO piggybak;
+
+--
+-- Name: piggybak_coupons_coupon_applications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE piggybak_coupons_coupon_applications_id_seq OWNED BY piggybak_coupons_coupon_applications.id;
+
+
+--
+-- Name: piggybak_coupons_coupons; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE piggybak_coupons_coupons (
+    id integer NOT NULL,
+    code character varying(255) NOT NULL,
+    amount numeric(10,2) NOT NULL,
+    discount_type character varying(255) NOT NULL,
+    min_cart_total numeric(10,2) NOT NULL,
+    expiration_date date,
+    allowed_applications integer
+);
+
+
+ALTER TABLE public.piggybak_coupons_coupons OWNER TO piggybak;
+
+--
+-- Name: piggybak_coupons_coupons_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE piggybak_coupons_coupons_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.piggybak_coupons_coupons_id_seq OWNER TO piggybak;
+
+--
+-- Name: piggybak_coupons_coupons_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE piggybak_coupons_coupons_id_seq OWNED BY piggybak_coupons_coupons.id;
+
+
+--
+-- Name: piggybak_giftcerts_buyable_giftcerts; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE piggybak_giftcerts_buyable_giftcerts (
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.piggybak_giftcerts_buyable_giftcerts OWNER TO piggybak;
+
+--
+-- Name: piggybak_giftcerts_buyable_giftcerts_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE piggybak_giftcerts_buyable_giftcerts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.piggybak_giftcerts_buyable_giftcerts_id_seq OWNER TO piggybak;
+
+--
+-- Name: piggybak_giftcerts_buyable_giftcerts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE piggybak_giftcerts_buyable_giftcerts_id_seq OWNED BY piggybak_giftcerts_buyable_giftcerts.id;
+
+
+--
+-- Name: piggybak_giftcerts_giftcert_applications; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE piggybak_giftcerts_giftcert_applications (
+    id integer NOT NULL,
+    line_item_id integer,
+    giftcert_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.piggybak_giftcerts_giftcert_applications OWNER TO piggybak;
+
+--
+-- Name: piggybak_giftcerts_giftcert_applications_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE piggybak_giftcerts_giftcert_applications_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.piggybak_giftcerts_giftcert_applications_id_seq OWNER TO piggybak;
+
+--
+-- Name: piggybak_giftcerts_giftcert_applications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE piggybak_giftcerts_giftcert_applications_id_seq OWNED BY piggybak_giftcerts_giftcert_applications.id;
+
+
+--
+-- Name: piggybak_giftcerts_giftcerts; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE piggybak_giftcerts_giftcerts (
+    id integer NOT NULL,
+    code character varying(255) NOT NULL,
+    amount numeric NOT NULL,
+    expiration_date date,
+    order_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.piggybak_giftcerts_giftcerts OWNER TO piggybak;
+
+--
+-- Name: piggybak_giftcerts_giftcerts_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE piggybak_giftcerts_giftcerts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.piggybak_giftcerts_giftcerts_id_seq OWNER TO piggybak;
+
+--
+-- Name: piggybak_giftcerts_giftcerts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE piggybak_giftcerts_giftcerts_id_seq OWNED BY piggybak_giftcerts_giftcerts.id;
+
+
+--
+-- Name: piggybak_line_items; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE piggybak_line_items (
+    id integer NOT NULL,
+    order_id integer NOT NULL,
+    quantity integer NOT NULL,
+    sellable_id integer,
+    price numeric(10,2),
+    unit_price numeric(10,2) DEFAULT 0.0 NOT NULL,
+    description character varying(255) DEFAULT ''::character varying NOT NULL,
+    line_item_type character varying(255) DEFAULT 'sellable'::character varying NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.piggybak_line_items OWNER TO piggybak;
+
+--
+-- Name: piggybak_line_items_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE piggybak_line_items_id_seq
+    START WITH 30
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.piggybak_line_items_id_seq OWNER TO piggybak;
+
+--
+-- Name: piggybak_line_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE piggybak_line_items_id_seq OWNED BY piggybak_line_items.id;
+
+
+--
+-- Name: piggybak_order_notes; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE piggybak_order_notes (
+    id integer NOT NULL,
+    order_id integer NOT NULL,
+    user_id integer NOT NULL,
+    note text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.piggybak_order_notes OWNER TO piggybak;
+
+--
+-- Name: piggybak_order_notes_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE piggybak_order_notes_id_seq
+    START WITH 30
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.piggybak_order_notes_id_seq OWNER TO piggybak;
+
+--
+-- Name: piggybak_order_notes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE piggybak_order_notes_id_seq OWNED BY piggybak_order_notes.id;
+
+
+--
+-- Name: piggybak_orders; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE piggybak_orders (
+    id integer NOT NULL,
+    billing_address_id integer NOT NULL,
+    shipping_address_id integer NOT NULL,
+    user_id integer,
+    email character varying(255) NOT NULL,
+    phone character varying(255) NOT NULL,
+    total numeric(10,2) NOT NULL,
+    total_due numeric(10,2) NOT NULL,
+    status character varying(255) NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    ip_address character varying(255),
+    user_agent text,
+    to_be_cancelled boolean DEFAULT false,
+    confirmation_sent boolean DEFAULT false
+);
+
+
+ALTER TABLE public.piggybak_orders OWNER TO piggybak;
+
+--
+-- Name: piggybak_orders_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE piggybak_orders_id_seq
+    START WITH 30
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.piggybak_orders_id_seq OWNER TO piggybak;
+
+--
+-- Name: piggybak_orders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE piggybak_orders_id_seq OWNED BY piggybak_orders.id;
+
+
+--
+-- Name: piggybak_payment_method_values; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE piggybak_payment_method_values (
+    id integer NOT NULL,
+    payment_method_id integer,
+    key character varying(255),
+    value character varying(255)
+);
+
+
+ALTER TABLE public.piggybak_payment_method_values OWNER TO piggybak;
+
+--
+-- Name: piggybak_payment_method_values_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE piggybak_payment_method_values_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.piggybak_payment_method_values_id_seq OWNER TO piggybak;
+
+--
+-- Name: piggybak_payment_method_values_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE piggybak_payment_method_values_id_seq OWNED BY piggybak_payment_method_values.id;
+
+
+--
+-- Name: piggybak_payment_methods; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE piggybak_payment_methods (
     id integer NOT NULL,
     description character varying(255) NOT NULL,
     klass character varying(255) NOT NULL,
@@ -991,13 +696,13 @@ CREATE TABLE payment_methods (
 );
 
 
-ALTER TABLE public.payment_methods OWNER TO piggybak;
+ALTER TABLE public.piggybak_payment_methods OWNER TO piggybak;
 
 --
--- Name: payment_methods_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+-- Name: piggybak_payment_methods_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
-CREATE SEQUENCE payment_methods_id_seq
+CREATE SEQUENCE piggybak_payment_methods_id_seq
     START WITH 5
     INCREMENT BY 1
     NO MINVALUE
@@ -1005,27 +710,20 @@ CREATE SEQUENCE payment_methods_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.payment_methods_id_seq OWNER TO piggybak;
+ALTER TABLE public.piggybak_payment_methods_id_seq OWNER TO piggybak;
 
 --
--- Name: payment_methods_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+-- Name: piggybak_payment_methods_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
-ALTER SEQUENCE payment_methods_id_seq OWNED BY payment_methods.id;
-
-
---
--- Name: payment_methods_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('payment_methods_id_seq', 2, true);
+ALTER SEQUENCE piggybak_payment_methods_id_seq OWNED BY piggybak_payment_methods.id;
 
 
 --
--- Name: payments; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+-- Name: piggybak_payments; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-CREATE TABLE payments (
+CREATE TABLE piggybak_payments (
     id integer NOT NULL,
     payment_method_id integer,
     status character varying(255) DEFAULT 'paid'::character varying NOT NULL,
@@ -1039,13 +737,13 @@ CREATE TABLE payments (
 );
 
 
-ALTER TABLE public.payments OWNER TO piggybak;
+ALTER TABLE public.piggybak_payments OWNER TO piggybak;
 
 --
--- Name: payments_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+-- Name: piggybak_payments_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
 --
 
-CREATE SEQUENCE payments_id_seq
+CREATE SEQUENCE piggybak_payments_id_seq
     START WITH 50
     INCREMENT BY 1
     NO MINVALUE
@@ -1053,20 +751,495 @@ CREATE SEQUENCE payments_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.payments_id_seq OWNER TO piggybak;
+ALTER TABLE public.piggybak_payments_id_seq OWNER TO piggybak;
 
 --
--- Name: payments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+-- Name: piggybak_payments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
 --
 
-ALTER SEQUENCE payments_id_seq OWNED BY payments.id;
+ALTER SEQUENCE piggybak_payments_id_seq OWNED BY piggybak_payments.id;
 
 
 --
--- Name: payments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+-- Name: piggybak_sellables; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-SELECT pg_catalog.setval('payments_id_seq', 16, true);
+CREATE TABLE piggybak_sellables (
+    id integer NOT NULL,
+    sku character varying(255) NOT NULL,
+    description character varying(255) NOT NULL,
+    price numeric(10,2) NOT NULL,
+    quantity integer DEFAULT 0 NOT NULL,
+    item_id integer NOT NULL,
+    item_type character varying(255) NOT NULL,
+    active boolean DEFAULT false NOT NULL,
+    unlimited_inventory boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE public.piggybak_sellables OWNER TO piggybak;
+
+--
+-- Name: piggybak_sellables_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE piggybak_sellables_id_seq
+    START WITH 100
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.piggybak_sellables_id_seq OWNER TO piggybak;
+
+--
+-- Name: piggybak_sellables_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE piggybak_sellables_id_seq OWNED BY piggybak_sellables.id;
+
+
+--
+-- Name: piggybak_shipments; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE piggybak_shipments (
+    id integer NOT NULL,
+    shipping_method_id integer NOT NULL,
+    status character varying(255) DEFAULT 'new'::character varying NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    line_item_id integer
+);
+
+
+ALTER TABLE public.piggybak_shipments OWNER TO piggybak;
+
+--
+-- Name: piggybak_shipments_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE piggybak_shipments_id_seq
+    START WITH 20
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.piggybak_shipments_id_seq OWNER TO piggybak;
+
+--
+-- Name: piggybak_shipments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE piggybak_shipments_id_seq OWNED BY piggybak_shipments.id;
+
+
+--
+-- Name: piggybak_shipping_method_values; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE piggybak_shipping_method_values (
+    id integer NOT NULL,
+    shipping_method_id integer,
+    key character varying(255),
+    value character varying(255)
+);
+
+
+ALTER TABLE public.piggybak_shipping_method_values OWNER TO piggybak;
+
+--
+-- Name: piggybak_shipping_method_values_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE piggybak_shipping_method_values_id_seq
+    START WITH 20
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.piggybak_shipping_method_values_id_seq OWNER TO piggybak;
+
+--
+-- Name: piggybak_shipping_method_values_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE piggybak_shipping_method_values_id_seq OWNED BY piggybak_shipping_method_values.id;
+
+
+--
+-- Name: piggybak_shipping_methods; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE piggybak_shipping_methods (
+    id integer NOT NULL,
+    description character varying(255) NOT NULL,
+    klass character varying(255) NOT NULL,
+    active boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE public.piggybak_shipping_methods OWNER TO piggybak;
+
+--
+-- Name: piggybak_shipping_methods_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE piggybak_shipping_methods_id_seq
+    START WITH 10
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.piggybak_shipping_methods_id_seq OWNER TO piggybak;
+
+--
+-- Name: piggybak_shipping_methods_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE piggybak_shipping_methods_id_seq OWNED BY piggybak_shipping_methods.id;
+
+
+--
+-- Name: piggybak_states; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE piggybak_states (
+    id integer NOT NULL,
+    abbr character varying(255),
+    name character varying(255),
+    country_id integer
+);
+
+
+ALTER TABLE public.piggybak_states OWNER TO piggybak;
+
+--
+-- Name: piggybak_states_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE piggybak_states_id_seq
+    START WITH 1000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.piggybak_states_id_seq OWNER TO piggybak;
+
+--
+-- Name: piggybak_states_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE piggybak_states_id_seq OWNED BY piggybak_states.id;
+
+
+--
+-- Name: piggybak_tax_method_values; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE piggybak_tax_method_values (
+    id integer NOT NULL,
+    tax_method_id integer,
+    key character varying(255),
+    value character varying(255)
+);
+
+
+ALTER TABLE public.piggybak_tax_method_values OWNER TO piggybak;
+
+--
+-- Name: piggybak_tax_method_values_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE piggybak_tax_method_values_id_seq
+    START WITH 10
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.piggybak_tax_method_values_id_seq OWNER TO piggybak;
+
+--
+-- Name: piggybak_tax_method_values_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE piggybak_tax_method_values_id_seq OWNED BY piggybak_tax_method_values.id;
+
+
+--
+-- Name: piggybak_tax_methods; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE piggybak_tax_methods (
+    id integer NOT NULL,
+    description character varying(255) NOT NULL,
+    klass character varying(255) NOT NULL,
+    active boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE public.piggybak_tax_methods OWNER TO piggybak;
+
+--
+-- Name: piggybak_tax_methods_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE piggybak_tax_methods_id_seq
+    START WITH 10
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.piggybak_tax_methods_id_seq OWNER TO piggybak;
+
+--
+-- Name: piggybak_tax_methods_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE piggybak_tax_methods_id_seq OWNED BY piggybak_tax_methods.id;
+
+
+--
+-- Name: piggybak_taxonomy_navigation_nodes; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE piggybak_taxonomy_navigation_nodes (
+    id integer NOT NULL,
+    title character varying(255),
+    slug character varying(255),
+    "position" character varying(255),
+    ancestry character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.piggybak_taxonomy_navigation_nodes OWNER TO piggybak;
+
+--
+-- Name: piggybak_taxonomy_navigation_nodes_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE piggybak_taxonomy_navigation_nodes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.piggybak_taxonomy_navigation_nodes_id_seq OWNER TO piggybak;
+
+--
+-- Name: piggybak_taxonomy_navigation_nodes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE piggybak_taxonomy_navigation_nodes_id_seq OWNED BY piggybak_taxonomy_navigation_nodes.id;
+
+
+--
+-- Name: piggybak_taxonomy_sellable_taxonomies; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE piggybak_taxonomy_sellable_taxonomies (
+    id integer NOT NULL,
+    navigation_node_id integer NOT NULL,
+    sellable_id integer NOT NULL,
+    sort integer DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public.piggybak_taxonomy_sellable_taxonomies OWNER TO piggybak;
+
+--
+-- Name: piggybak_taxonomy_sellable_taxonomies_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE piggybak_taxonomy_sellable_taxonomies_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.piggybak_taxonomy_sellable_taxonomies_id_seq OWNER TO piggybak;
+
+--
+-- Name: piggybak_taxonomy_sellable_taxonomies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE piggybak_taxonomy_sellable_taxonomies_id_seq OWNED BY piggybak_taxonomy_sellable_taxonomies.id;
+
+
+--
+-- Name: piggybak_variants_option_configurations; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE piggybak_variants_option_configurations (
+    id integer NOT NULL,
+    klass character varying(255) NOT NULL,
+    option_id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.piggybak_variants_option_configurations OWNER TO piggybak;
+
+--
+-- Name: piggybak_variants_option_configurations_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE piggybak_variants_option_configurations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.piggybak_variants_option_configurations_id_seq OWNER TO piggybak;
+
+--
+-- Name: piggybak_variants_option_configurations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE piggybak_variants_option_configurations_id_seq OWNED BY piggybak_variants_option_configurations.id;
+
+
+--
+-- Name: piggybak_variants_option_values; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE piggybak_variants_option_values (
+    id integer NOT NULL,
+    option_id integer,
+    name character varying(255),
+    "position" integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.piggybak_variants_option_values OWNER TO piggybak;
+
+--
+-- Name: piggybak_variants_option_values_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE piggybak_variants_option_values_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.piggybak_variants_option_values_id_seq OWNER TO piggybak;
+
+--
+-- Name: piggybak_variants_option_values_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE piggybak_variants_option_values_id_seq OWNED BY piggybak_variants_option_values.id;
+
+
+--
+-- Name: piggybak_variants_option_values_variants; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE piggybak_variants_option_values_variants (
+    option_value_id integer,
+    variant_id integer
+);
+
+
+ALTER TABLE public.piggybak_variants_option_values_variants OWNER TO piggybak;
+
+--
+-- Name: piggybak_variants_options; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE piggybak_variants_options (
+    id integer NOT NULL,
+    name character varying(255),
+    "position" integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.piggybak_variants_options OWNER TO piggybak;
+
+--
+-- Name: piggybak_variants_options_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE piggybak_variants_options_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.piggybak_variants_options_id_seq OWNER TO piggybak;
+
+--
+-- Name: piggybak_variants_options_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE piggybak_variants_options_id_seq OWNED BY piggybak_variants_options.id;
+
+
+--
+-- Name: piggybak_variants_variants; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
+--
+
+CREATE TABLE piggybak_variants_variants (
+    id integer NOT NULL,
+    item_id integer NOT NULL,
+    item_type character varying(255) NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.piggybak_variants_variants OWNER TO piggybak;
+
+--
+-- Name: piggybak_variants_variants_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
+--
+
+CREATE SEQUENCE piggybak_variants_variants_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.piggybak_variants_variants_id_seq OWNER TO piggybak;
+
+--
+-- Name: piggybak_variants_variants_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
+--
+
+ALTER SEQUENCE piggybak_variants_variants_id_seq OWNED BY piggybak_variants_variants.id;
 
 
 --
@@ -1105,13 +1278,6 @@ ALTER TABLE public.posts_id_seq OWNER TO piggybak;
 --
 
 ALTER SEQUENCE posts_id_seq OWNED BY posts.id;
-
-
---
--- Name: posts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('posts_id_seq', 4, true);
 
 
 --
@@ -1155,13 +1321,6 @@ ALTER SEQUENCE rails_admin_histories_id_seq OWNED BY rails_admin_histories.id;
 
 
 --
--- Name: rails_admin_histories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('rails_admin_histories_id_seq', 179, true);
-
-
---
 -- Name: roles; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
@@ -1195,13 +1354,6 @@ ALTER SEQUENCE roles_id_seq OWNED BY roles.id;
 
 
 --
--- Name: roles_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('roles_id_seq', 10, true);
-
-
---
 -- Name: roles_users; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
@@ -1223,265 +1375,6 @@ CREATE TABLE schema_migrations (
 
 
 ALTER TABLE public.schema_migrations OWNER TO piggybak;
-
---
--- Name: sellable_taxonomies; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE sellable_taxonomies (
-    id integer NOT NULL,
-    navigation_node_id integer NOT NULL,
-    sellable_id integer NOT NULL,
-    sort integer DEFAULT 0 NOT NULL
-);
-
-
-ALTER TABLE public.sellable_taxonomies OWNER TO piggybak;
-
---
--- Name: sellable_taxonomies_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE sellable_taxonomies_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.sellable_taxonomies_id_seq OWNER TO piggybak;
-
---
--- Name: sellable_taxonomies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE sellable_taxonomies_id_seq OWNED BY sellable_taxonomies.id;
-
-
---
--- Name: sellable_taxonomies_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('sellable_taxonomies_id_seq', 174, true);
-
-
---
--- Name: sellables; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE sellables (
-    id integer NOT NULL,
-    sku character varying(255) NOT NULL,
-    description character varying(255) NOT NULL,
-    price numeric(10,2) NOT NULL,
-    quantity integer DEFAULT 0 NOT NULL,
-    item_id integer NOT NULL,
-    item_type character varying(255) NOT NULL,
-    active boolean DEFAULT false NOT NULL,
-    unlimited_inventory boolean DEFAULT false NOT NULL
-);
-
-
-ALTER TABLE public.sellables OWNER TO piggybak;
-
---
--- Name: sellables_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE sellables_id_seq
-    START WITH 100
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.sellables_id_seq OWNER TO piggybak;
-
---
--- Name: sellables_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE sellables_id_seq OWNED BY sellables.id;
-
-
---
--- Name: sellables_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('sellables_id_seq', 55, true);
-
-
---
--- Name: shipments; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE shipments (
-    id integer NOT NULL,
-    shipping_method_id integer NOT NULL,
-    status character varying(255) DEFAULT 'new'::character varying NOT NULL,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    line_item_id integer
-);
-
-
-ALTER TABLE public.shipments OWNER TO piggybak;
-
---
--- Name: shipments_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE shipments_id_seq
-    START WITH 20
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.shipments_id_seq OWNER TO piggybak;
-
---
--- Name: shipments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE shipments_id_seq OWNED BY shipments.id;
-
-
---
--- Name: shipments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('shipments_id_seq', 16, true);
-
-
---
--- Name: shipping_method_values; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE shipping_method_values (
-    id integer NOT NULL,
-    shipping_method_id integer,
-    key character varying(255),
-    value character varying(255)
-);
-
-
-ALTER TABLE public.shipping_method_values OWNER TO piggybak;
-
---
--- Name: shipping_method_values_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE shipping_method_values_id_seq
-    START WITH 20
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.shipping_method_values_id_seq OWNER TO piggybak;
-
---
--- Name: shipping_method_values_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE shipping_method_values_id_seq OWNED BY shipping_method_values.id;
-
-
---
--- Name: shipping_method_values_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('shipping_method_values_id_seq', 7, true);
-
-
---
--- Name: shipping_methods; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE shipping_methods (
-    id integer NOT NULL,
-    description character varying(255) NOT NULL,
-    klass character varying(255) NOT NULL,
-    active boolean DEFAULT false NOT NULL
-);
-
-
-ALTER TABLE public.shipping_methods OWNER TO piggybak;
-
---
--- Name: shipping_methods_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE shipping_methods_id_seq
-    START WITH 10
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.shipping_methods_id_seq OWNER TO piggybak;
-
---
--- Name: shipping_methods_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE shipping_methods_id_seq OWNED BY shipping_methods.id;
-
-
---
--- Name: shipping_methods_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('shipping_methods_id_seq', 6, true);
-
-
---
--- Name: states; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE states (
-    id integer NOT NULL,
-    abbr character varying(255),
-    name character varying(255),
-    country_id integer
-);
-
-
-ALTER TABLE public.states OWNER TO piggybak;
-
---
--- Name: states_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE states_id_seq
-    START WITH 1000
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.states_id_seq OWNER TO piggybak;
-
---
--- Name: states_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE states_id_seq OWNED BY states.id;
-
-
---
--- Name: states_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('states_id_seq', 7125, true);
-
 
 --
 -- Name: taggings; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
@@ -1523,13 +1416,6 @@ ALTER SEQUENCE taggings_id_seq OWNED BY taggings.id;
 
 
 --
--- Name: taggings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('taggings_id_seq', 1, false);
-
-
---
 -- Name: tags; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
 --
 
@@ -1560,97 +1446,6 @@ ALTER TABLE public.tags_id_seq OWNER TO piggybak;
 --
 
 ALTER SEQUENCE tags_id_seq OWNED BY tags.id;
-
-
---
--- Name: tags_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('tags_id_seq', 1, false);
-
-
---
--- Name: tax_method_values; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE tax_method_values (
-    id integer NOT NULL,
-    tax_method_id integer,
-    key character varying(255),
-    value character varying(255)
-);
-
-
-ALTER TABLE public.tax_method_values OWNER TO piggybak;
-
---
--- Name: tax_method_values_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE tax_method_values_id_seq
-    START WITH 10
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.tax_method_values_id_seq OWNER TO piggybak;
-
---
--- Name: tax_method_values_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE tax_method_values_id_seq OWNED BY tax_method_values.id;
-
-
---
--- Name: tax_method_values_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('tax_method_values_id_seq', 2, true);
-
-
---
--- Name: tax_methods; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE tax_methods (
-    id integer NOT NULL,
-    description character varying(255) NOT NULL,
-    klass character varying(255) NOT NULL,
-    active boolean DEFAULT false NOT NULL
-);
-
-
-ALTER TABLE public.tax_methods OWNER TO piggybak;
-
---
--- Name: tax_methods_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE tax_methods_id_seq
-    START WITH 10
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.tax_methods_id_seq OWNER TO piggybak;
-
---
--- Name: tax_methods_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE tax_methods_id_seq OWNED BY tax_methods.id;
-
-
---
--- Name: tax_methods_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('tax_methods_id_seq', 1, true);
 
 
 --
@@ -1699,123 +1494,10 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
 --
--- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('users_id_seq', 10, true);
-
-
---
--- Name: variants; Type: TABLE; Schema: public; Owner: piggybak; Tablespace: 
---
-
-CREATE TABLE variants (
-    id integer NOT NULL,
-    item_id integer NOT NULL,
-    item_type character varying(255) NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
-ALTER TABLE public.variants OWNER TO piggybak;
-
---
--- Name: variants_id_seq; Type: SEQUENCE; Schema: public; Owner: piggybak
---
-
-CREATE SEQUENCE variants_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.variants_id_seq OWNER TO piggybak;
-
---
--- Name: variants_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: piggybak
---
-
-ALTER SEQUENCE variants_id_seq OWNED BY variants.id;
-
-
---
--- Name: variants_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
---
-
-SELECT pg_catalog.setval('variants_id_seq', 11, true);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
-ALTER TABLE ONLY addresses ALTER COLUMN id SET DEFAULT nextval('addresses_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
-ALTER TABLE ONLY bundle_discount_sellables ALTER COLUMN id SET DEFAULT nextval('bundle_discount_sellables_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
-ALTER TABLE ONLY bundle_discounts ALTER COLUMN id SET DEFAULT nextval('bundle_discounts_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
-ALTER TABLE ONLY buyable_giftcerts ALTER COLUMN id SET DEFAULT nextval('buyable_giftcerts_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
-ALTER TABLE ONLY countries ALTER COLUMN id SET DEFAULT nextval('countries_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
-ALTER TABLE ONLY coupon_applications ALTER COLUMN id SET DEFAULT nextval('coupon_applications_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
-ALTER TABLE ONLY coupons ALTER COLUMN id SET DEFAULT nextval('coupons_id_seq'::regclass);
-
-
---
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
 ALTER TABLE ONLY frames ALTER COLUMN id SET DEFAULT nextval('frames_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
-ALTER TABLE ONLY giftcert_applications ALTER COLUMN id SET DEFAULT nextval('giftcert_applications_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
-ALTER TABLE ONLY giftcerts ALTER COLUMN id SET DEFAULT nextval('giftcerts_id_seq'::regclass);
 
 
 --
@@ -1829,55 +1511,6 @@ ALTER TABLE ONLY images ALTER COLUMN id SET DEFAULT nextval('images_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE ONLY line_items ALTER COLUMN id SET DEFAULT nextval('line_items_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
-ALTER TABLE ONLY navigation_nodes ALTER COLUMN id SET DEFAULT nextval('navigation_nodes_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
-ALTER TABLE ONLY option_configurations ALTER COLUMN id SET DEFAULT nextval('option_configurations_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
-ALTER TABLE ONLY option_values ALTER COLUMN id SET DEFAULT nextval('option_values_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
-ALTER TABLE ONLY options ALTER COLUMN id SET DEFAULT nextval('options_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
-ALTER TABLE ONLY order_notes ALTER COLUMN id SET DEFAULT nextval('order_notes_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
-ALTER TABLE ONLY orders ALTER COLUMN id SET DEFAULT nextval('orders_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
 ALTER TABLE ONLY pages ALTER COLUMN id SET DEFAULT nextval('pages_id_seq'::regclass);
 
 
@@ -1885,21 +1518,196 @@ ALTER TABLE ONLY pages ALTER COLUMN id SET DEFAULT nextval('pages_id_seq'::regcl
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE ONLY payment_method_values ALTER COLUMN id SET DEFAULT nextval('payment_method_values_id_seq'::regclass);
+ALTER TABLE ONLY piggybak_addresses ALTER COLUMN id SET DEFAULT nextval('piggybak_addresses_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE ONLY payment_methods ALTER COLUMN id SET DEFAULT nextval('payment_methods_id_seq'::regclass);
+ALTER TABLE ONLY piggybak_bundle_discounts_bundle_discount_sellables ALTER COLUMN id SET DEFAULT nextval('piggybak_bundle_discounts_bundle_discount_sellables_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE ONLY payments ALTER COLUMN id SET DEFAULT nextval('payments_id_seq'::regclass);
+ALTER TABLE ONLY piggybak_bundle_discounts_bundle_discounts ALTER COLUMN id SET DEFAULT nextval('piggybak_bundle_discounts_bundle_discounts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY piggybak_countries ALTER COLUMN id SET DEFAULT nextval('piggybak_countries_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY piggybak_coupons_coupon_applications ALTER COLUMN id SET DEFAULT nextval('piggybak_coupons_coupon_applications_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY piggybak_coupons_coupons ALTER COLUMN id SET DEFAULT nextval('piggybak_coupons_coupons_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY piggybak_giftcerts_buyable_giftcerts ALTER COLUMN id SET DEFAULT nextval('piggybak_giftcerts_buyable_giftcerts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY piggybak_giftcerts_giftcert_applications ALTER COLUMN id SET DEFAULT nextval('piggybak_giftcerts_giftcert_applications_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY piggybak_giftcerts_giftcerts ALTER COLUMN id SET DEFAULT nextval('piggybak_giftcerts_giftcerts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY piggybak_line_items ALTER COLUMN id SET DEFAULT nextval('piggybak_line_items_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY piggybak_order_notes ALTER COLUMN id SET DEFAULT nextval('piggybak_order_notes_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY piggybak_orders ALTER COLUMN id SET DEFAULT nextval('piggybak_orders_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY piggybak_payment_method_values ALTER COLUMN id SET DEFAULT nextval('piggybak_payment_method_values_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY piggybak_payment_methods ALTER COLUMN id SET DEFAULT nextval('piggybak_payment_methods_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY piggybak_payments ALTER COLUMN id SET DEFAULT nextval('piggybak_payments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY piggybak_sellables ALTER COLUMN id SET DEFAULT nextval('piggybak_sellables_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY piggybak_shipments ALTER COLUMN id SET DEFAULT nextval('piggybak_shipments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY piggybak_shipping_method_values ALTER COLUMN id SET DEFAULT nextval('piggybak_shipping_method_values_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY piggybak_shipping_methods ALTER COLUMN id SET DEFAULT nextval('piggybak_shipping_methods_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY piggybak_states ALTER COLUMN id SET DEFAULT nextval('piggybak_states_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY piggybak_tax_method_values ALTER COLUMN id SET DEFAULT nextval('piggybak_tax_method_values_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY piggybak_tax_methods ALTER COLUMN id SET DEFAULT nextval('piggybak_tax_methods_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY piggybak_taxonomy_navigation_nodes ALTER COLUMN id SET DEFAULT nextval('piggybak_taxonomy_navigation_nodes_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY piggybak_taxonomy_sellable_taxonomies ALTER COLUMN id SET DEFAULT nextval('piggybak_taxonomy_sellable_taxonomies_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY piggybak_variants_option_configurations ALTER COLUMN id SET DEFAULT nextval('piggybak_variants_option_configurations_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY piggybak_variants_option_values ALTER COLUMN id SET DEFAULT nextval('piggybak_variants_option_values_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY piggybak_variants_options ALTER COLUMN id SET DEFAULT nextval('piggybak_variants_options_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+--
+
+ALTER TABLE ONLY piggybak_variants_variants ALTER COLUMN id SET DEFAULT nextval('piggybak_variants_variants_id_seq'::regclass);
 
 
 --
@@ -1927,48 +1735,6 @@ ALTER TABLE ONLY roles ALTER COLUMN id SET DEFAULT nextval('roles_id_seq'::regcl
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE ONLY sellable_taxonomies ALTER COLUMN id SET DEFAULT nextval('sellable_taxonomies_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
-ALTER TABLE ONLY sellables ALTER COLUMN id SET DEFAULT nextval('sellables_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
-ALTER TABLE ONLY shipments ALTER COLUMN id SET DEFAULT nextval('shipments_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
-ALTER TABLE ONLY shipping_method_values ALTER COLUMN id SET DEFAULT nextval('shipping_method_values_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
-ALTER TABLE ONLY shipping_methods ALTER COLUMN id SET DEFAULT nextval('shipping_methods_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
-ALTER TABLE ONLY states ALTER COLUMN id SET DEFAULT nextval('states_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
 ALTER TABLE ONLY taggings ALTER COLUMN id SET DEFAULT nextval('taggings_id_seq'::regclass);
 
 
@@ -1983,47 +1749,117 @@ ALTER TABLE ONLY tags ALTER COLUMN id SET DEFAULT nextval('tags_id_seq'::regclas
 -- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE ONLY tax_method_values ALTER COLUMN id SET DEFAULT nextval('tax_method_values_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
-ALTER TABLE ONLY tax_methods ALTER COLUMN id SET DEFAULT nextval('tax_methods_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
---
-
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: piggybak
+-- Data for Name: frames; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
-ALTER TABLE ONLY variants ALTER COLUMN id SET DEFAULT nextval('variants_id_seq'::regclass);
-
-
---
--- Data for Name: addresses; Type: TABLE DATA; Schema: public; Owner: piggybak
---
-
-COPY addresses (id, firstname, lastname, address1, address2, city, state_id, zip, created_at, updated_at, country_id) FROM stdin;
-41	Testy	Tester	12360 West Carolina Dr.		Lakewood	6883	80228	2012-01-10 16:16:12.893695	2012-01-10 16:16:12.893695	405
-42	Testy	Tester	12360 West Carolina Dr.		Lakewood	6883	80228	2012-01-10 16:16:13.066987	2012-01-10 16:16:13.066987	405
-43	Steph	Skardal	54 Elizabeth St.		Salt Lake City	6926	84105	2012-01-10 16:19:25.728466	2012-01-10 16:19:25.728466	405
-44	Steph	Skardal	54 Elizabeth St.		Salt Lake City	6926	84105	2012-01-10 16:19:25.731399	2012-01-10 16:19:25.731399	405
+COPY frames (id, title, slug, description, main_file_name, main_content_type, main_file_size, main_updated_at, created_at, updated_at) FROM stdin;
+1	Professional Frame	frame	Purchase a frame to go with your print! Frames are available in two sizes (10" x 20" and 20" x 40") and four finishes. All frames include white matboard.	frames.jpg	image/jpeg	48501	2012-11-05 15:41:30.337191	2012-11-05 15:41:30.950787	2012-11-05 15:52:43.768192
 \.
 
 
 --
--- Data for Name: bundle_discount_sellables; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Name: frames_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-COPY bundle_discount_sellables (id, bundle_discount_id, sellable_id) FROM stdin;
+SELECT pg_catalog.setval('frames_id_seq', 1, true);
+
+
+--
+-- Data for Name: images; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY images (id, title, slug, description, user_id, gallery_file_name, gallery_content_type, gallery_file_size, gallery_updated_at, main_file_name, main_content_type, main_file_size, main_updated_at, created_at, updated_at, is_featured) FROM stdin;
+19	Backlit Fall Leaves	backlit-fall-leaves	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_0988.jpg	image/jpeg	41431	2012-01-05 04:02:17.527388	IMG_0988 (2).jpg	image/jpeg	96516	2012-01-06 03:06:14.112479	2012-01-04 01:48:59.726619	2012-01-06 03:06:14.268086	f
+17	Murky Reflection	murky-reflection	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_0609.jpg	image/jpeg	45565	2012-01-05 04:02:09.769174	IMG_0609 (2).jpg	image/jpeg	140129	2012-01-06 03:03:39.315426	2012-01-04 01:46:37.840913	2012-01-06 03:03:39.474964	f
+23	Spider	spider	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_1536.jpg	image/jpeg	27710	2012-01-05 04:01:16.011062	IMG_1536 (2).jpg	image/jpeg	57358	2012-01-06 03:02:47.276154	2012-01-04 01:52:25.037344	2012-01-06 03:02:47.511552	f
+21	Car Window	car-window	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_1268.jpg	image/jpeg	44889	2012-01-05 04:00:07.543055	IMG_1268 (2).jpg	image/jpeg	106393	2012-01-06 03:03:12.78358	2012-01-04 01:50:49.530661	2012-01-06 03:03:12.936139	f
+20	Green Bokeh	green-bokeh	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_1028.jpg	image/jpeg	37003	2012-01-05 04:02:26.702469	IMG_1028 (2).jpg	image/jpeg	87977	2012-01-06 03:03:21.248613	2012-01-04 01:49:59.772243	2012-01-06 03:03:21.499063	f
+12	Dog in Sunglasses	dog-sunglasses	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_8294.jpg	image/jpeg	40478	2012-01-05 03:57:50.636307	IMG_8294 (2).jpg	image/jpeg	92476	2012-01-06 03:09:19.681559	2012-01-04 01:27:22.702599	2012-01-06 03:09:19.820237	f
+22	Dog Lookout	dog-lookout	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_1458.jpg	image/jpeg	33929	2012-01-05 03:59:52.267494	IMG_1458 (2).jpg	image/jpeg	75948	2012-01-06 03:03:00.661259	2012-01-04 01:51:44.08727	2012-01-06 03:03:00.812015	f
+16	Nature	nature	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_0980.jpg	image/jpeg	34911	2012-01-05 03:58:56.92517	IMG_0980.jpg	image/jpeg	77774	2012-01-06 03:03:47.696025	2012-01-04 01:41:41.914299	2012-01-06 03:03:47.846072	f
+15	Beach Dog	beach-dog	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_0262.jpg	image/jpeg	32280	2012-01-05 04:00:20.512985	IMG_0262 (2).jpg	image/jpeg	79680	2012-01-06 03:08:03.74322	2012-01-04 01:38:51.87074	2012-01-06 03:08:03.892608	f
+18	Butterfly	butterfly	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_0928.jpg	image/jpeg	34827	2012-01-05 03:58:44.497056	IMG_0928 (2).jpg	image/jpeg	72064	2012-01-06 03:03:29.916677	2012-01-04 01:47:45.592717	2012-01-06 03:03:30.066065	f
+14	Tired Puppy	tired-puppy	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_7785.jpg	image/jpeg	30221	2012-01-05 03:58:21.898289	IMG_7785.jpg	image/jpeg	61377	2012-01-06 03:04:18.222199	2012-01-04 01:37:55.347265	2012-01-06 03:04:18.37046	f
+35	Nature #2	nature-2	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_5662.jpg	image/jpeg	43548	2012-01-05 03:54:17.926043	IMG_5662 (2).jpg	image/jpeg	114621	2012-01-06 02:51:40.791842	2012-01-04 02:07:08.109208	2012-01-06 02:51:41.049886	f
+40	Best Friends	best-friends	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_8262.jpg	image/jpeg	40076	2012-01-05 03:51:32.488375	IMG_8262 (2).jpg	image/jpeg	104557	2012-01-06 02:50:37.365756	2012-01-04 02:11:23.269686	2012-01-06 02:50:37.50471	f
+28	Puppy Pile	puppy-pile	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_4575.jpg	image/jpeg	34836	2012-01-05 03:56:43.630299	IMG_4575 (2).jpg	image/jpeg	73476	2012-01-06 03:01:36.981517	2012-01-04 01:57:01.570171	2012-01-06 03:01:37.144175	f
+34	Tug Of War	tug-of-war	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_5488.jpg	image/jpeg	33189	2012-01-05 03:54:37.244278	IMG_5488 (2).jpg	image/jpeg	70391	2012-01-06 02:51:52.395457	2012-01-04 02:05:33.246414	2012-01-06 02:51:52.544557	f
+30	Pollination	pollination	This is a description for pollination. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_4991.jpg	image/jpeg	36220	2012-01-05 03:56:14.639197	IMG_4991 (2).jpg	image/jpeg	87487	2012-01-06 02:53:15.873413	2012-01-04 01:59:10.399855	2012-01-06 02:53:16.022288	t
+29	Purple Flowers	purple-flowers	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_4968.jpg	image/jpeg	40189	2012-01-05 03:56:29.725263	IMG_4968 (2).jpg	image/jpeg	85800	2012-01-06 02:53:27.422139	2012-01-04 01:58:19.376719	2012-01-06 02:53:27.57473	f
+27	Happy Beagle	happy-beagle	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_3880.jpg	image/jpeg	54633	2012-01-05 03:57:03.822005	IMG_3880 (2).jpg	image/jpeg	162972	2012-01-06 03:02:10.336384	2012-01-04 01:56:09.84998	2012-01-06 03:02:10.501727	f
+25	Puppy Pals	puppy-pals	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_3536.jpg	image/jpeg	38042	2012-01-05 03:57:16.770321	IMG_3536 (2).jpg	image/jpeg	84435	2012-01-06 03:02:22.057652	2012-01-04 01:54:44.063851	2012-01-06 03:02:22.223951	f
+24	Spider Duo	spider-duo	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_2739.jpg	image/jpeg	38569	2012-01-05 04:01:05.115159	IMG_2739 (2).jpg	image/jpeg	82394	2012-01-06 03:02:35.608226	2012-01-04 01:53:55.327604	2012-01-06 03:02:35.758069	f
+33	Spiderweb	spiderweb	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_5363.jpg	image/jpeg	33836	2012-01-05 03:55:02.365646	IMG_5363 (2).jpg	image/jpeg	78344	2012-01-06 03:05:51.562723	2012-01-04 02:04:19.266243	2012-01-06 03:05:51.806537	f
+41	Street Cat	street-cat	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_8604.jpg	image/jpeg	34090	2012-01-05 03:51:18.704083	IMG_8604 (2).jpg	image/jpeg	79893	2012-01-06 02:50:24.491587	2012-01-04 02:12:11.715957	2012-01-06 02:50:24.710716	t
+39	Make a Wish	make-a-wish	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_8003.jpg	image/jpeg	38606	2012-01-05 03:51:46.898428	IMG_8003 (2).jpg	image/jpeg	96062	2012-01-06 02:50:52.858552	2012-01-04 02:10:36.607113	2012-01-06 02:50:52.997194	f
+44	Japanese Maple	japanese-maple	Here is a description for Japanese Maple. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_9608.jpg	image/jpeg	35674	2012-01-05 03:49:58.302731	IMG_9608 (2).jpg	image/jpeg	77961	2012-01-06 02:49:34.261722	2012-01-04 02:15:29.245068	2012-01-06 02:49:34.510136	t
+43	Spider #2	spider-2	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_9205.jpg	image/jpeg	33984	2012-01-05 03:50:35.561096	IMG_9205 (2).jpg	image/jpeg	75189	2012-01-06 02:49:53.765752	2012-01-04 02:14:15.202401	2012-01-06 02:49:53.91309	f
+42	Fall Colors	fall-colors	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_8784.jpg	image/jpeg	53858	2012-01-05 03:50:51.722957	IMG_8784 (2).jpg	image/jpeg	162781	2012-01-06 02:50:12.277823	2012-01-04 02:13:29.236201	2012-01-06 02:50:12.443617	f
+38	Nature #4	nature-4	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_6262.jpg	image/jpeg	39719	2012-01-05 03:52:00.3107	IMG_6262 (2).jpg	image/jpeg	106741	2012-01-06 02:51:04.614477	2012-01-04 02:09:51.890184	2012-01-06 02:51:04.763192	f
+37	Floor Dog	floor-dog	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_5987.jpg	image/jpeg	33664	2012-01-05 03:52:14.736048	IMG_5987 (2).jpg	image/jpeg	71490	2012-01-06 02:51:17.040249	2012-01-04 02:08:46.4199	2012-01-06 02:51:17.176603	f
+36	Nature #3	nature-3	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_5668.jpg	image/jpeg	34040	2012-01-05 03:52:28.372689	IMG_5668 (2).jpg	image/jpeg	75551	2012-01-06 02:51:27.464653	2012-01-04 02:07:55.197138	2012-01-06 02:51:27.61041	f
+32	Beach Dog #2	beach-dog-2	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_5220.jpg	image/jpeg	51321	2012-01-05 03:55:31.299079	IMG_5220 (2).jpg	image/jpeg	132938	2012-01-06 02:52:51.561219	2012-01-04 02:03:05.963117	2012-01-06 02:52:51.712604	f
+31	Pollination #2	pollination-2	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_5078.jpg	image/jpeg	35775	2012-01-05 03:55:59.614872	IMG_5078 (2).jpg	image/jpeg	72021	2012-01-06 02:53:03.887999	2012-01-04 01:59:58.192968	2012-01-06 02:53:04.050902	f
+13	Havanese Smile	havanese-smile	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_0276.jpg	image/jpeg	47522	2012-01-05 03:58:03.825062	IMG_0276 (2).jpg	image/jpeg	87106	2012-01-06 03:04:08.348957	2012-01-04 01:28:34.72775	2012-01-06 03:04:08.598823	f
+11	Fall Leaves	fall-leaves	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_2836.jpg	image/jpeg	61986	2012-01-05 03:57:29.962346	IMG_2836.jpg	image/jpeg	206737	2012-01-06 03:04:35.133013	2012-01-04 01:26:18.728123	2012-01-06 03:04:35.30472	f
+45	Relaxing Puppy	relaxing-puppy	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_9892.jpg	image/jpeg	35612	2012-01-05 03:49:17.471811	IMG_9892 (2).jpg	image/jpeg	84226	2012-01-06 02:49:16.499131	2012-01-04 02:16:30.973072	2012-01-06 02:49:16.648919	f
+\.
+
+
+--
+-- Name: images_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('images_id_seq', 45, true);
+
+
+--
+-- Data for Name: pages; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY pages (id, title, slug, content, created_at, updated_at) FROM stdin;
+2	Terms	terms	<p>\r\n\tThis is a generic Terms and Conditions page in the Piggbak demo. It&#39;s content is driven by a WYSIWYG editor in the Admin.</p>\r\n<h3>\r\n\tAll Rights Reserved</h3>\r\n<p>\r\n\tThe photos shown in this demo are &copy; Steph Skardal. All Rights Reserved.</p>\r\n<h3>\r\n\tTemplate</h3>\r\n<p>\r\n\tThe template shown in this demo was purchased from <a href="http://themeforest.net/item/sevenwonders-clean-responsive-html-template/1157155">ThemeForest</a>, under the <a href="http://themeforest.net/wiki/support/legal-terms/licensing-terms/">Regular License</a>. It can not be ported to additional sites without purchase of the theme.</p>\r\n	2012-01-04 00:01:29.190115	2012-01-10 21:24:22.633361
+1	About	about	<p>\r\n\tThis is a generic about page in the Piggybak demo. It is driven by a WYSIWYG editor in the Admin.</p>\r\n\r\n<h3>About Piggybak</h3>\r\n\r\n<p>Piggybak is a Ruby on Rails 3 gem that offers mountable ecommerce functionality. Visit the main site <a href="/">here</a>.</p>	2012-01-03 23:59:47.608532	2012-01-10 21:25:37.762214
+\.
+
+
+--
+-- Name: pages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('pages_id_seq', 2, true);
+
+
+--
+-- Data for Name: piggybak_addresses; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY piggybak_addresses (id, firstname, lastname, address1, address2, city, state_id, zip, created_at, updated_at, country_id) FROM stdin;
+41	Testy	Tester	12360 West Carolina Dr.		Lakewood	6883	80228	2012-01-10 16:16:12.893695	2012-01-10 16:16:12.893695	405
+42	Testy	Tester	12360 West Carolina Dr.		Lakewood	6883	80228	2012-01-10 16:16:13.066987	2012-01-10 16:16:13.066987	405
+43	Steph	Skardal	54 Elizabeth St.		Salt Lake City	6926	84105	2012-01-10 16:19:25.728466	2012-01-10 16:19:25.728466	405
+44	Steph	Skardal	54 Elizabeth St.		Salt Lake City	6926	84105	2012-01-10 16:19:25.731399	2012-01-10 16:19:25.731399	405
+45	S	S	123		WS	6907	27103	2014-03-31 22:01:33.295337	2014-03-31 22:01:33.295337	405
+46	S	S	123		WS	6907	27103	2014-03-31 22:01:33.302465	2014-03-31 22:01:33.302465	405
+\.
+
+
+--
+-- Name: piggybak_addresses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('piggybak_addresses_id_seq', 46, true);
+
+
+--
+-- Data for Name: piggybak_bundle_discounts_bundle_discount_sellables; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY piggybak_bundle_discounts_bundle_discount_sellables (id, bundle_discount_id, sellable_id) FROM stdin;
 3	2	29
 4	2	30
 5	3	15
@@ -2034,29 +1870,34 @@ COPY bundle_discount_sellables (id, bundle_discount_id, sellable_id) FROM stdin;
 
 
 --
--- Data for Name: bundle_discounts; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Name: piggybak_bundle_discounts_bundle_discount_sellables_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-COPY bundle_discounts (id, name, discount, multiply, active_until, created_at, updated_at) FROM stdin;
+SELECT pg_catalog.setval('piggybak_bundle_discounts_bundle_discount_sellables_id_seq', 8, true);
+
+
+--
+-- Data for Name: piggybak_bundle_discounts_bundle_discounts; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY piggybak_bundle_discounts_bundle_discounts (id, name, discount, multiply, active_until, created_at, updated_at) FROM stdin;
 2	Pollination Bundle Discount	10	f	\N	2012-11-15 23:55:45.447528	2012-11-15 23:55:45.447528
 3	Nature Discount	20	f	\N	2012-11-15 23:56:13.221795	2012-11-15 23:56:13.221795
 \.
 
 
 --
--- Data for Name: buyable_giftcerts; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Name: piggybak_bundle_discounts_bundle_discounts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-COPY buyable_giftcerts (id) FROM stdin;
-1
-\.
+SELECT pg_catalog.setval('piggybak_bundle_discounts_bundle_discounts_id_seq', 3, true);
 
 
 --
--- Data for Name: countries; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Data for Name: piggybak_countries; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
-COPY countries (id, name, abbr, active_shipping, active_billing) FROM stdin;
+COPY piggybak_countries (id, name, abbr, active_shipping, active_billing) FROM stdin;
 176	Andorra	AD	f	f
 177	United Arab Emirates	AE	f	f
 178	Afghanistan	AF	f	f
@@ -2307,18 +2148,32 @@ COPY countries (id, name, abbr, active_shipping, active_billing) FROM stdin;
 
 
 --
--- Data for Name: coupon_applications; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Name: piggybak_countries_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-COPY coupon_applications (id, line_item_id, coupon_id) FROM stdin;
+SELECT pg_catalog.setval('piggybak_countries_id_seq', 421, true);
+
+
+--
+-- Data for Name: piggybak_coupons_coupon_applications; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY piggybak_coupons_coupon_applications (id, line_item_id, coupon_id) FROM stdin;
 \.
 
 
 --
--- Data for Name: coupons; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Name: piggybak_coupons_coupon_applications_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-COPY coupons (id, code, amount, discount_type, min_cart_total, expiration_date, allowed_applications) FROM stdin;
+SELECT pg_catalog.setval('piggybak_coupons_coupon_applications_id_seq', 1, false);
+
+
+--
+-- Data for Name: piggybak_coupons_coupons; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY piggybak_coupons_coupons (id, code, amount, discount_type, min_cart_total, expiration_date, allowed_applications) FROM stdin;
 1	APOXPQAWHDRC	10.00	%	20.00	2013-12-31	10
 2	DAZWDHBPYTMP	0.00	ship	0.00	2013-12-31	10
 3	DWMIFNRBKTOZ	10.00	$	10.00	2013-12-31	10
@@ -2326,379 +2181,173 @@ COPY coupons (id, code, amount, discount_type, min_cart_total, expiration_date, 
 
 
 --
--- Data for Name: frames; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Name: piggybak_coupons_coupons_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-COPY frames (id, title, slug, description, main_file_name, main_content_type, main_file_size, main_updated_at, created_at, updated_at) FROM stdin;
-1	Professional Frame	frame	Purchase a frame to go with your print! Frames are available in two sizes (10" x 20" and 20" x 40") and four finishes. All frames include white matboard.	frames.jpg	image/jpeg	48501	2012-11-05 15:41:30.337191	2012-11-05 15:41:30.950787	2012-11-05 15:52:43.768192
+SELECT pg_catalog.setval('piggybak_coupons_coupons_id_seq', 3, true);
+
+
+--
+-- Data for Name: piggybak_giftcerts_buyable_giftcerts; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY piggybak_giftcerts_buyable_giftcerts (id) FROM stdin;
+1
 \.
 
 
 --
--- Data for Name: giftcert_applications; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Name: piggybak_giftcerts_buyable_giftcerts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-COPY giftcert_applications (id, line_item_id, giftcert_id, created_at, updated_at) FROM stdin;
+SELECT pg_catalog.setval('piggybak_giftcerts_buyable_giftcerts_id_seq', 1, true);
+
+
+--
+-- Data for Name: piggybak_giftcerts_giftcert_applications; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY piggybak_giftcerts_giftcert_applications (id, line_item_id, giftcert_id, created_at, updated_at) FROM stdin;
 \.
 
 
 --
--- Data for Name: giftcerts; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Name: piggybak_giftcerts_giftcert_applications_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-COPY giftcerts (id, code, amount, expiration_date, order_id, created_at, updated_at) FROM stdin;
+SELECT pg_catalog.setval('piggybak_giftcerts_giftcert_applications_id_seq', 1, false);
+
+
+--
+-- Data for Name: piggybak_giftcerts_giftcerts; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY piggybak_giftcerts_giftcerts (id, code, amount, expiration_date, order_id, created_at, updated_at) FROM stdin;
 1	XDELRGQFPNMN	100.0	2013-12-31	\N	2012-11-05 16:05:14.825879	2012-11-05 16:05:14.825879
 2	IEQGABUEKJGQ	10.0	2013-12-31	\N	2012-11-05 16:05:27.603879	2012-11-05 16:05:27.603879
 \.
 
 
 --
--- Data for Name: images; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Name: piggybak_giftcerts_giftcerts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-COPY images (id, title, slug, description, user_id, gallery_file_name, gallery_content_type, gallery_file_size, gallery_updated_at, main_file_name, main_content_type, main_file_size, main_updated_at, created_at, updated_at, is_featured) FROM stdin;
-19	Backlit Fall Leaves	backlit-fall-leaves	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_0988.jpg	image/jpeg	41431	2012-01-05 04:02:17.527388	IMG_0988 (2).jpg	image/jpeg	96516	2012-01-06 03:06:14.112479	2012-01-04 01:48:59.726619	2012-01-06 03:06:14.268086	f
-17	Murky Reflection	murky-reflection	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_0609.jpg	image/jpeg	45565	2012-01-05 04:02:09.769174	IMG_0609 (2).jpg	image/jpeg	140129	2012-01-06 03:03:39.315426	2012-01-04 01:46:37.840913	2012-01-06 03:03:39.474964	f
-23	Spider	spider	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_1536.jpg	image/jpeg	27710	2012-01-05 04:01:16.011062	IMG_1536 (2).jpg	image/jpeg	57358	2012-01-06 03:02:47.276154	2012-01-04 01:52:25.037344	2012-01-06 03:02:47.511552	f
-21	Car Window	car-window	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_1268.jpg	image/jpeg	44889	2012-01-05 04:00:07.543055	IMG_1268 (2).jpg	image/jpeg	106393	2012-01-06 03:03:12.78358	2012-01-04 01:50:49.530661	2012-01-06 03:03:12.936139	f
-20	Green Bokeh	green-bokeh	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_1028.jpg	image/jpeg	37003	2012-01-05 04:02:26.702469	IMG_1028 (2).jpg	image/jpeg	87977	2012-01-06 03:03:21.248613	2012-01-04 01:49:59.772243	2012-01-06 03:03:21.499063	f
-12	Dog in Sunglasses	dog-sunglasses	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_8294.jpg	image/jpeg	40478	2012-01-05 03:57:50.636307	IMG_8294 (2).jpg	image/jpeg	92476	2012-01-06 03:09:19.681559	2012-01-04 01:27:22.702599	2012-01-06 03:09:19.820237	f
-22	Dog Lookout	dog-lookout	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_1458.jpg	image/jpeg	33929	2012-01-05 03:59:52.267494	IMG_1458 (2).jpg	image/jpeg	75948	2012-01-06 03:03:00.661259	2012-01-04 01:51:44.08727	2012-01-06 03:03:00.812015	f
-16	Nature	nature	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_0980.jpg	image/jpeg	34911	2012-01-05 03:58:56.92517	IMG_0980.jpg	image/jpeg	77774	2012-01-06 03:03:47.696025	2012-01-04 01:41:41.914299	2012-01-06 03:03:47.846072	f
-15	Beach Dog	beach-dog	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_0262.jpg	image/jpeg	32280	2012-01-05 04:00:20.512985	IMG_0262 (2).jpg	image/jpeg	79680	2012-01-06 03:08:03.74322	2012-01-04 01:38:51.87074	2012-01-06 03:08:03.892608	f
-18	Butterfly	butterfly	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_0928.jpg	image/jpeg	34827	2012-01-05 03:58:44.497056	IMG_0928 (2).jpg	image/jpeg	72064	2012-01-06 03:03:29.916677	2012-01-04 01:47:45.592717	2012-01-06 03:03:30.066065	f
-14	Tired Puppy	tired-puppy	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_7785.jpg	image/jpeg	30221	2012-01-05 03:58:21.898289	IMG_7785.jpg	image/jpeg	61377	2012-01-06 03:04:18.222199	2012-01-04 01:37:55.347265	2012-01-06 03:04:18.37046	f
-35	Nature #2	nature-2	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_5662.jpg	image/jpeg	43548	2012-01-05 03:54:17.926043	IMG_5662 (2).jpg	image/jpeg	114621	2012-01-06 02:51:40.791842	2012-01-04 02:07:08.109208	2012-01-06 02:51:41.049886	f
-40	Best Friends	best-friends	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_8262.jpg	image/jpeg	40076	2012-01-05 03:51:32.488375	IMG_8262 (2).jpg	image/jpeg	104557	2012-01-06 02:50:37.365756	2012-01-04 02:11:23.269686	2012-01-06 02:50:37.50471	f
-28	Puppy Pile	puppy-pile	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_4575.jpg	image/jpeg	34836	2012-01-05 03:56:43.630299	IMG_4575 (2).jpg	image/jpeg	73476	2012-01-06 03:01:36.981517	2012-01-04 01:57:01.570171	2012-01-06 03:01:37.144175	f
-34	Tug Of War	tug-of-war	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_5488.jpg	image/jpeg	33189	2012-01-05 03:54:37.244278	IMG_5488 (2).jpg	image/jpeg	70391	2012-01-06 02:51:52.395457	2012-01-04 02:05:33.246414	2012-01-06 02:51:52.544557	f
-30	Pollination	pollination	This is a description for pollination. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_4991.jpg	image/jpeg	36220	2012-01-05 03:56:14.639197	IMG_4991 (2).jpg	image/jpeg	87487	2012-01-06 02:53:15.873413	2012-01-04 01:59:10.399855	2012-01-06 02:53:16.022288	t
-29	Purple Flowers	purple-flowers	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_4968.jpg	image/jpeg	40189	2012-01-05 03:56:29.725263	IMG_4968 (2).jpg	image/jpeg	85800	2012-01-06 02:53:27.422139	2012-01-04 01:58:19.376719	2012-01-06 02:53:27.57473	f
-27	Happy Beagle	happy-beagle	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_3880.jpg	image/jpeg	54633	2012-01-05 03:57:03.822005	IMG_3880 (2).jpg	image/jpeg	162972	2012-01-06 03:02:10.336384	2012-01-04 01:56:09.84998	2012-01-06 03:02:10.501727	f
-25	Puppy Pals	puppy-pals	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_3536.jpg	image/jpeg	38042	2012-01-05 03:57:16.770321	IMG_3536 (2).jpg	image/jpeg	84435	2012-01-06 03:02:22.057652	2012-01-04 01:54:44.063851	2012-01-06 03:02:22.223951	f
-24	Spider Duo	spider-duo	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_2739.jpg	image/jpeg	38569	2012-01-05 04:01:05.115159	IMG_2739 (2).jpg	image/jpeg	82394	2012-01-06 03:02:35.608226	2012-01-04 01:53:55.327604	2012-01-06 03:02:35.758069	f
-33	Spiderweb	spiderweb	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_5363.jpg	image/jpeg	33836	2012-01-05 03:55:02.365646	IMG_5363 (2).jpg	image/jpeg	78344	2012-01-06 03:05:51.562723	2012-01-04 02:04:19.266243	2012-01-06 03:05:51.806537	f
-41	Street Cat	street-cat	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_8604.jpg	image/jpeg	34090	2012-01-05 03:51:18.704083	IMG_8604 (2).jpg	image/jpeg	79893	2012-01-06 02:50:24.491587	2012-01-04 02:12:11.715957	2012-01-06 02:50:24.710716	t
-39	Make a Wish	make-a-wish	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_8003.jpg	image/jpeg	38606	2012-01-05 03:51:46.898428	IMG_8003 (2).jpg	image/jpeg	96062	2012-01-06 02:50:52.858552	2012-01-04 02:10:36.607113	2012-01-06 02:50:52.997194	f
-44	Japanese Maple	japanese-maple	Here is a description for Japanese Maple. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_9608.jpg	image/jpeg	35674	2012-01-05 03:49:58.302731	IMG_9608 (2).jpg	image/jpeg	77961	2012-01-06 02:49:34.261722	2012-01-04 02:15:29.245068	2012-01-06 02:49:34.510136	t
-43	Spider #2	spider-2	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_9205.jpg	image/jpeg	33984	2012-01-05 03:50:35.561096	IMG_9205 (2).jpg	image/jpeg	75189	2012-01-06 02:49:53.765752	2012-01-04 02:14:15.202401	2012-01-06 02:49:53.91309	f
-42	Fall Colors	fall-colors	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_8784.jpg	image/jpeg	53858	2012-01-05 03:50:51.722957	IMG_8784 (2).jpg	image/jpeg	162781	2012-01-06 02:50:12.277823	2012-01-04 02:13:29.236201	2012-01-06 02:50:12.443617	f
-38	Nature #4	nature-4	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_6262.jpg	image/jpeg	39719	2012-01-05 03:52:00.3107	IMG_6262 (2).jpg	image/jpeg	106741	2012-01-06 02:51:04.614477	2012-01-04 02:09:51.890184	2012-01-06 02:51:04.763192	f
-37	Floor Dog	floor-dog	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_5987.jpg	image/jpeg	33664	2012-01-05 03:52:14.736048	IMG_5987 (2).jpg	image/jpeg	71490	2012-01-06 02:51:17.040249	2012-01-04 02:08:46.4199	2012-01-06 02:51:17.176603	f
-36	Nature #3	nature-3	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_5668.jpg	image/jpeg	34040	2012-01-05 03:52:28.372689	IMG_5668 (2).jpg	image/jpeg	75551	2012-01-06 02:51:27.464653	2012-01-04 02:07:55.197138	2012-01-06 02:51:27.61041	f
-32	Beach Dog #2	beach-dog-2	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_5220.jpg	image/jpeg	51321	2012-01-05 03:55:31.299079	IMG_5220 (2).jpg	image/jpeg	132938	2012-01-06 02:52:51.561219	2012-01-04 02:03:05.963117	2012-01-06 02:52:51.712604	f
-31	Pollination #2	pollination-2	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_5078.jpg	image/jpeg	35775	2012-01-05 03:55:59.614872	IMG_5078 (2).jpg	image/jpeg	72021	2012-01-06 02:53:03.887999	2012-01-04 01:59:58.192968	2012-01-06 02:53:04.050902	f
-13	Havanese Smile	havanese-smile	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_0276.jpg	image/jpeg	47522	2012-01-05 03:58:03.825062	IMG_0276 (2).jpg	image/jpeg	87106	2012-01-06 03:04:08.348957	2012-01-04 01:28:34.72775	2012-01-06 03:04:08.598823	f
-11	Fall Leaves	fall-leaves	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_2836.jpg	image/jpeg	61986	2012-01-05 03:57:29.962346	IMG_2836.jpg	image/jpeg	206737	2012-01-06 03:04:35.133013	2012-01-04 01:26:18.728123	2012-01-06 03:04:35.30472	f
-45	Relaxing Puppy	relaxing-puppy	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	10	IMG_9892.jpg	image/jpeg	35612	2012-01-05 03:49:17.471811	IMG_9892 (2).jpg	image/jpeg	84226	2012-01-06 02:49:16.499131	2012-01-04 02:16:30.973072	2012-01-06 02:49:16.648919	f
-\.
+SELECT pg_catalog.setval('piggybak_giftcerts_giftcerts_id_seq', 2, true);
 
 
 --
--- Data for Name: line_items; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Data for Name: piggybak_line_items; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
-COPY line_items (id, order_id, quantity, sellable_id, price, unit_price, description, line_item_type, created_at, updated_at) FROM stdin;
+COPY piggybak_line_items (id, order_id, quantity, sellable_id, price, unit_price, description, line_item_type, created_at, updated_at) FROM stdin;
 19	16	1	15	19.00	0.00		sellable	\N	\N
 20	17	1	15	19.00	0.00		sellable	\N	\N
 21	16	1	\N	10.00	0.00	Shipping	shipment	2012-10-17 15:39:00.951104	2012-10-17 15:39:01.082012
 22	17	1	\N	20.00	0.00	Shipping	shipment	2012-10-17 15:39:01.084616	2012-10-17 15:39:01.089901
 23	16	1	\N	-29.00	0.00	Payment	payment	2012-10-17 15:39:01.106489	2012-10-17 15:39:01.114213
 24	17	1	\N	-39.00	0.00	Payment	payment	2012-10-17 15:39:01.11578	2012-10-17 15:39:01.121287
+25	18	1	\N	0.00	0.00	Pickup (NC Only)	shipment	2014-03-31 22:01:33.236848	2014-03-31 22:01:33.330298
+26	18	1	\N	-21.33	0.00	Payment	payment	2014-03-31 22:01:33.238374	2014-03-31 22:01:33.334117
+27	18	1	29	19.99	19.99	4"x6" Print of Pollination	sellable	2014-03-31 22:01:33.263438	2014-03-31 22:01:33.337153
+28	18	1	\N	1.34	0.00	Tax Charge	tax	2014-03-31 22:01:33.320896	2014-03-31 22:01:33.338367
 \.
 
 
 --
--- Data for Name: navigation_nodes; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Name: piggybak_line_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-COPY navigation_nodes (id, title, slug, "position", ancestry, created_at, updated_at) FROM stdin;
-1	Nature	nature	1	\N	2012-11-14 16:07:41.911049	2012-11-14 16:08:20.905353
-2	Animals	animals	2	\N	2012-11-14 16:07:49.98803	2012-11-14 16:08:20.90768
-3	Dogs	dogs	1	2	2012-11-14 16:07:55.139671	2012-11-14 16:08:20.909884
-4	Cats	cats	2	2	2012-11-14 16:07:58.843703	2012-11-14 16:08:20.913336
-5	Insects	insects	3	\N	2012-11-14 16:08:09.571068	2012-11-14 16:08:20.915373
+SELECT pg_catalog.setval('piggybak_line_items_id_seq', 28, true);
+
+
+--
+-- Data for Name: piggybak_order_notes; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY piggybak_order_notes (id, order_id, user_id, note, created_at, updated_at) FROM stdin;
+1	18	0	LineItem #25 added:<br />quantity: 1<br />price: $0.00<br />description: Pickup (NC Only)<br /><br />LineItem #26 added:<br />quantity: 1<br />price: $-21.33<br />description: Payment<br /><br />LineItem #27 added:<br />quantity: 1<br />price: $19.99<br />description: 4"x6" Print of Pollination<br /><br />LineItem #28 added:<br />quantity: 1<br />price: $1.34<br />description: Tax Charge<br />	2014-03-31 22:01:33.351786	2014-03-31 22:01:33.351786
 \.
 
 
 --
--- Data for Name: option_configurations; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Name: piggybak_order_notes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-COPY option_configurations (id, klass, option_id, created_at, updated_at) FROM stdin;
-1	PiggybakGiftcerts::BuyableGiftcert	1	2012-11-05 15:34:06.726083	2012-11-05 15:34:06.726083
-2	Frame	2	2012-11-05 15:37:25.949082	2012-11-05 15:37:25.949082
-3	Frame	3	2012-11-05 15:40:01.495028	2012-11-05 15:40:01.495028
-\.
+SELECT pg_catalog.setval('piggybak_order_notes_id_seq', 1, true);
 
 
 --
--- Data for Name: option_values; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Data for Name: piggybak_orders; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
-COPY option_values (id, option_id, name, "position", created_at, updated_at) FROM stdin;
-1	1	$10	1	2012-11-05 15:34:06.722342	2012-11-05 15:34:06.722342
-2	1	$20	1	2012-11-05 15:34:06.724104	2012-11-05 15:34:06.724104
-3	1	$40	1	2012-11-05 15:34:06.724941	2012-11-05 15:34:06.724941
-7	3	Black	3	2012-11-05 15:40:01.492447	2012-11-05 15:40:01.492447
-8	3	Cherry	1	2012-11-05 15:40:01.493127	2012-11-05 15:40:01.493127
-9	3	Bronze	4	2012-11-05 15:40:01.493752	2012-11-05 15:40:01.493752
-10	3	Iron	2	2012-11-05 15:40:01.494383	2012-11-05 15:40:01.494383
-4	2	10" x 20"	1	2012-11-05 15:38:08.010145	2012-11-05 15:42:49.640011
-5	2	20" x 40"	2	2012-11-05 15:38:08.011897	2012-11-05 15:42:49.641262
-\.
-
-
---
--- Data for Name: option_values_variants; Type: TABLE DATA; Schema: public; Owner: piggybak
---
-
-COPY option_values_variants (option_value_id, variant_id) FROM stdin;
-1	1
-2	2
-3	3
-4	4
-8	4
-4	5
-10	5
-4	6
-7	6
-4	7
-9	7
-5	8
-8	8
-5	9
-10	9
-5	10
-7	10
-5	11
-9	11
-\.
-
-
---
--- Data for Name: options; Type: TABLE DATA; Schema: public; Owner: piggybak
---
-
-COPY options (id, name, "position", created_at, updated_at) FROM stdin;
-1	Amount	1	2012-11-05 15:34:06.716901	2012-11-05 15:34:06.716901
-2	Frame Size	1	2012-11-05 15:37:25.947511	2012-11-05 15:37:25.947511
-3	Frame Finish	2	2012-11-05 15:40:01.491554	2012-11-05 15:40:01.491554
-\.
-
-
---
--- Data for Name: order_notes; Type: TABLE DATA; Schema: public; Owner: piggybak
---
-
-COPY order_notes (id, order_id, user_id, note, created_at, updated_at) FROM stdin;
-\.
-
-
---
--- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: piggybak
---
-
-COPY orders (id, billing_address_id, shipping_address_id, user_id, email, phone, total, total_due, status, created_at, updated_at, ip_address, user_agent, to_be_cancelled, confirmation_sent) FROM stdin;
+COPY piggybak_orders (id, billing_address_id, shipping_address_id, user_id, email, phone, total, total_due, status, created_at, updated_at, ip_address, user_agent, to_be_cancelled, confirmation_sent) FROM stdin;
 16	41	42	10	test@endpoint.com	6304844834	29.00	0.00	paid	2012-01-10 16:16:12.691295	2012-01-10 16:16:13.081443	174.111.11.143	\N	f	f
 17	43	44	\N	steph@endpoint.com	6304844834	39.00	0.00	paid	2012-01-10 16:19:25.541916	2012-01-10 16:19:25.745341	174.111.11.143	\N	f	f
+18	45	46	10	test@endpoint.com	6304844834	21.33	0.00	new	2014-03-31 22:01:33.238556	2014-03-31 22:01:33.32807	75.183.100.168	Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:28.0) Gecko/20100101 Firefox/28.0	f	t
 \.
 
 
 --
--- Data for Name: pages; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Name: piggybak_orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-COPY pages (id, title, slug, content, created_at, updated_at) FROM stdin;
-2	Terms	terms	<p>\r\n\tThis is a generic Terms and Conditions page in the Piggbak demo. It&#39;s content is driven by a WYSIWYG editor in the Admin.</p>\r\n<h3>\r\n\tAll Rights Reserved</h3>\r\n<p>\r\n\tThe photos shown in this demo are &copy; Steph Skardal. All Rights Reserved.</p>\r\n<h3>\r\n\tTemplate</h3>\r\n<p>\r\n\tThe template shown in this demo was purchased from <a href="http://themeforest.net/item/sevenwonders-clean-responsive-html-template/1157155">ThemeForest</a>, under the <a href="http://themeforest.net/wiki/support/legal-terms/licensing-terms/">Regular License</a>. It can not be ported to additional sites without purchase of the theme.</p>\r\n	2012-01-04 00:01:29.190115	2012-01-10 21:24:22.633361
-1	About	about	<p>\r\n\tThis is a generic about page in the Piggybak demo. It is driven by a WYSIWYG editor in the Admin.</p>\r\n\r\n<h3>About Piggybak</h3>\r\n\r\n<p>Piggybak is a Ruby on Rails 3 gem that offers mountable ecommerce functionality. Visit the main site <a href="/">here</a>.</p>	2012-01-03 23:59:47.608532	2012-01-10 21:25:37.762214
+SELECT pg_catalog.setval('piggybak_orders_id_seq', 18, true);
+
+
+--
+-- Data for Name: piggybak_payment_method_values; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY piggybak_payment_method_values (id, payment_method_id, key, value) FROM stdin;
 \.
 
 
 --
--- Data for Name: payment_method_values; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Name: piggybak_payment_method_values_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-COPY payment_method_values (id, payment_method_id, key, value) FROM stdin;
-\.
+SELECT pg_catalog.setval('piggybak_payment_method_values_id_seq', 2, true);
 
 
 --
--- Data for Name: payment_methods; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Data for Name: piggybak_payment_methods; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
-COPY payment_methods (id, description, klass, active, created_at, updated_at) FROM stdin;
+COPY piggybak_payment_methods (id, description, klass, active, created_at, updated_at) FROM stdin;
 1	Fake Credit Card	::Piggybak::PaymentCalculator::Fake	t	2012-01-03 21:47:03.052088	2012-01-05 21:04:27.193433
 \.
 
 
 --
--- Data for Name: payments; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Name: piggybak_payment_methods_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-COPY payments (id, payment_method_id, status, month, year, transaction_id, created_at, updated_at, masked_number, line_item_id) FROM stdin;
+SELECT pg_catalog.setval('piggybak_payment_methods_id_seq', 2, true);
+
+
+--
+-- Data for Name: piggybak_payments; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY piggybak_payments (id, payment_method_id, status, month, year, transaction_id, created_at, updated_at, masked_number, line_item_id) FROM stdin;
 15	1	paid	1	2012	N/A	2012-01-10 16:16:13.121248	2012-10-17 15:39:01.112282	\N	23
 16	1	paid	1	2012	N/A	2012-01-10 16:19:25.751568	2012-10-17 15:39:01.12037	\N	24
+17	1	paid	1	2015	N/A	2014-03-31 22:01:33.335405	2014-03-31 22:01:33.335405	41**********1111	26
 \.
 
 
 --
--- Data for Name: posts; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Name: piggybak_payments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-COPY posts (id, title, slug, user_id, content, created_at, updated_at) FROM stdin;
-1	Test Post	test-post	10	<p>\r\n\tLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n	2012-01-06 03:57:46.675949	2012-01-06 03:57:46.675949
-2	Test Post #2	test-post-2	10	<p>\r\n\tLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n	2012-01-06 03:58:04.81419	2012-01-06 03:58:04.81419
-3	Test Post #3	test-post-3	10	<p>\r\n\tLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n	2012-01-06 03:58:55.214296	2012-01-06 03:58:55.214296
-4	Test Post #4	test-post-	10	<p>\r\n\tLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n	2012-01-06 03:59:12.952935	2012-01-06 03:59:12.952935
-\.
+SELECT pg_catalog.setval('piggybak_payments_id_seq', 17, true);
 
 
 --
--- Data for Name: rails_admin_histories; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Data for Name: piggybak_sellables; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
-COPY rails_admin_histories (id, message, username, item, "table", month, year, created_at, updated_at) FROM stdin;
-\.
-
-
---
--- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: piggybak
---
-
-COPY roles (id, name) FROM stdin;
-10	admin
-\.
-
-
---
--- Data for Name: roles_users; Type: TABLE DATA; Schema: public; Owner: piggybak
---
-
-COPY roles_users (role_id, user_id) FROM stdin;
-1	1
-3	3
-4	4
-5	5
-6	6
-7	7
-8	8
-9	9
-10	10
-\.
-
-
---
--- Data for Name: schema_migrations; Type: TABLE DATA; Schema: public; Owner: piggybak
---
-
-COPY schema_migrations (version) FROM stdin;
-20111221175014
-20111231040339
-20111231040340
-20111231040354
-20111231041048
-20111231052811
-20111231055412
-20111231060335
-20111231060428
-20120103020918
-20120103020919
-20120103020920
-20120103020921
-20120103020922
-20120103020923
-20120103020924
-20120103020925
-20120103020926
-20120103020927
-20120103020928
-20120103020929
-20120103020930
-20120102162414
-20120102162415
-20120104020930
-20120106010846
-20120106034634
-20120107140039
-20120111195717
-20120627151032
-20120627175044
-20120829140525
-20120829140526
-20120829140527
-20120829140528
-20120829140529
-20121008195802
-20121012220537
-20121017151401
-20121022161614
-20121022164235
-20121022165051
-20121022202530
-20121022202531
-20121022202532
-20121022202533
-20121022210041
-20121023225128
-20121026200953
-20121108204215
-20121109165416
-20121113143538
-20121113164416
-20121115150733
-\.
-
-
---
--- Data for Name: sellable_taxonomies; Type: TABLE DATA; Schema: public; Owner: piggybak
---
-
-COPY sellable_taxonomies (id, navigation_node_id, sellable_id, sort) FROM stdin;
-1	1	10	1
-2	1	15	2
-6	1	16	3
-7	1	18	4
-8	1	19	5
-9	1	28	6
-10	1	29	7
-11	1	30	8
-12	1	32	9
-13	1	34	10
-14	1	35	11
-15	1	37	12
-16	1	38	13
-17	1	41	15
-18	1	43	16
-19	5	17	1
-20	5	22	2
-21	5	23	3
-22	5	29	4
-23	5	30	4
-24	5	42	6
-25	4	40	1
-26	3	11	1
-27	3	12	2
-28	3	13	3
-29	3	14	4
-30	3	20	5
-31	3	21	6
-32	3	24	7
-33	3	26	8
-34	3	27	9
-35	3	31	10
-36	3	33	11
-37	3	36	12
-38	3	39	13
-39	3	44	14
-\.
-
-
---
--- Data for Name: sellables; Type: TABLE DATA; Schema: public; Owner: piggybak
---
-
-COPY sellables (id, sku, description, price, quantity, item_id, item_type, active, unlimited_inventory) FROM stdin;
+COPY piggybak_sellables (id, sku, description, price, quantity, item_id, item_type, active, unlimited_inventory) FROM stdin;
 9	test-3	Print of Test #3	19.99	8	10	Image	t	f
 7	1	Sample Product	19.99	8	8	Image	t	f
 8	test-2	Print of Test #2	19.99	6	9	Image	t	f
@@ -2752,20 +2401,35 @@ COPY sellables (id, sku, description, price, quantity, item_id, item_type, activ
 
 
 --
--- Data for Name: shipments; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Name: piggybak_sellables_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-COPY shipments (id, shipping_method_id, status, created_at, updated_at, line_item_id) FROM stdin;
+SELECT pg_catalog.setval('piggybak_sellables_id_seq', 55, true);
+
+
+--
+-- Data for Name: piggybak_shipments; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY piggybak_shipments (id, shipping_method_id, status, created_at, updated_at, line_item_id) FROM stdin;
 15	4	new	2012-01-10 16:16:13.12503	2012-10-17 15:39:01.079716	21
 16	5	new	2012-01-10 16:19:25.753415	2012-10-17 15:39:01.089099	22
+17	6	new	2014-03-31 22:01:33.332445	2014-03-31 22:01:33.332445	25
 \.
 
 
 --
--- Data for Name: shipping_method_values; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Name: piggybak_shipments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-COPY shipping_method_values (id, shipping_method_id, key, value) FROM stdin;
+SELECT pg_catalog.setval('piggybak_shipments_id_seq', 17, true);
+
+
+--
+-- Data for Name: piggybak_shipping_method_values; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY piggybak_shipping_method_values (id, shipping_method_id, key, value) FROM stdin;
 4	4	rate	10.00
 5	5	rate	20.00
 7	6	rate	0.00
@@ -2774,10 +2438,17 @@ COPY shipping_method_values (id, shipping_method_id, key, value) FROM stdin;
 
 
 --
--- Data for Name: shipping_methods; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Name: piggybak_shipping_method_values_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-COPY shipping_methods (id, description, klass, active) FROM stdin;
+SELECT pg_catalog.setval('piggybak_shipping_method_values_id_seq', 7, true);
+
+
+--
+-- Data for Name: piggybak_shipping_methods; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY piggybak_shipping_methods (id, description, klass, active) FROM stdin;
 6	Pickup (NC Only)	Pickup	t
 4	Standard Shipping	::Piggybak::ShippingCalculator::FlatRate	t
 5	Express Shipping	::Piggybak::ShippingCalculator::FlatRate	t
@@ -2785,10 +2456,17 @@ COPY shipping_methods (id, description, klass, active) FROM stdin;
 
 
 --
--- Data for Name: states; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Name: piggybak_shipping_methods_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-COPY states (id, abbr, name, country_id) FROM stdin;
+SELECT pg_catalog.setval('piggybak_shipping_methods_id_seq', 6, true);
+
+
+--
+-- Data for Name: piggybak_states; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY piggybak_states (id, abbr, name, country_id) FROM stdin;
 2871	02	Canillo	176
 2872	03	Encamp	176
 2873	04	La Massana	176
@@ -7048,54 +6726,433 @@ COPY states (id, abbr, name, country_id) FROM stdin;
 
 
 --
--- Data for Name: taggings; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Name: piggybak_states_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-COPY taggings (id, tag_id, taggable_id, taggable_type, tagger_id, tagger_type, context, created_at) FROM stdin;
-\.
-
-
---
--- Data for Name: tags; Type: TABLE DATA; Schema: public; Owner: piggybak
---
-
-COPY tags (id, name) FROM stdin;
-\.
+SELECT pg_catalog.setval('piggybak_states_id_seq', 7125, true);
 
 
 --
--- Data for Name: tax_method_values; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Data for Name: piggybak_tax_method_values; Type: TABLE DATA; Schema: public; Owner: piggybak
 --
 
-COPY tax_method_values (id, tax_method_id, key, value) FROM stdin;
+COPY piggybak_tax_method_values (id, tax_method_id, key, value) FROM stdin;
 2	1	rate	0.0675
 1	1	state_id	6907
 \.
 
 
 --
--- Data for Name: tax_methods; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Name: piggybak_tax_method_values_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-COPY tax_methods (id, description, klass, active) FROM stdin;
+SELECT pg_catalog.setval('piggybak_tax_method_values_id_seq', 2, true);
+
+
+--
+-- Data for Name: piggybak_tax_methods; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY piggybak_tax_methods (id, description, klass, active) FROM stdin;
 1	NC State Tax	::Piggybak::TaxCalculator::Percent	t
 \.
 
 
 --
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Name: piggybak_tax_methods_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-COPY users (id, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, display_name, created_at, updated_at) FROM stdin;
-10	test@endpoint.com	$2a$10$eq.pXquV5s1nQcQNnEpM6.rdsK5x8H7gAHbaTHBe/YhzxjMLQbd96	\N	\N	\N	40	2012-08-29 14:12:39.019391	2012-01-10 21:17:14.613089	174.111.11.143	174.111.11.143	Testy Tester	2012-01-03 20:26:41.571741	2012-08-29 14:12:39.020228
+SELECT pg_catalog.setval('piggybak_tax_methods_id_seq', 1, true);
+
+
+--
+-- Data for Name: piggybak_taxonomy_navigation_nodes; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY piggybak_taxonomy_navigation_nodes (id, title, slug, "position", ancestry, created_at, updated_at) FROM stdin;
+1	Nature	nature	1	\N	2012-11-14 16:07:41.911049	2012-11-14 16:08:20.905353
+2	Animals	animals	2	\N	2012-11-14 16:07:49.98803	2012-11-14 16:08:20.90768
+3	Dogs	dogs	1	2	2012-11-14 16:07:55.139671	2012-11-14 16:08:20.909884
+4	Cats	cats	2	2	2012-11-14 16:07:58.843703	2012-11-14 16:08:20.913336
+5	Insects	insects	3	\N	2012-11-14 16:08:09.571068	2012-11-14 16:08:20.915373
 \.
 
 
 --
--- Data for Name: variants; Type: TABLE DATA; Schema: public; Owner: piggybak
+-- Name: piggybak_taxonomy_navigation_nodes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
 --
 
-COPY variants (id, item_id, item_type, created_at, updated_at) FROM stdin;
+SELECT pg_catalog.setval('piggybak_taxonomy_navigation_nodes_id_seq', 5, true);
+
+
+--
+-- Data for Name: piggybak_taxonomy_sellable_taxonomies; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY piggybak_taxonomy_sellable_taxonomies (id, navigation_node_id, sellable_id, sort) FROM stdin;
+1	1	10	1
+2	1	15	2
+6	1	16	3
+7	1	18	4
+8	1	19	5
+9	1	28	6
+10	1	29	7
+11	1	30	8
+12	1	32	9
+13	1	34	10
+14	1	35	11
+15	1	37	12
+16	1	38	13
+17	1	41	15
+18	1	43	16
+19	5	17	1
+20	5	22	2
+21	5	23	3
+22	5	29	4
+23	5	30	4
+24	5	42	6
+25	4	40	1
+26	3	11	1
+27	3	12	2
+28	3	13	3
+29	3	14	4
+30	3	20	5
+31	3	21	6
+32	3	24	7
+33	3	26	8
+34	3	27	9
+35	3	31	10
+36	3	33	11
+37	3	36	12
+38	3	39	13
+39	3	44	14
+175	2	11	0
+176	2	12	0
+177	2	13	0
+178	2	14	0
+179	2	20	0
+180	2	21	0
+181	2	24	0
+182	2	26	0
+183	2	27	0
+184	2	31	0
+185	2	33	0
+186	2	36	0
+187	2	39	0
+188	2	44	0
+189	2	40	0
+190	2	11	0
+191	2	12	0
+192	2	13	0
+193	2	14	0
+194	2	20	0
+195	2	21	0
+196	2	24	0
+197	2	26	0
+198	2	27	0
+199	2	31	0
+200	2	33	0
+201	2	36	0
+202	2	39	0
+203	2	44	0
+204	2	40	0
+205	2	11	0
+206	2	12	0
+207	2	13	0
+208	2	14	0
+209	2	20	0
+210	2	21	0
+211	2	24	0
+212	2	26	0
+213	2	27	0
+214	2	31	0
+215	2	33	0
+216	2	36	0
+217	2	39	0
+218	2	44	0
+219	2	40	0
+220	2	11	0
+221	2	12	0
+222	2	13	0
+223	2	14	0
+224	2	20	0
+225	2	21	0
+226	2	24	0
+227	2	26	0
+228	2	27	0
+229	2	31	0
+230	2	33	0
+231	2	36	0
+232	2	39	0
+233	2	44	0
+234	2	40	0
+235	2	11	0
+236	2	12	0
+237	2	13	0
+238	2	14	0
+239	2	20	0
+240	2	21	0
+241	2	24	0
+242	2	26	0
+243	2	27	0
+244	2	31	0
+245	2	33	0
+246	2	36	0
+247	2	39	0
+248	2	44	0
+249	2	40	0
+250	2	11	0
+251	2	12	0
+252	2	13	0
+253	2	14	0
+254	2	20	0
+255	2	21	0
+256	2	24	0
+257	2	26	0
+258	2	27	0
+259	2	31	0
+260	2	33	0
+261	2	36	0
+262	2	39	0
+263	2	44	0
+264	2	40	0
+265	2	11	0
+266	2	12	0
+267	2	13	0
+268	2	14	0
+269	2	20	0
+270	2	21	0
+271	2	24	0
+272	2	26	0
+273	2	27	0
+274	2	31	0
+275	2	33	0
+276	2	36	0
+277	2	39	0
+278	2	44	0
+279	2	40	0
+280	2	11	0
+281	2	12	0
+282	2	13	0
+283	2	14	0
+284	2	20	0
+285	2	21	0
+286	2	24	0
+287	2	26	0
+288	2	27	0
+289	2	31	0
+290	2	33	0
+291	2	36	0
+292	2	39	0
+293	2	44	0
+294	2	40	0
+295	2	11	0
+296	2	12	0
+297	2	13	0
+298	2	14	0
+299	2	20	0
+300	2	21	0
+301	2	24	0
+302	2	26	0
+303	2	27	0
+304	2	31	0
+305	2	33	0
+306	2	36	0
+307	2	39	0
+308	2	44	0
+309	2	40	0
+310	2	11	0
+311	2	12	0
+312	2	13	0
+313	2	14	0
+314	2	20	0
+315	2	21	0
+316	2	24	0
+317	2	26	0
+318	2	27	0
+319	2	31	0
+320	2	33	0
+321	2	36	0
+322	2	39	0
+323	2	44	0
+324	2	40	0
+325	2	11	0
+326	2	12	0
+327	2	13	0
+328	2	14	0
+329	2	20	0
+330	2	21	0
+331	2	24	0
+332	2	26	0
+333	2	27	0
+334	2	31	0
+335	2	33	0
+336	2	36	0
+337	2	39	0
+338	2	44	0
+339	2	40	0
+340	2	11	0
+341	2	12	0
+342	2	13	0
+343	2	14	0
+344	2	20	0
+345	2	21	0
+346	2	24	0
+347	2	26	0
+348	2	27	0
+349	2	31	0
+350	2	33	0
+351	2	36	0
+352	2	39	0
+353	2	44	0
+354	2	40	0
+355	2	11	0
+356	2	12	0
+357	2	13	0
+358	2	14	0
+359	2	20	0
+360	2	21	0
+361	2	24	0
+362	2	26	0
+363	2	27	0
+364	2	31	0
+365	2	33	0
+366	2	36	0
+367	2	39	0
+368	2	44	0
+369	2	40	0
+370	2	11	0
+371	2	12	0
+372	2	13	0
+373	2	14	0
+374	2	20	0
+375	2	21	0
+376	2	24	0
+377	2	26	0
+378	2	27	0
+379	2	31	0
+380	2	33	0
+381	2	36	0
+382	2	39	0
+383	2	44	0
+384	2	40	0
+385	2	11	0
+386	2	12	0
+387	2	13	0
+388	2	14	0
+389	2	20	0
+390	2	21	0
+391	2	24	0
+392	2	26	0
+393	2	27	0
+394	2	31	0
+395	2	33	0
+396	2	36	0
+397	2	39	0
+398	2	44	0
+399	2	40	0
+\.
+
+
+--
+-- Name: piggybak_taxonomy_sellable_taxonomies_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('piggybak_taxonomy_sellable_taxonomies_id_seq', 399, true);
+
+
+--
+-- Data for Name: piggybak_variants_option_configurations; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY piggybak_variants_option_configurations (id, klass, option_id, created_at, updated_at) FROM stdin;
+1	PiggybakGiftcerts::BuyableGiftcert	1	2012-11-05 15:34:06.726083	2012-11-05 15:34:06.726083
+2	Frame	2	2012-11-05 15:37:25.949082	2012-11-05 15:37:25.949082
+3	Frame	3	2012-11-05 15:40:01.495028	2012-11-05 15:40:01.495028
+\.
+
+
+--
+-- Name: piggybak_variants_option_configurations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('piggybak_variants_option_configurations_id_seq', 3, true);
+
+
+--
+-- Data for Name: piggybak_variants_option_values; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY piggybak_variants_option_values (id, option_id, name, "position", created_at, updated_at) FROM stdin;
+1	1	$10	1	2012-11-05 15:34:06.722342	2012-11-05 15:34:06.722342
+2	1	$20	1	2012-11-05 15:34:06.724104	2012-11-05 15:34:06.724104
+3	1	$40	1	2012-11-05 15:34:06.724941	2012-11-05 15:34:06.724941
+7	3	Black	3	2012-11-05 15:40:01.492447	2012-11-05 15:40:01.492447
+8	3	Cherry	1	2012-11-05 15:40:01.493127	2012-11-05 15:40:01.493127
+9	3	Bronze	4	2012-11-05 15:40:01.493752	2012-11-05 15:40:01.493752
+10	3	Iron	2	2012-11-05 15:40:01.494383	2012-11-05 15:40:01.494383
+4	2	10" x 20"	1	2012-11-05 15:38:08.010145	2012-11-05 15:42:49.640011
+5	2	20" x 40"	2	2012-11-05 15:38:08.011897	2012-11-05 15:42:49.641262
+\.
+
+
+--
+-- Name: piggybak_variants_option_values_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('piggybak_variants_option_values_id_seq', 10, true);
+
+
+--
+-- Data for Name: piggybak_variants_option_values_variants; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY piggybak_variants_option_values_variants (option_value_id, variant_id) FROM stdin;
+1	1
+2	2
+3	3
+4	4
+8	4
+4	5
+10	5
+4	6
+7	6
+4	7
+9	7
+5	8
+8	8
+5	9
+10	9
+5	10
+7	10
+5	11
+9	11
+\.
+
+
+--
+-- Data for Name: piggybak_variants_options; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY piggybak_variants_options (id, name, "position", created_at, updated_at) FROM stdin;
+1	Amount	1	2012-11-05 15:34:06.716901	2012-11-05 15:34:06.716901
+2	Frame Size	1	2012-11-05 15:37:25.947511	2012-11-05 15:37:25.947511
+3	Frame Finish	2	2012-11-05 15:40:01.491554	2012-11-05 15:40:01.491554
+\.
+
+
+--
+-- Name: piggybak_variants_options_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('piggybak_variants_options_id_seq', 3, true);
+
+
+--
+-- Data for Name: piggybak_variants_variants; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY piggybak_variants_variants (id, item_id, item_type, created_at, updated_at) FROM stdin;
 1	1	PiggybakGiftcerts::BuyableGiftcert	2012-11-05 15:34:06.868555	2012-11-05 15:34:06.868555
 2	1	PiggybakGiftcerts::BuyableGiftcert	2012-11-05 15:34:06.874895	2012-11-05 15:34:06.874895
 3	1	PiggybakGiftcerts::BuyableGiftcert	2012-11-05 15:34:06.87849	2012-11-05 15:34:06.87849
@@ -7111,10 +7168,200 @@ COPY variants (id, item_id, item_type, created_at, updated_at) FROM stdin;
 
 
 --
+-- Name: piggybak_variants_variants_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('piggybak_variants_variants_id_seq', 11, true);
+
+
+--
+-- Data for Name: posts; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY posts (id, title, slug, user_id, content, created_at, updated_at) FROM stdin;
+1	Test Post	test-post	10	<p>\r\n\tLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n	2012-01-06 03:57:46.675949	2012-01-06 03:57:46.675949
+2	Test Post #2	test-post-2	10	<p>\r\n\tLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n	2012-01-06 03:58:04.81419	2012-01-06 03:58:04.81419
+3	Test Post #3	test-post-3	10	<p>\r\n\tLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n	2012-01-06 03:58:55.214296	2012-01-06 03:58:55.214296
+4	Test Post #4	test-post-	10	<p>\r\n\tLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n	2012-01-06 03:59:12.952935	2012-01-06 03:59:12.952935
+\.
+
+
+--
+-- Name: posts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('posts_id_seq', 4, true);
+
+
+--
+-- Data for Name: rails_admin_histories; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY rails_admin_histories (id, message, username, item, "table", month, year, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Name: rails_admin_histories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('rails_admin_histories_id_seq', 179, true);
+
+
+--
+-- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY roles (id, name) FROM stdin;
+10	admin
+\.
+
+
+--
+-- Name: roles_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('roles_id_seq', 10, true);
+
+
+--
+-- Data for Name: roles_users; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY roles_users (role_id, user_id) FROM stdin;
+1	1
+3	3
+4	4
+5	5
+6	6
+7	7
+8	8
+9	9
+10	10
+\.
+
+
+--
+-- Data for Name: schema_migrations; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY schema_migrations (version) FROM stdin;
+20111221175014
+20111231040339
+20111231040340
+20111231040354
+20111231041048
+20111231052811
+20111231055412
+20111231060335
+20111231060428
+20120103020918
+20120103020919
+20120103020920
+20120103020921
+20120103020922
+20120103020923
+20120103020924
+20120103020925
+20120103020926
+20120103020927
+20120103020928
+20120103020929
+20120103020930
+20120102162414
+20120102162415
+20120104020930
+20120106010846
+20120106034634
+20120107140039
+20120111195717
+20120627151032
+20120627175044
+20120829140525
+20120829140526
+20120829140527
+20120829140528
+20120829140529
+20121008195802
+20121012220537
+20121017151401
+20121022161614
+20121022164235
+20121022165051
+20121022202530
+20121022202531
+20121022202532
+20121022202533
+20121022210041
+20121023225128
+20121026200953
+20121108204215
+20121109165416
+20121113143538
+20121113164416
+20121115150733
+20130516201046
+20130516201047
+20140325133841
+20140325195831
+20140325200747
+20140325200807
+20140325200816
+20140325200825
+\.
+
+
+--
+-- Data for Name: taggings; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY taggings (id, tag_id, taggable_id, taggable_type, tagger_id, tagger_type, context, created_at) FROM stdin;
+\.
+
+
+--
+-- Name: taggings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('taggings_id_seq', 1, false);
+
+
+--
+-- Data for Name: tags; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY tags (id, name) FROM stdin;
+\.
+
+
+--
+-- Name: tags_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('tags_id_seq', 1, false);
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: piggybak
+--
+
+COPY users (id, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, display_name, created_at, updated_at) FROM stdin;
+10	test@endpoint.com	$2a$10$eq.pXquV5s1nQcQNnEpM6.rdsK5x8H7gAHbaTHBe/YhzxjMLQbd96	\N	\N	\N	42	2014-03-31 22:01:11.880481	2014-03-31 21:58:02.673801	75.183.100.168	75.183.100.168	Testy Tester	2012-01-03 20:26:41.571741	2014-03-31 22:01:11.881962
+\.
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: piggybak
+--
+
+SELECT pg_catalog.setval('users_id_seq', 10, true);
+
+
+--
 -- Name: addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY addresses
+ALTER TABLE ONLY piggybak_addresses
     ADD CONSTRAINT addresses_pkey PRIMARY KEY (id);
 
 
@@ -7122,7 +7369,7 @@ ALTER TABLE ONLY addresses
 -- Name: bundle_discount_sellables_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY bundle_discount_sellables
+ALTER TABLE ONLY piggybak_bundle_discounts_bundle_discount_sellables
     ADD CONSTRAINT bundle_discount_sellables_pkey PRIMARY KEY (id);
 
 
@@ -7130,7 +7377,7 @@ ALTER TABLE ONLY bundle_discount_sellables
 -- Name: bundle_discounts_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY bundle_discounts
+ALTER TABLE ONLY piggybak_bundle_discounts_bundle_discounts
     ADD CONSTRAINT bundle_discounts_pkey PRIMARY KEY (id);
 
 
@@ -7138,7 +7385,7 @@ ALTER TABLE ONLY bundle_discounts
 -- Name: buyable_giftcerts_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY buyable_giftcerts
+ALTER TABLE ONLY piggybak_giftcerts_buyable_giftcerts
     ADD CONSTRAINT buyable_giftcerts_pkey PRIMARY KEY (id);
 
 
@@ -7146,7 +7393,7 @@ ALTER TABLE ONLY buyable_giftcerts
 -- Name: countries_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY countries
+ALTER TABLE ONLY piggybak_countries
     ADD CONSTRAINT countries_pkey PRIMARY KEY (id);
 
 
@@ -7154,7 +7401,7 @@ ALTER TABLE ONLY countries
 -- Name: coupon_applications_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY coupon_applications
+ALTER TABLE ONLY piggybak_coupons_coupon_applications
     ADD CONSTRAINT coupon_applications_pkey PRIMARY KEY (id);
 
 
@@ -7162,7 +7409,7 @@ ALTER TABLE ONLY coupon_applications
 -- Name: coupons_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY coupons
+ALTER TABLE ONLY piggybak_coupons_coupons
     ADD CONSTRAINT coupons_pkey PRIMARY KEY (id);
 
 
@@ -7178,7 +7425,7 @@ ALTER TABLE ONLY frames
 -- Name: giftcert_applications_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY giftcert_applications
+ALTER TABLE ONLY piggybak_giftcerts_giftcert_applications
     ADD CONSTRAINT giftcert_applications_pkey PRIMARY KEY (id);
 
 
@@ -7186,7 +7433,7 @@ ALTER TABLE ONLY giftcert_applications
 -- Name: giftcerts_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY giftcerts
+ALTER TABLE ONLY piggybak_giftcerts_giftcerts
     ADD CONSTRAINT giftcerts_pkey PRIMARY KEY (id);
 
 
@@ -7202,7 +7449,7 @@ ALTER TABLE ONLY images
 -- Name: line_items_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY line_items
+ALTER TABLE ONLY piggybak_line_items
     ADD CONSTRAINT line_items_pkey PRIMARY KEY (id);
 
 
@@ -7210,7 +7457,7 @@ ALTER TABLE ONLY line_items
 -- Name: navigation_nodes_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY navigation_nodes
+ALTER TABLE ONLY piggybak_taxonomy_navigation_nodes
     ADD CONSTRAINT navigation_nodes_pkey PRIMARY KEY (id);
 
 
@@ -7218,7 +7465,7 @@ ALTER TABLE ONLY navigation_nodes
 -- Name: option_configurations_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY option_configurations
+ALTER TABLE ONLY piggybak_variants_option_configurations
     ADD CONSTRAINT option_configurations_pkey PRIMARY KEY (id);
 
 
@@ -7226,7 +7473,7 @@ ALTER TABLE ONLY option_configurations
 -- Name: option_values_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY option_values
+ALTER TABLE ONLY piggybak_variants_option_values
     ADD CONSTRAINT option_values_pkey PRIMARY KEY (id);
 
 
@@ -7234,7 +7481,7 @@ ALTER TABLE ONLY option_values
 -- Name: options_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY options
+ALTER TABLE ONLY piggybak_variants_options
     ADD CONSTRAINT options_pkey PRIMARY KEY (id);
 
 
@@ -7242,7 +7489,7 @@ ALTER TABLE ONLY options
 -- Name: order_notes_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY order_notes
+ALTER TABLE ONLY piggybak_order_notes
     ADD CONSTRAINT order_notes_pkey PRIMARY KEY (id);
 
 
@@ -7250,7 +7497,7 @@ ALTER TABLE ONLY order_notes
 -- Name: orders_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY orders
+ALTER TABLE ONLY piggybak_orders
     ADD CONSTRAINT orders_pkey PRIMARY KEY (id);
 
 
@@ -7266,7 +7513,7 @@ ALTER TABLE ONLY pages
 -- Name: payment_method_values_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY payment_method_values
+ALTER TABLE ONLY piggybak_payment_method_values
     ADD CONSTRAINT payment_method_values_pkey PRIMARY KEY (id);
 
 
@@ -7274,7 +7521,7 @@ ALTER TABLE ONLY payment_method_values
 -- Name: payment_methods_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY payment_methods
+ALTER TABLE ONLY piggybak_payment_methods
     ADD CONSTRAINT payment_methods_pkey PRIMARY KEY (id);
 
 
@@ -7282,7 +7529,7 @@ ALTER TABLE ONLY payment_methods
 -- Name: payments_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY payments
+ALTER TABLE ONLY piggybak_payments
     ADD CONSTRAINT payments_pkey PRIMARY KEY (id);
 
 
@@ -7298,7 +7545,7 @@ ALTER TABLE ONLY posts
 -- Name: products_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY sellables
+ALTER TABLE ONLY piggybak_sellables
     ADD CONSTRAINT products_pkey PRIMARY KEY (id);
 
 
@@ -7322,7 +7569,7 @@ ALTER TABLE ONLY roles
 -- Name: sellable_taxonomies_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY sellable_taxonomies
+ALTER TABLE ONLY piggybak_taxonomy_sellable_taxonomies
     ADD CONSTRAINT sellable_taxonomies_pkey PRIMARY KEY (id);
 
 
@@ -7330,7 +7577,7 @@ ALTER TABLE ONLY sellable_taxonomies
 -- Name: shipments_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY shipments
+ALTER TABLE ONLY piggybak_shipments
     ADD CONSTRAINT shipments_pkey PRIMARY KEY (id);
 
 
@@ -7338,7 +7585,7 @@ ALTER TABLE ONLY shipments
 -- Name: shipping_method_values_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY shipping_method_values
+ALTER TABLE ONLY piggybak_shipping_method_values
     ADD CONSTRAINT shipping_method_values_pkey PRIMARY KEY (id);
 
 
@@ -7346,7 +7593,7 @@ ALTER TABLE ONLY shipping_method_values
 -- Name: shipping_methods_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY shipping_methods
+ALTER TABLE ONLY piggybak_shipping_methods
     ADD CONSTRAINT shipping_methods_pkey PRIMARY KEY (id);
 
 
@@ -7354,7 +7601,7 @@ ALTER TABLE ONLY shipping_methods
 -- Name: states_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY states
+ALTER TABLE ONLY piggybak_states
     ADD CONSTRAINT states_pkey PRIMARY KEY (id);
 
 
@@ -7378,7 +7625,7 @@ ALTER TABLE ONLY tags
 -- Name: tax_method_values_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY tax_method_values
+ALTER TABLE ONLY piggybak_tax_method_values
     ADD CONSTRAINT tax_method_values_pkey PRIMARY KEY (id);
 
 
@@ -7386,7 +7633,7 @@ ALTER TABLE ONLY tax_method_values
 -- Name: tax_methods_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY tax_methods
+ALTER TABLE ONLY piggybak_tax_methods
     ADD CONSTRAINT tax_methods_pkey PRIMARY KEY (id);
 
 
@@ -7402,15 +7649,15 @@ ALTER TABLE ONLY users
 -- Name: variants_pkey; Type: CONSTRAINT; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-ALTER TABLE ONLY variants
+ALTER TABLE ONLY piggybak_variants_variants
     ADD CONSTRAINT variants_pkey PRIMARY KEY (id);
 
 
 --
--- Name: index_navigation_nodes_on_ancestry; Type: INDEX; Schema: public; Owner: piggybak; Tablespace: 
+-- Name: index_piggybak_taxonomy_navigation_nodes_on_ancestry; Type: INDEX; Schema: public; Owner: piggybak; Tablespace: 
 --
 
-CREATE INDEX index_navigation_nodes_on_ancestry ON navigation_nodes USING btree (ancestry);
+CREATE INDEX index_piggybak_taxonomy_navigation_nodes_on_ancestry ON piggybak_taxonomy_navigation_nodes USING btree (ancestry);
 
 
 --

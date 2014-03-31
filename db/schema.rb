@@ -67,21 +67,18 @@ ActiveRecord::Schema.define(version: 20140325200825) do
     t.integer  "country_id"
   end
 
-  create_table "piggybak_bundle_discount_sellables", force: true do |t|
+  create_table "piggybak_bundle_discounts_bundle_discount_sellables", force: true do |t|
     t.integer "bundle_discount_id", null: false
     t.integer "sellable_id",        null: false
   end
 
-  create_table "piggybak_bundle_discounts", force: true do |t|
+  create_table "piggybak_bundle_discounts_bundle_discounts", force: true do |t|
     t.string   "name",                         null: false
     t.float    "discount",                     null: false
     t.boolean  "multiply",     default: false, null: false
     t.datetime "active_until"
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
-  end
-
-  create_table "piggybak_buyable_giftcerts", force: true do |t|
   end
 
   create_table "piggybak_countries", force: true do |t|
@@ -91,12 +88,12 @@ ActiveRecord::Schema.define(version: 20140325200825) do
     t.boolean "active_billing",  default: false
   end
 
-  create_table "piggybak_coupon_applications", force: true do |t|
+  create_table "piggybak_coupons_coupon_applications", force: true do |t|
     t.integer "line_item_id"
     t.integer "coupon_id"
   end
 
-  create_table "piggybak_coupons", force: true do |t|
+  create_table "piggybak_coupons_coupons", force: true do |t|
     t.string  "code",                                          null: false
     t.decimal "amount",               precision: 10, scale: 2, null: false
     t.string  "discount_type",                                 null: false
@@ -105,14 +102,17 @@ ActiveRecord::Schema.define(version: 20140325200825) do
     t.integer "allowed_applications"
   end
 
-  create_table "piggybak_giftcert_applications", force: true do |t|
+  create_table "piggybak_giftcerts_buyable_giftcerts", force: true do |t|
+  end
+
+  create_table "piggybak_giftcerts_giftcert_applications", force: true do |t|
     t.integer  "line_item_id"
     t.integer  "giftcert_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
 
-  create_table "piggybak_giftcerts", force: true do |t|
+  create_table "piggybak_giftcerts_giftcerts", force: true do |t|
     t.string   "code",            null: false
     t.decimal  "amount",          null: false
     t.date     "expiration_date"
@@ -131,44 +131,6 @@ ActiveRecord::Schema.define(version: 20140325200825) do
     t.string   "line_item_type",                          default: "sellable", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "piggybak_navigation_nodes", force: true do |t|
-    t.string   "title"
-    t.string   "slug"
-    t.string   "position"
-    t.string   "ancestry"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "piggybak_navigation_nodes", ["ancestry"], name: "index_piggybak_navigation_nodes_on_ancestry", using: :btree
-
-  create_table "piggybak_option_configurations", force: true do |t|
-    t.string   "klass",      null: false
-    t.integer  "option_id",  null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "piggybak_option_values", force: true do |t|
-    t.integer  "option_id"
-    t.string   "name"
-    t.integer  "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "piggybak_option_values_variants", id: false, force: true do |t|
-    t.integer "option_value_id"
-    t.integer "variant_id"
-  end
-
-  create_table "piggybak_options", force: true do |t|
-    t.string   "name"
-    t.integer  "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "piggybak_order_notes", force: true do |t|
@@ -222,12 +184,6 @@ ActiveRecord::Schema.define(version: 20140325200825) do
     t.integer  "line_item_id"
   end
 
-  create_table "piggybak_sellable_taxonomies", force: true do |t|
-    t.integer "navigation_node_id",             null: false
-    t.integer "sellable_id",                    null: false
-    t.integer "sort",               default: 0, null: false
-  end
-
   create_table "piggybak_sellables", force: true do |t|
     t.string  "sku",                                                          null: false
     t.string  "description",                                                  null: false
@@ -277,7 +233,51 @@ ActiveRecord::Schema.define(version: 20140325200825) do
     t.boolean "active",      default: false, null: false
   end
 
-  create_table "piggybak_variants", force: true do |t|
+  create_table "piggybak_taxonomy_navigation_nodes", force: true do |t|
+    t.string   "title"
+    t.string   "slug"
+    t.string   "position"
+    t.string   "ancestry"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "piggybak_taxonomy_navigation_nodes", ["ancestry"], name: "index_piggybak_taxonomy_navigation_nodes_on_ancestry", using: :btree
+
+  create_table "piggybak_taxonomy_sellable_taxonomies", force: true do |t|
+    t.integer "navigation_node_id",             null: false
+    t.integer "sellable_id",                    null: false
+    t.integer "sort",               default: 0, null: false
+  end
+
+  create_table "piggybak_variants_option_configurations", force: true do |t|
+    t.string   "klass",      null: false
+    t.integer  "option_id",  null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "piggybak_variants_option_values", force: true do |t|
+    t.integer  "option_id"
+    t.string   "name"
+    t.integer  "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "piggybak_variants_option_values_variants", id: false, force: true do |t|
+    t.integer "option_value_id"
+    t.integer "variant_id"
+  end
+
+  create_table "piggybak_variants_options", force: true do |t|
+    t.string   "name"
+    t.integer  "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "piggybak_variants_variants", force: true do |t|
     t.integer  "item_id",    null: false
     t.string   "item_type",  null: false
     t.datetime "created_at", null: false

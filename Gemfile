@@ -27,3 +27,5 @@ gem "piggybak_variants", "0.1.1"
 gem "piggybak_coupons", "0.1.2"
 gem "piggybak_bundle_discounts", "0.1.1"
 gem "piggybak_giftcerts", "0.1.0"
+
+gem "unicorn"
