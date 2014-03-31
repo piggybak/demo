@@ -7,3 +7,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
+
+//= require piggybak/piggybak-application
+//= require piggybak_coupons/piggybak_coupons-application
+//= require piggybak_variants/piggybak_variants-application
+//= require piggybak_bundle_discounts/piggybak_bundle_discounts-application
+//= require piggybak_giftcerts/piggybak_giftcerts-application

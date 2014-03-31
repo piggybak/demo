@@ -49,9 +49,7 @@ RailsAdmin.config do |config|
     edit do
       field :title
       field :slug
-      field :content, :text do
-        ckeditor true
-      end
+      field :content, :ck_editor
     end
   end
   config.model Image do

@@ -1,0 +1,14 @@
+<div id="taxonomy_breadcrumb">
+<%= link_to "Home", "/demo" %> > 
+<% final_node.path.each do |node| -%>
+<% if node == final_node -%>
+<% if link_last -%>
+<%= link_to node.title, piggybak_taxonomy.piggybak_taxonomy_url(:path => node.nav_path) %>
+<% else -%>
+<b><%= node.title %></b>
+<% end -%>
+<% else -%>
+<%= link_to node.title, piggybak_taxonomy.piggybak_taxonomy_url(:path => node.nav_path) %> > 
+<% end -%>
+<% end -%>
+</div>
