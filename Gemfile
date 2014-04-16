@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '4.1.0.rc2'
+gem 'rails', '4.1.0'
 gem 'fastercsv'
 gem 'rails_admin'
 gem 'pg', '0.12.0'
