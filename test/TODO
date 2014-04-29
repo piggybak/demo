@@ -1,0 +1,17 @@
+* Checkout functionality
+** Basic checkout
+** gift cert
+** coupons
+** bundle discounts
+
+* Taxonomy functionality
+
+* Variants
+
+---
+
+* Figure out where to set RAILS_ENV so testing doesn't abort
+
+* Modify testing script to load sample.psql into test database
+
+* Update all gems to appropriately reference, either via note or git submodule?
