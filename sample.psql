@@ -2174,9 +2174,11 @@ SELECT pg_catalog.setval('piggybak_coupons_coupon_applications_id_seq', 1, false
 --
 
 COPY piggybak_coupons_coupons (id, code, amount, discount_type, min_cart_total, expiration_date, allowed_applications) FROM stdin;
-1	APOXPQAWHDRC	10.00	%	20.00	2013-12-31	10
-2	DAZWDHBPYTMP	0.00	ship	0.00	2013-12-31	10
-3	DWMIFNRBKTOZ	10.00	$	10.00	2013-12-31	10
+1	APOXPQAWHDRC	10.00	%	20.00	2020-12-31	10
+2	DAZWDHBPYTMP	0.00	ship	0.00	2020-12-31	10
+3	DWMIFNRBKTOZ	10.00	$	10.00	2020-12-31	10
+4	RRRXPQAWHDRC	5.00	%	20.00	2001-12-31	1
+5	TTTXPQAWHDRC	10.00	%	20.00	2020-12-31	1
 \.
 
 

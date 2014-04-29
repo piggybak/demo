@@ -2,6 +2,57 @@ require 'test_helper'
 
 module Piggybak
   class CheckoutFlowTest < ActionDispatch::IntegrationTest
+    def setup_order
+      post_via_redirect piggybak.cart_add_path, { sellable_id: 29, quantity: 2 }
+      get_via_redirect piggybak.orders_path
+    end
+
+    def order_params
+      { "order" => {
+         "email" => "test@endpoint.com", 
+         "phone" => "6304844834", 
+         "billing_address_attributes" => {
+           "firstname"=>"S", 
+           "lastname"=>"S", 
+           "address1"=>"123", 
+           "address2"=>"", 
+           "city"=>"SLC", 
+           "country_id"=>"405", 
+           "state_id"=>"6926", 
+           "zip"=>"84115"
+         }, 
+         "shipping_address_attributes" => {
+           "firstname" => "S", 
+           "lastname"=>"S", 
+           "address1"=>"123", 
+           "address2"=>"", 
+           "city"=>"SLC", 
+           "country_id"=>"405", 
+           "state_id"=>"6926", 
+           "zip"=>"84115" },
+         "line_items_attributes" => {
+           "0" => {
+             "line_item_type" => "shipment", 
+             "shipment_attributes" => { 
+               "shipping_method_id"=>"4"
+             }
+           }, 
+           "1" => { 
+             "line_item_type" => "payment", 
+             "payment_attributes" => {
+               "number" => "4111111111111111", 
+               "verification_value"=>"333", 
+               "month"=>"1", 
+               "year"=>"2016"
+             }
+           }
+         }
+       }, 
+       "piggybak_coupon_code" => "", 
+       "piggybak_giftcert_code"=>""
+      }
+    end 
+
     test "checkout redirects to https" do
       post_via_redirect piggybak.cart_add_path, { sellable_id: 29, quantity: 2 }
       assert !https?
@@ -24,11 +75,13 @@ module Piggybak
     end
 
     test "checkout fails as guest" do
-      post_via_redirect piggybak.cart_add_path, { sellable_id: 29, quantity: 2 }
-      get_via_redirect piggybak.orders_path
+      setup_order
 
       # Valid credentials except credit card number
-      post_via_redirect piggybak.orders_path, { "order" => { "email" => "test@endpoint.com", "phone" => "6304844834", "billing_address_attributes"=>{"firstname"=>"S", "lastname"=>"S", "address1"=>"123", "address2"=>"", "city"=>"SLC", "country_id"=>"405", "state_id"=>"6926", "zip"=>"84115"}, "shipping_address_attributes"=>{"firstname"=>"S", "lastname"=>"S", "address1"=>"123", "address2"=>"", "city"=>"SLC", "country_id"=>"405", "state_id"=>"6926", "zip"=>"84115"}, "line_items_attributes"=>{"0"=>{"line_item_type"=>"shipment", "shipment_attributes"=>{"shipping_method_id"=>"4"}}, "1"=>{"line_item_type"=>"payment", "payment_attributes"=>{"number"=>"4111", "verification_value"=>"333", "month"=>"1", "year"=>"2016"}}}}, "piggybak_coupon_code"=>"", "piggybak_giftcert_code"=>""}, { "User-Agent" => "Testbot" }
+
+      p = order_params
+      p["order"]["line_items_attributes"]["1"]["payment_attributes"]["number"] = "4111"
+      post_via_redirect piggybak.orders_path, p, { "User-Agent" => "Testbot" }
 
       # Assert checkout did not go through
       order = assigns(:order)
@@ -43,11 +96,9 @@ module Piggybak
     end
 
     test "checkout works as guest" do
-      post_via_redirect piggybak.cart_add_path, { sellable_id: 29, quantity: 2 }
-      get_via_redirect piggybak.orders_path
+      setup_order
 
-      # Valid credentials except credit card number
-      post_via_redirect piggybak.orders_path, { "order" => { "email" => "test@endpoint.com", "phone" => "6304844834", "billing_address_attributes"=>{"firstname"=>"S", "lastname"=>"S", "address1"=>"123", "address2"=>"", "city"=>"SLC", "country_id"=>"405", "state_id"=>"6926", "zip"=>"84115"}, "shipping_address_attributes"=>{"firstname"=>"S", "lastname"=>"S", "address1"=>"123", "address2"=>"", "city"=>"SLC", "country_id"=>"405", "state_id"=>"6926", "zip"=>"84115"}, "line_items_attributes"=>{"0"=>{"line_item_type"=>"shipment", "shipment_attributes"=>{"shipping_method_id"=>"4"}}, "1"=>{"line_item_type"=>"payment", "payment_attributes"=>{"number"=>"4111111111111111", "verification_value"=>"333", "month"=>"1", "year"=>"2016"}}}}, "piggybak_coupon_code"=>"", "piggybak_giftcert_code"=>""}, { "User-Agent" => "Testbot" }
+      post_via_redirect piggybak.orders_path, order_params, { "User-Agent" => "Testbot" }
 
       # Assert checkout did go through
       order = assigns(:order)
@@ -64,7 +115,8 @@ module Piggybak
     end
 
     test "checkout pass as logged in user" do
-      # get to checkout
+      setup_order
+
       # assert user is not logged in
       # go to login, follow redirects
       # proceed with checkout
@@ -72,10 +124,8 @@ module Piggybak
     end
 
     test "tax added correctly" do
-      post_via_redirect piggybak.cart_add_path, { sellable_id: 29, quantity: 2 }
-      get_via_redirect piggybak.orders_path
+      setup_order
 
-      # Valid credentials except credit card number
       post_via_redirect piggybak.orders_path, { "order"=>{"email"=>"test@endpoint.com", "phone"=>"6304844834", "billing_address_attributes"=>{"firstname"=>"S", "lastname"=>"S", "address1"=>"123", "address2"=>"", "city"=>"SLC", "country_id"=>"405", "state_id"=>"6907", "zip"=>"84115"}, "shipping_address_attributes"=>{"firstname"=>"S", "lastname"=>"S", "address1"=>"123", "address2"=>"", "city"=>"SLC", "country_id"=>"405", "state_id"=>"6907", "zip"=>"84115"}, "line_items_attributes"=>{"0"=>{"line_item_type"=>"shipment", "shipment_attributes"=>{"shipping_method_id"=>"6"}}, "1"=>{"line_item_type"=>"payment", "payment_attributes"=>{"number"=>"4111111111111111", "verification_value"=>"333", "month"=>"1", "year"=>"2015"}}}}, "piggybak_coupon_code"=>"", "piggybak_giftcert_code"=>""}, { "User-Agent" => "Testbot" }
 
       # Assert tax value is correct
@@ -88,10 +138,37 @@ module Piggybak
     end
 
     test "checkout shipping amount accurate" do
+      setup_order
+
+      post_via_redirect piggybak.orders_path, { "order"=>{"email"=>"test@endpoint.com", "phone"=>"6304844834", "billing_address_attributes"=>{"firstname"=>"S", "lastname"=>"S", "address1"=>"123", "address2"=>"", "city"=>"SLC", "country_id"=>"405", "state_id"=>"6907", "zip"=>"84115"}, "shipping_address_attributes"=>{"firstname"=>"S", "lastname"=>"S", "address1"=>"123", "address2"=>"", "city"=>"SLC", "country_id"=>"405", "state_id"=>"6907", "zip"=>"84115"}, "line_items_attributes"=>{"0"=>{"line_item_type"=>"shipment", "shipment_attributes"=>{"shipping_method_id"=>"5"}}, "1"=>{"line_item_type"=>"payment", "payment_attributes"=>{"number"=>"4111111111111111", "verification_value"=>"333", "month"=>"1", "year"=>"2015"}}}}, "piggybak_coupon_code"=>"", "piggybak_giftcert_code"=>""}, { "User-Agent" => "Testbot" }
+
+      # Assert tax value is correct
+      order = assigns(:order)
+      assert_not_nil order  
+      assert order.total = 59.98
+      shipping = order.line_items.detect { |li| li.line_item_type == "shipment" }
+      assert_not_nil shipping
+      assert shipping.price == 20.00
     end
 
-    test "coupons apply correctly" do
+    test "expired coupon does not affect order" do
     end
+
+    test "used coupon does not affect order" do
+    end
+
+    test "order that does not reach minimum order total does not affect order" do
+    end
+
+    test "percent coupon applies correctly" do
+    end
+
+    test "free shipping coupon applies correctly" do
+    end
+
+    test "dollar off coupon applies correctly" do
+    end
+
 
     test "gift cert partial coverage applies correctly" do
     end
