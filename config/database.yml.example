@@ -1,0 +1,17 @@
+development:
+  adapter: postgresql
+  database: piggybak
+  username: piggybak  
+  password:
+
+production:
+  adapter: postgresql
+  database: piggybak
+  username: piggybak  
+  password:
+
+test:
+  adapter: postgresql
+  database: piggybak_test
+  username: piggybak
+  password:

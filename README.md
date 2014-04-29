@@ -1,20 +1,18 @@
-Piggybak Gem (Engine)
+Piggybak Demo
 ========
 
-Modular / mountable ecommerce gem. Features:
+* The Piggybak demo is a Rails application that uses Piggybak, and the supported Piggybak plugins (taxonomy, variants, coupons, bundle_discounts, giftcerts).
 
-* Configurable tax methods, shipping methods, payment methods
+* The Piggybak demo includes a PostgreSQL database dump (sample.psql) that can be loaded in place of fixtures / seed data. Note that the demo does not include seed data for other database types.
 
-* One page checkout, with AJAX for shipping and tax calculations
-
-* Order processing completed in transaction, minimizing orphan data created 
-
-* Fully defined backend RailsAdmin interface for adding orders on the backend
+* To install, clone the repo, create a config/database.yml (based on config/database.yml.example) to connect to your database. If you are running PostgreSQL, load the data into your database by running sample.psql. Then start your server, via "rails server".
 
 
-Piggybak Repo
+Other Resources
 ========
 
 * Refer to the <a href="https://github.com/piggybak/piggybak">Piggybak repository</a> for documentation.
+
+* Refer to the <a href="https://github.com/piggybak">Piggybak Github account</a> for a full list of supported plugins.
 
 Copyright (c) 2013 End Point & Steph Skardal. See LICENSE.txt for further details.
