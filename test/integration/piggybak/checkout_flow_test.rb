@@ -78,7 +78,6 @@ module Piggybak
       setup_order
 
       # Valid credentials except credit card number
-
       p = order_params
       p["order"]["line_items_attributes"]["1"]["payment_attributes"]["number"] = "4111"
       post_via_redirect piggybak.orders_path, p, { "User-Agent" => "Testbot" }
@@ -126,7 +125,10 @@ module Piggybak
     test "tax added correctly" do
       setup_order
 
-      post_via_redirect piggybak.orders_path, { "order"=>{"email"=>"test@endpoint.com", "phone"=>"6304844834", "billing_address_attributes"=>{"firstname"=>"S", "lastname"=>"S", "address1"=>"123", "address2"=>"", "city"=>"SLC", "country_id"=>"405", "state_id"=>"6907", "zip"=>"84115"}, "shipping_address_attributes"=>{"firstname"=>"S", "lastname"=>"S", "address1"=>"123", "address2"=>"", "city"=>"SLC", "country_id"=>"405", "state_id"=>"6907", "zip"=>"84115"}, "line_items_attributes"=>{"0"=>{"line_item_type"=>"shipment", "shipment_attributes"=>{"shipping_method_id"=>"6"}}, "1"=>{"line_item_type"=>"payment", "payment_attributes"=>{"number"=>"4111111111111111", "verification_value"=>"333", "month"=>"1", "year"=>"2015"}}}}, "piggybak_coupon_code"=>"", "piggybak_giftcert_code"=>""}, { "User-Agent" => "Testbot" }
+      p = order_params
+      p["order"]["billing_address_attributes"]["state_id"] = "6907"
+      p["order"]["shipping_address_attributes"]["state_id"] = "6907"
+      post_via_redirect piggybak.orders_path, p, { "User-Agent" => "Testbot" }
 
       # Assert tax value is correct
       order = assigns(:order)
@@ -140,7 +142,9 @@ module Piggybak
     test "checkout shipping amount accurate" do
       setup_order
 
-      post_via_redirect piggybak.orders_path, { "order"=>{"email"=>"test@endpoint.com", "phone"=>"6304844834", "billing_address_attributes"=>{"firstname"=>"S", "lastname"=>"S", "address1"=>"123", "address2"=>"", "city"=>"SLC", "country_id"=>"405", "state_id"=>"6907", "zip"=>"84115"}, "shipping_address_attributes"=>{"firstname"=>"S", "lastname"=>"S", "address1"=>"123", "address2"=>"", "city"=>"SLC", "country_id"=>"405", "state_id"=>"6907", "zip"=>"84115"}, "line_items_attributes"=>{"0"=>{"line_item_type"=>"shipment", "shipment_attributes"=>{"shipping_method_id"=>"5"}}, "1"=>{"line_item_type"=>"payment", "payment_attributes"=>{"number"=>"4111111111111111", "verification_value"=>"333", "month"=>"1", "year"=>"2015"}}}}, "piggybak_coupon_code"=>"", "piggybak_giftcert_code"=>""}, { "User-Agent" => "Testbot" }
+      p = order_params
+      p["order"]["line_items_attributes"]["0"]["shipment_attributes"]["shipping_method_id"] = "5"
+      post_via_redirect piggybak.orders_path, p, { "User-Agent" => "Testbot" }
 
       # Assert tax value is correct
       order = assigns(:order)
@@ -152,6 +156,23 @@ module Piggybak
     end
 
     test "expired coupon does not affect order" do
+      setup_order
+
+      p = order_params
+      expired_code = "RRRXPQAWHDRC"
+      p["order"]["piggybak_coupon_code"] = expired_code
+      p["order"]["line_items_attributes"]["2"] = {"line_item_type"=>"coupon_application", "coupon_application_attributes"=>{"code"=> expired_code } }
+      post_via_redirect piggybak.orders_path, p, { "User-Agent" => "Testbot" }
+
+# TODO: This fails. Must fix on order processing!
+
+      # Assert tax value is correct
+      order = assigns(:order)
+      assert_not_nil order  
+
+      assert order.total = 49.99
+      coupon = order.line_items.detect { |li| li.line_item_type == "coupon_application" }
+      assert coupon.nil?
     end
 
     test "used coupon does not affect order" do
@@ -161,6 +182,22 @@ module Piggybak
     end
 
     test "percent coupon applies correctly" do
+      setup_order
+
+      p = order_params
+      expired_code = "APOXPQAWHDRC"
+      p["order"]["piggybak_coupon_code"] = expired_code
+      p["order"]["line_items_attributes"]["2"] = {"line_item_type"=>"coupon_application", "coupon_application_attributes"=>{"code"=> expired_code } }
+      post_via_redirect piggybak.orders_path, p, { "User-Agent" => "Testbot" }
+
+      # Assert tax value is correct
+      order = assigns(:order)
+      assert_not_nil order  
+
+      assert order.total = 45.99
+      coupon = order.line_items.detect { |li| li.line_item_type == "coupon_application" }
+      assert_not_nil coupon
+      assert coupon.price == -3.99
     end
 
     test "free shipping coupon applies correctly" do
