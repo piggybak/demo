@@ -124,7 +124,7 @@ GEM
     piggybak_taxonomy (0.2.1)
       ancestry
       piggybak_rails_admin_nestable (= 0.0.6)
-    piggybak_variants (0.1.1)
+    piggybak_variants (0.1.2)
     polyglot (0.3.4)
     rack (1.5.2)
     rack-pjax (0.7.0)
@@ -226,7 +226,7 @@ DEPENDENCIES
   piggybak_coupons (= 0.1.2)
   piggybak_giftcerts (= 0.1.0)
   piggybak_taxonomy (= 0.2.1)
-  piggybak_variants (= 0.1.1)
+  piggybak_variants (= 0.1.2)
   rails (= 4.1.0)
   rails_admin
   sass-rails (~> 4.0.0)
