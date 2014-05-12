@@ -9,6 +9,6 @@ class CreateOptionConfigurations < ActiveRecord::Migration
   end
 
   def down
-    drop_table :option_assignments
+    drop_table :option_configurations
   end
 end

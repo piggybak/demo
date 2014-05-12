@@ -10,6 +10,6 @@ class CreateOptionValues < ActiveRecord::Migration
   end
 
   def down
-    drop_table :options_values
+    drop_table :option_values
   end
 end
