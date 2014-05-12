@@ -1,5 +1,6 @@
 source 'http://rubygems.org'
 
+# gem 'sqlite3'
 gem 'rails', '4.1.0'
 gem 'fastercsv'
 gem 'rails_admin'

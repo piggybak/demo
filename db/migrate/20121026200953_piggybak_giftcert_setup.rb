@@ -1,5 +1,24 @@
 class PiggybakGiftcertSetup < ActiveRecord::Migration
   def up
+    ::PiggybakVariants::Option.class_eval do
+      self.table_name = 'options'
+    end
+    ::PiggybakVariants::OptionConfiguration.class_eval do
+      self.table_name = 'option_configurations'
+    end
+    ::PiggybakVariants::OptionValue.class_eval do
+      self.table_name = 'option_values'
+    end
+    ::PiggybakVariants::Variant.class_eval do
+      self.table_name = 'variants'
+    end
+    ::PiggybakGiftcerts::BuyableGiftcert.class_eval do
+      self.table_name = 'buyable_giftcerts'
+    end
+    ::Piggybak::Sellable.class_eval do
+      self.table_name = 'sellables'
+    end
+
     create_table :giftcerts do |t|
       t.string :code, :null => false
       t.decimal :amount, :null => false
@@ -39,7 +58,7 @@ class PiggybakGiftcertSetup < ActiveRecord::Migration
     drop_table :buyable_giftcerts
     drop_table :giftcert_applications
 
-    option = ::PiggybakVariants::Option.find_by_name("Amount")
-    ::PiggybakVariants::Option.destroy(option)
+    #option = ::PiggybakVariants::Option.find_by_name("Amount")
+    #::PiggybakVariants::Option.destroy(option)
   end
 end

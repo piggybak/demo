@@ -1,5 +1,18 @@
 class LineItemRearchitecture < ActiveRecord::Migration
   def up
+    Piggybak::Shipment.class_eval do
+      self.table_name = 'shipments'
+    end
+    Piggybak::Payment.class_eval do
+      self.table_name = 'payments'
+    end
+    Piggybak::Adjustment.class_eval do
+      self.table_name = 'adjustments'
+    end
+    Piggybak::Order.class_eval do
+      self.table_name = 'orders'
+    end
+
     add_column :line_items, :line_item_type, :string, :null => false, :default => "sellable"
     rename_column :line_items, :price, :unit_price
     rename_column :line_items, :total, :price
@@ -67,6 +80,9 @@ class LineItemRearchitecture < ActiveRecord::Migration
     add_column :orders, :tax_charge, :decimal, :null => false, :default => 0.0
 
     to_delete = []
+    Piggybak::LineItem.class_eval do
+      self.table_name = 'line_items'
+    end
     Piggybak::LineItem.all.each do |line_item|
       if line_item.line_item_type == "payment"
         line_item.payment.update_attributes({ :order_id => line_item.order_id, :total => line_item.price }) 
