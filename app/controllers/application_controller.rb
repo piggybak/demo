@@ -14,4 +14,9 @@ class ApplicationController < ActionController::Base
   def after_sign_out_path_for(resource_or_scope)
     session[:return_to] || root_url
   end
+
+  rescue_from CanCan::AccessDenied do |exception|
+    flash[:notice] = "You are not authorized to access this page."
+    redirect_to "/demo/"
+  end 
 end
