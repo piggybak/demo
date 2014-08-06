@@ -9,7 +9,7 @@ class Pickup
     id = method.metadata.detect { |t| t.key == "state_id" }.value.to_i
 
     if object.is_a?(Piggybak::Cart)
-      state = Piggybak::State.find(object.extra_data[:state_id])
+      state = Piggybak::State.find_by_id(object.extra_data[:state_id])
       return true if state && state.id == id
     else
       if object.billing_address && object.billing_address.state 

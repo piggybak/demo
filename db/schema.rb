@@ -13,8 +13,7 @@
 
 ActiveRecord::Schema.define(:version => 20140805164433) do
 
-  create_table "addresses", :id => false, :force => true do |t|
-    t.integer  "id",         :null => false
+  create_table "addresses", :force => true do |t|
     t.string   "firstname",  :null => false
     t.string   "lastname",   :null => false
     t.string   "address1",   :null => false
@@ -55,8 +54,7 @@ ActiveRecord::Schema.define(:version => 20140805164433) do
     t.integer "id", :null => false
   end
 
-  create_table "countries", :id => false, :force => true do |t|
-    t.integer "id",                                 :null => false
+  create_table "countries", :force => true do |t|
     t.string  "name"
     t.string  "abbr"
     t.boolean "active_shipping", :default => false
@@ -128,8 +126,7 @@ ActiveRecord::Schema.define(:version => 20140805164433) do
     t.boolean  "free_shipping",        :default => false, :null => false
   end
 
-  create_table "line_items", :id => false, :force => true do |t|
-    t.integer  "id",                                                                    :null => false
+  create_table "line_items", :force => true do |t|
     t.integer  "order_id",                                                              :null => false
     t.integer  "quantity",                                                              :null => false
     t.integer  "sellable_id"
@@ -536,15 +533,13 @@ ActiveRecord::Schema.define(:version => 20140805164433) do
     t.integer  "line_item_id"
   end
 
-  create_table "shipping_method_values", :id => false, :force => true do |t|
-    t.integer "id",                 :null => false
+  create_table "shipping_method_values", :force => true do |t|
     t.integer "shipping_method_id"
     t.string  "key"
     t.string  "value"
   end
 
-  create_table "shipping_methods", :id => false, :force => true do |t|
-    t.integer "id",                             :null => false
+  create_table "shipping_methods", :force => true do |t|
     t.string  "description",                    :null => false
     t.string  "klass",                          :null => false
     t.boolean "active",      :default => false, :null => false

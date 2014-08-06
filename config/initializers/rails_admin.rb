@@ -66,6 +66,7 @@ RailsAdmin.config do |config|
     end
     edit do
       field :title
+      field :free_shipping
       field :slug
       field :description
       field :main
