@@ -11,9 +11,10 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130516201047) do
+ActiveRecord::Schema.define(:version => 20140805164433) do
 
-  create_table "addresses", :force => true do |t|
+  create_table "addresses", :id => false, :force => true do |t|
+    t.integer  "id",         :null => false
     t.string   "firstname",  :null => false
     t.string   "lastname",   :null => false
     t.string   "address1",   :null => false
@@ -26,12 +27,22 @@ ActiveRecord::Schema.define(:version => 20130516201047) do
     t.integer  "country_id"
   end
 
-  create_table "bundle_discount_sellables", :force => true do |t|
+  create_table "adjustments", :force => true do |t|
+    t.string   "source_type"
+    t.integer  "source_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "note"
+  end
+
+  create_table "bundle_discount_sellables", :id => false, :force => true do |t|
+    t.integer "id",                 :null => false
     t.integer "bundle_discount_id", :null => false
     t.integer "sellable_id",        :null => false
   end
 
-  create_table "bundle_discounts", :force => true do |t|
+  create_table "bundle_discounts", :id => false, :force => true do |t|
+    t.integer  "id",                              :null => false
     t.string   "name",                            :null => false
     t.float    "discount",                        :null => false
     t.boolean  "multiply",     :default => false, :null => false
@@ -40,22 +51,26 @@ ActiveRecord::Schema.define(:version => 20130516201047) do
     t.datetime "updated_at",                      :null => false
   end
 
-  create_table "buyable_giftcerts", :force => true do |t|
+  create_table "buyable_giftcerts", :id => false, :force => true do |t|
+    t.integer "id", :null => false
   end
 
-  create_table "countries", :force => true do |t|
+  create_table "countries", :id => false, :force => true do |t|
+    t.integer "id",                                 :null => false
     t.string  "name"
     t.string  "abbr"
     t.boolean "active_shipping", :default => false
     t.boolean "active_billing",  :default => false
   end
 
-  create_table "coupon_applications", :force => true do |t|
+  create_table "coupon_applications", :id => false, :force => true do |t|
+    t.integer "id",           :null => false
     t.integer "line_item_id"
     t.integer "coupon_id"
   end
 
-  create_table "coupons", :force => true do |t|
+  create_table "coupons", :id => false, :force => true do |t|
+    t.integer "id",                                                  :null => false
     t.string  "code",                                                :null => false
     t.decimal "amount",               :precision => 10, :scale => 2, :null => false
     t.string  "discount_type",                                       :null => false
@@ -76,14 +91,16 @@ ActiveRecord::Schema.define(:version => 20130516201047) do
     t.datetime "updated_at",        :null => false
   end
 
-  create_table "giftcert_applications", :force => true do |t|
+  create_table "giftcert_applications", :id => false, :force => true do |t|
+    t.integer  "id",           :null => false
     t.integer  "line_item_id"
     t.integer  "giftcert_id"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
   end
 
-  create_table "giftcerts", :force => true do |t|
+  create_table "giftcerts", :id => false, :force => true do |t|
+    t.integer  "id",              :null => false
     t.string   "code",            :null => false
     t.decimal  "amount",          :null => false
     t.date     "expiration_date"
@@ -108,9 +125,11 @@ ActiveRecord::Schema.define(:version => 20130516201047) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "is_featured",          :default => false, :null => false
+    t.boolean  "free_shipping",        :default => false, :null => false
   end
 
-  create_table "line_items", :force => true do |t|
+  create_table "line_items", :id => false, :force => true do |t|
+    t.integer  "id",                                                                    :null => false
     t.integer  "order_id",                                                              :null => false
     t.integer  "quantity",                                                              :null => false
     t.integer  "sellable_id"
@@ -122,7 +141,8 @@ ActiveRecord::Schema.define(:version => 20130516201047) do
     t.datetime "updated_at"
   end
 
-  create_table "navigation_nodes", :force => true do |t|
+  create_table "navigation_nodes", :id => false, :force => true do |t|
+    t.integer  "id",         :null => false
     t.string   "title"
     t.string   "slug"
     t.string   "position"
@@ -133,14 +153,16 @@ ActiveRecord::Schema.define(:version => 20130516201047) do
 
   add_index "navigation_nodes", ["ancestry"], :name => "index_navigation_nodes_on_ancestry"
 
-  create_table "option_configurations", :force => true do |t|
+  create_table "option_configurations", :id => false, :force => true do |t|
+    t.integer  "id",         :null => false
     t.string   "klass",      :null => false
     t.integer  "option_id",  :null => false
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
-  create_table "option_values", :force => true do |t|
+  create_table "option_values", :id => false, :force => true do |t|
+    t.integer  "id",         :null => false
     t.integer  "option_id"
     t.string   "name"
     t.integer  "position"
@@ -153,14 +175,16 @@ ActiveRecord::Schema.define(:version => 20130516201047) do
     t.integer "variant_id"
   end
 
-  create_table "options", :force => true do |t|
+  create_table "options", :id => false, :force => true do |t|
+    t.integer  "id",         :null => false
     t.string   "name"
     t.integer  "position"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
-  create_table "order_notes", :force => true do |t|
+  create_table "order_notes", :id => false, :force => true do |t|
+    t.integer  "id",         :null => false
     t.integer  "order_id",   :null => false
     t.integer  "user_id",    :null => false
     t.text     "note"
@@ -168,7 +192,8 @@ ActiveRecord::Schema.define(:version => 20130516201047) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "orders", :force => true do |t|
+  create_table "orders", :id => false, :force => true do |t|
+    t.integer  "id",                                                                    :null => false
     t.integer  "billing_address_id",                                                    :null => false
     t.integer  "shipping_address_id",                                                   :null => false
     t.integer  "user_id"
@@ -193,13 +218,15 @@ ActiveRecord::Schema.define(:version => 20130516201047) do
     t.datetime "updated_at"
   end
 
-  create_table "payment_method_values", :force => true do |t|
+  create_table "payment_method_values", :id => false, :force => true do |t|
+    t.integer "id",                :null => false
     t.integer "payment_method_id"
     t.string  "key"
     t.string  "value"
   end
 
-  create_table "payment_methods", :force => true do |t|
+  create_table "payment_methods", :id => false, :force => true do |t|
+    t.integer  "id",                             :null => false
     t.string   "description",                    :null => false
     t.string   "klass",                          :null => false
     t.boolean  "active",      :default => false, :null => false
@@ -207,7 +234,8 @@ ActiveRecord::Schema.define(:version => 20130516201047) do
     t.datetime "updated_at"
   end
 
-  create_table "payments", :force => true do |t|
+  create_table "payments", :id => false, :force => true do |t|
+    t.integer  "id",                                    :null => false
     t.integer  "payment_method_id"
     t.string   "status",            :default => "paid", :null => false
     t.integer  "month"
@@ -217,6 +245,236 @@ ActiveRecord::Schema.define(:version => 20130516201047) do
     t.datetime "updated_at"
     t.string   "masked_number"
     t.integer  "line_item_id"
+  end
+
+  create_table "piggybak_addresses", :force => true do |t|
+    t.string   "firstname",  :null => false
+    t.string   "lastname",   :null => false
+    t.string   "address1",   :null => false
+    t.string   "address2"
+    t.string   "city",       :null => false
+    t.string   "state_id",   :null => false
+    t.string   "zip",        :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "country_id"
+  end
+
+  create_table "piggybak_bundle_discounts_bundle_discount_sellables", :force => true do |t|
+    t.integer "bundle_discount_id", :null => false
+    t.integer "sellable_id",        :null => false
+  end
+
+  create_table "piggybak_bundle_discounts_bundle_discounts", :force => true do |t|
+    t.string   "name",                            :null => false
+    t.float    "discount",                        :null => false
+    t.boolean  "multiply",     :default => false, :null => false
+    t.datetime "active_until"
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+  end
+
+  create_table "piggybak_countries", :force => true do |t|
+    t.string  "name"
+    t.string  "abbr"
+    t.boolean "active_shipping", :default => false
+    t.boolean "active_billing",  :default => false
+  end
+
+  create_table "piggybak_coupons_coupon_applications", :force => true do |t|
+    t.integer "line_item_id"
+    t.integer "coupon_id"
+  end
+
+  create_table "piggybak_coupons_coupons", :force => true do |t|
+    t.string  "code",                                                :null => false
+    t.decimal "amount",               :precision => 10, :scale => 2, :null => false
+    t.string  "discount_type",                                       :null => false
+    t.decimal "min_cart_total",       :precision => 10, :scale => 2, :null => false
+    t.date    "expiration_date"
+    t.integer "allowed_applications"
+  end
+
+  create_table "piggybak_giftcerts_buyable_giftcerts", :force => true do |t|
+  end
+
+  create_table "piggybak_giftcerts_giftcert_applications", :force => true do |t|
+    t.integer  "line_item_id"
+    t.integer  "giftcert_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  create_table "piggybak_giftcerts_giftcerts", :force => true do |t|
+    t.string   "code",            :null => false
+    t.decimal  "amount",          :null => false
+    t.date     "expiration_date"
+    t.integer  "order_id"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  create_table "piggybak_line_items", :force => true do |t|
+    t.integer  "order_id",                                                              :null => false
+    t.integer  "quantity",                                                              :null => false
+    t.integer  "sellable_id"
+    t.decimal  "price",          :precision => 10, :scale => 2
+    t.decimal  "unit_price",     :precision => 10, :scale => 2, :default => 0.0,        :null => false
+    t.string   "description",                                   :default => "",         :null => false
+    t.string   "line_item_type",                                :default => "sellable", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "piggybak_order_notes", :force => true do |t|
+    t.integer  "order_id",   :null => false
+    t.integer  "user_id",    :null => false
+    t.text     "note"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "piggybak_orders", :force => true do |t|
+    t.integer  "billing_address_id",                                                    :null => false
+    t.integer  "shipping_address_id",                                                   :null => false
+    t.integer  "user_id"
+    t.string   "email",                                                                 :null => false
+    t.string   "phone",                                                                 :null => false
+    t.decimal  "total",               :precision => 10, :scale => 2,                    :null => false
+    t.decimal  "total_due",           :precision => 10, :scale => 2,                    :null => false
+    t.string   "status",                                                                :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "ip_address"
+    t.text     "user_agent"
+    t.boolean  "to_be_cancelled",                                    :default => false
+    t.boolean  "confirmation_sent",                                  :default => false
+  end
+
+  create_table "piggybak_payment_method_values", :force => true do |t|
+    t.integer "payment_method_id"
+    t.string  "key"
+    t.string  "value"
+  end
+
+  create_table "piggybak_payment_methods", :force => true do |t|
+    t.string   "description",                    :null => false
+    t.string   "klass",                          :null => false
+    t.boolean  "active",      :default => false, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "piggybak_payments", :force => true do |t|
+    t.integer  "payment_method_id"
+    t.string   "status",            :default => "paid", :null => false
+    t.integer  "month"
+    t.integer  "year"
+    t.string   "transaction_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "masked_number"
+    t.integer  "line_item_id"
+  end
+
+  create_table "piggybak_sellables", :force => true do |t|
+    t.string  "sku",                                                                   :null => false
+    t.string  "description",                                                           :null => false
+    t.decimal "price",               :precision => 10, :scale => 2,                    :null => false
+    t.integer "quantity",                                           :default => 0,     :null => false
+    t.integer "item_id",                                                               :null => false
+    t.string  "item_type",                                                             :null => false
+    t.boolean "active",                                             :default => false, :null => false
+    t.boolean "unlimited_inventory",                                :default => false, :null => false
+  end
+
+  create_table "piggybak_shipments", :force => true do |t|
+    t.integer  "shipping_method_id",                    :null => false
+    t.string   "status",             :default => "new", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "line_item_id"
+  end
+
+  create_table "piggybak_shipping_method_values", :force => true do |t|
+    t.integer "shipping_method_id"
+    t.string  "key"
+    t.string  "value"
+  end
+
+  create_table "piggybak_shipping_methods", :force => true do |t|
+    t.string  "description",                    :null => false
+    t.string  "klass",                          :null => false
+    t.boolean "active",      :default => false, :null => false
+  end
+
+  create_table "piggybak_states", :force => true do |t|
+    t.string  "abbr"
+    t.string  "name"
+    t.integer "country_id"
+  end
+
+  create_table "piggybak_tax_method_values", :force => true do |t|
+    t.integer "tax_method_id"
+    t.string  "key"
+    t.string  "value"
+  end
+
+  create_table "piggybak_tax_methods", :force => true do |t|
+    t.string  "description",                    :null => false
+    t.string  "klass",                          :null => false
+    t.boolean "active",      :default => false, :null => false
+  end
+
+  create_table "piggybak_taxonomy_navigation_nodes", :force => true do |t|
+    t.string   "title"
+    t.string   "slug"
+    t.string   "position"
+    t.string   "ancestry"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "piggybak_taxonomy_navigation_nodes", ["ancestry"], :name => "index_piggybak_taxonomy_navigation_nodes_on_ancestry"
+
+  create_table "piggybak_taxonomy_sellable_taxonomies", :force => true do |t|
+    t.integer "navigation_node_id",                :null => false
+    t.integer "sellable_id",                       :null => false
+    t.integer "sort",               :default => 0, :null => false
+  end
+
+  create_table "piggybak_variants_option_configurations", :force => true do |t|
+    t.string   "klass",      :null => false
+    t.integer  "option_id",  :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "piggybak_variants_option_values", :force => true do |t|
+    t.integer  "option_id"
+    t.string   "name"
+    t.integer  "position"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "piggybak_variants_option_values_variants", :id => false, :force => true do |t|
+    t.integer "option_value_id"
+    t.integer "variant_id"
+  end
+
+  create_table "piggybak_variants_options", :force => true do |t|
+    t.string   "name"
+    t.integer  "position"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "piggybak_variants_variants", :force => true do |t|
+    t.integer  "item_id",    :null => false
+    t.string   "item_type",  :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "posts", :force => true do |t|
@@ -250,13 +508,15 @@ ActiveRecord::Schema.define(:version => 20130516201047) do
     t.integer "user_id"
   end
 
-  create_table "sellable_taxonomies", :force => true do |t|
+  create_table "sellable_taxonomies", :id => false, :force => true do |t|
+    t.integer "id",                                :null => false
     t.integer "navigation_node_id",                :null => false
     t.integer "sellable_id",                       :null => false
     t.integer "sort",               :default => 0, :null => false
   end
 
-  create_table "sellables", :force => true do |t|
+  create_table "sellables", :id => false, :force => true do |t|
+    t.integer "id",                                                                    :null => false
     t.string  "sku",                                                                   :null => false
     t.string  "description",                                                           :null => false
     t.decimal "price",               :precision => 10, :scale => 2,                    :null => false
@@ -267,7 +527,8 @@ ActiveRecord::Schema.define(:version => 20130516201047) do
     t.boolean "unlimited_inventory",                                :default => false, :null => false
   end
 
-  create_table "shipments", :force => true do |t|
+  create_table "shipments", :id => false, :force => true do |t|
+    t.integer  "id",                                    :null => false
     t.integer  "shipping_method_id",                    :null => false
     t.string   "status",             :default => "new", :null => false
     t.datetime "created_at"
@@ -275,19 +536,22 @@ ActiveRecord::Schema.define(:version => 20130516201047) do
     t.integer  "line_item_id"
   end
 
-  create_table "shipping_method_values", :force => true do |t|
+  create_table "shipping_method_values", :id => false, :force => true do |t|
+    t.integer "id",                 :null => false
     t.integer "shipping_method_id"
     t.string  "key"
     t.string  "value"
   end
 
-  create_table "shipping_methods", :force => true do |t|
+  create_table "shipping_methods", :id => false, :force => true do |t|
+    t.integer "id",                             :null => false
     t.string  "description",                    :null => false
     t.string  "klass",                          :null => false
     t.boolean "active",      :default => false, :null => false
   end
 
-  create_table "states", :force => true do |t|
+  create_table "states", :id => false, :force => true do |t|
+    t.integer "id",         :null => false
     t.string  "abbr"
     t.string  "name"
     t.integer "country_id"
@@ -310,13 +574,15 @@ ActiveRecord::Schema.define(:version => 20130516201047) do
     t.string "name"
   end
 
-  create_table "tax_method_values", :force => true do |t|
+  create_table "tax_method_values", :id => false, :force => true do |t|
+    t.integer "id",            :null => false
     t.integer "tax_method_id"
     t.string  "key"
     t.string  "value"
   end
 
-  create_table "tax_methods", :force => true do |t|
+  create_table "tax_methods", :id => false, :force => true do |t|
+    t.integer "id",                             :null => false
     t.string  "description",                    :null => false
     t.string  "klass",                          :null => false
     t.boolean "active",      :default => false, :null => false
@@ -341,7 +607,8 @@ ActiveRecord::Schema.define(:version => 20130516201047) do
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
-  create_table "variants", :force => true do |t|
+  create_table "variants", :id => false, :force => true do |t|
+    t.integer  "id",         :null => false
     t.integer  "item_id",    :null => false
     t.string   "item_type",  :null => false
     t.datetime "created_at", :null => false

@@ -11,7 +11,8 @@ end
 
 module Demo
   class Application < Rails::Application
-    Rails.env = ActiveSupport::StringInquirer.new('production')
+    #Rails.env = ActiveSupport::StringInquirer.new('production')
+    Rails.env = ActiveSupport::StringInquirer.new('development')
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -51,9 +52,11 @@ module Demo
     ActionMailer::Base.smtp_settings[:enable_starttls_auto] = false
     ActionMailer::Base.smtp_settings[:tls] = false
 
-    Demo::Application.config.middleware.use ExceptionNotifier,
-      :email_prefix => "Piggybak Exception",
-      :sender_address => %{"notifier" <notifier@piggybak.org>},
-      :exception_recipients => %w{piggybak@endpoint.com}
+    Demo::Application.config.middleware.use ExceptionNotification::Rack,
+      :email => {
+        :email_prefix => "Piggybak Exception",
+        :sender_address => %{"notifier" <notifier@piggybak.org>},
+        :exception_recipients => %w{piggybak@endpoint.com}
+      }
   end
 end

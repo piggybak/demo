@@ -10,11 +10,11 @@ class ImagesController < ApplicationController
         redirect_to root_url
       end
     else
-      if @image.piggybak_sellable.navigation_nodes.any?
-        @related_images = @image.piggybak_sellable.navigation_nodes.first.sellables.collect { |s| s.item }.select { |p| p != @image }[0..2]
-      else
+      #if @image.piggybak_sellable.navigation_nodes.any?
+      #  @related_images = @image.piggybak_sellable.navigation_nodes.first.sellables.collect { |s| s.item }.select { |p| p != @image }[0..2]
+      #else
         @related_images = []
-      end
+      #end
     end
   end
 end
