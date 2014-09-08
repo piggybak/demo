@@ -28,4 +28,4 @@ gem "piggybak_bundle_discounts", '0.0.4'
 gem "piggybak_variants", '0.0.17'
 gem "piggybak_giftcerts", '0.0.12'
 
-gem "piggybak_free_shipping_by_product", :path => "../piggybak_free_shipping_by_product" #'0.0.1'
+gem "piggybak_free_shipping_by_product", '0.0.2'

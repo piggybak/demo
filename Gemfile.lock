@@ -1,8 +1,3 @@
-PATH
-  remote: ../piggybak_free_shipping_by_product
-  specs:
-    piggybak_free_shipping_by_product (0.0.1)
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -132,6 +127,7 @@ GEM
       rails (~> 3.2.8)
     piggybak_coupons (0.0.14)
       rails (~> 3.2.8)
+    piggybak_free_shipping_by_product (0.0.2)
     piggybak_giftcerts (0.0.12)
       piggybak
       piggybak_variants
@@ -236,7 +232,7 @@ DEPENDENCIES
   piggybak (= 0.6.33)
   piggybak_bundle_discounts (= 0.0.4)
   piggybak_coupons (= 0.0.14)
-  piggybak_free_shipping_by_product!
+  piggybak_free_shipping_by_product (= 0.0.2)
   piggybak_giftcerts (= 0.0.12)
   piggybak_taxonomy (= 0.0.8)
   piggybak_variants (= 0.0.17)
