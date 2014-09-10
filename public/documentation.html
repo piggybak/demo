@@ -97,6 +97,7 @@
 								<p>The parent Ruby on Rails application must be on Rails 4.1 and Ruby 1.9.3 or newer. (Older versions of Rails and Ruby are supported in older versions of Piggybak.) While it is not a requirement that the parent application be using <a href="https://github.com/sferik/rails_admin">RailsAdmin</a>, it is a recommendtion. RailsAdmin depends on <a href="https://github.com/plataformatec/devise">Devise</a> for user authentication. <a href="https://github.com/ryanb/cancan">CanCan</a> is also used for authorization by RailsAdmin. It is highly recommended that you be familiar with RailsAdmin, Devise, and CanCan while working with Piggybak.</p>
 							</div>
 							<div id="tab_installation" class="tab-content">
+								<p>Piggybak assumes that you already have a model User, which will connect with Devise. Devise will be installed via the Piggybak installation process, but you must have a model and migration in place for User.</p>
 								<p>Installation is similar to installation of other Rails gems. First, install the gem by adding the following line to your Gemfile:</p>
 								<pre>gem "piggybak"</pre>
 								<p>Install the gem:</p>
