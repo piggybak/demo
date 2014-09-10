@@ -7469,3 +7469,15 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 -- PostgreSQL database dump complete
 --
 
+ALTER TABLE countries ADD PRIMARY KEY (id);
+ALTER TABLE addresses ADD PRIMARY KEY (id);
+ALTER TABLE line_items ADD PRIMARY KEY (id);
+ALTER TABLE orders ADD PRIMARY KEY (id);
+ALTER TABLE states ADD PRIMARY KEY (id);
+ALTER TABLE payment_methods ADD PRIMARY KEY (id);
+ALTER TABLE shipping_methods ADD PRIMARY KEY (id);
+ALTER TABLE shipments ADD PRIMARY KEY (id);
+ALTER TABLE payments ADD PRIMARY KEY (id);
+ALTER TABLE sellables ADD PRIMARY KEY (id);
+ALTER TABLE bundle_discounts ADD PRIMARY KEY (id);
+ALTER TABLE order_notes ADD PRIMARY KEY (id);
