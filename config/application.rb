@@ -52,11 +52,12 @@ module Demo
     ActionMailer::Base.smtp_settings[:enable_starttls_auto] = false
     ActionMailer::Base.smtp_settings[:tls] = false
 
-    config.middleware.use ExceptionNotification::Rack,
-      :email => { 
-        :email_prefix => "Piggybak Exception",
-        :sender_address => %{"notifier" <notifier@piggybak.org>},
-        :exception_recipients => %w{piggybak@endpoint.com}
-      } 
+    # Set this up if you want to add exceptions
+    # config.middleware.use ExceptionNotification::Rack,
+    #   :email => { 
+    #   :email_prefix => "Piggybak Exception",
+    #   :sender_address => %{"notifier" <notifier@yourhost.com>},
+    #   :exception_recipients => %w{recipient@yourhost.com}
+    #  } 
   end
 end
