@@ -15,7 +15,7 @@ module Piggybak
     end 
   
     test "post to cart params will add to cart" do
-      post_via_redirect piggybak.cart_add_path, { sellable_id: 29, quantity: 2 }
+      post_via_redirect piggybak.cart_add_path, sellable_id: 29, quantity: 2 # }
       cart = assigns(:cart)
       assert_not_nil cart
       assert !cart.empty?
@@ -23,7 +23,7 @@ module Piggybak
       assert cart.sellables.first[:sellable].id == 29
       assert cart.total == 39.98
     end
-  
+
     test "remove item from cart" do
       post_via_redirect piggybak.cart_add_path, { sellable_id: 29, quantity: 1 }
       delete_via_redirect piggybak.remove_item_path("29")
