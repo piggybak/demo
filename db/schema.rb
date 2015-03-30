@@ -16,6 +16,14 @@ ActiveRecord::Schema.define(version: 20140325200825) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "adjustments", force: true do |t|
+    t.string   "source_type"
+    t.integer  "source_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "note"
+  end
+
   create_table "frames", force: true do |t|
     t.string   "title",             null: false
     t.string   "slug",              null: false
@@ -24,8 +32,8 @@ ActiveRecord::Schema.define(version: 20140325200825) do
     t.string   "main_content_type"
     t.string   "main_file_size"
     t.datetime "main_updated_at"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "images", force: true do |t|
@@ -41,9 +49,9 @@ ActiveRecord::Schema.define(version: 20140325200825) do
     t.string   "main_content_type"
     t.string   "main_file_size"
     t.datetime "main_updated_at"
+    t.boolean  "is_featured",          default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_featured",          default: false, null: false
   end
 
   create_table "pages", force: true do |t|
@@ -60,11 +68,11 @@ ActiveRecord::Schema.define(version: 20140325200825) do
     t.string   "address1",   null: false
     t.string   "address2"
     t.string   "city",       null: false
-    t.string   "state_id",   null: false
+    t.integer  "state_id",   null: false
+    t.integer  "country_id", null: false
     t.string   "zip",        null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "country_id"
   end
 
   create_table "piggybak_bundle_discounts_bundle_discount_sellables", force: true do |t|
@@ -77,8 +85,8 @@ ActiveRecord::Schema.define(version: 20140325200825) do
     t.float    "discount",                     null: false
     t.boolean  "multiply",     default: false, null: false
     t.datetime "active_until"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "piggybak_countries", force: true do |t|
@@ -108,8 +116,8 @@ ActiveRecord::Schema.define(version: 20140325200825) do
   create_table "piggybak_giftcerts_giftcert_applications", force: true do |t|
     t.integer  "line_item_id"
     t.integer  "giftcert_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "piggybak_giftcerts_giftcerts", force: true do |t|
@@ -117,8 +125,8 @@ ActiveRecord::Schema.define(version: 20140325200825) do
     t.decimal  "amount",          null: false
     t.date     "expiration_date"
     t.integer  "order_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "piggybak_line_items", force: true do |t|
@@ -137,8 +145,8 @@ ActiveRecord::Schema.define(version: 20140325200825) do
     t.integer  "order_id",   null: false
     t.integer  "user_id",    null: false
     t.text     "note"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "piggybak_orders", force: true do |t|
@@ -216,8 +224,8 @@ ActiveRecord::Schema.define(version: 20140325200825) do
   end
 
   create_table "piggybak_states", force: true do |t|
-    t.string  "abbr"
     t.string  "name"
+    t.string  "abbr"
     t.integer "country_id"
   end
 
@@ -238,8 +246,8 @@ ActiveRecord::Schema.define(version: 20140325200825) do
     t.string   "slug"
     t.string   "position"
     t.string   "ancestry"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "piggybak_taxonomy_navigation_nodes", ["ancestry"], name: "index_piggybak_taxonomy_navigation_nodes_on_ancestry", using: :btree
@@ -253,16 +261,16 @@ ActiveRecord::Schema.define(version: 20140325200825) do
   create_table "piggybak_variants_option_configurations", force: true do |t|
     t.string   "klass",      null: false
     t.integer  "option_id",  null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "piggybak_variants_option_values", force: true do |t|
     t.integer  "option_id"
     t.string   "name"
     t.integer  "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "piggybak_variants_option_values_variants", id: false, force: true do |t|
@@ -273,15 +281,15 @@ ActiveRecord::Schema.define(version: 20140325200825) do
   create_table "piggybak_variants_options", force: true do |t|
     t.string   "name"
     t.integer  "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "piggybak_variants_variants", force: true do |t|
     t.integer  "item_id",    null: false
     t.string   "item_type",  null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "posts", force: true do |t|
@@ -333,17 +341,17 @@ ActiveRecord::Schema.define(version: 20140325200825) do
   end
 
   create_table "users", force: true do |t|
-    t.string   "email",                              default: "", null: false
-    t.string   "encrypted_password",     limit: 128, default: "", null: false
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                      default: 0
+    t.integer  "sign_in_count",          default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.string   "display_name",                                    null: false
+    t.string   "display_name",                        null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

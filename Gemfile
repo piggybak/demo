@@ -1,15 +1,15 @@
 source 'http://rubygems.org'
 
-gem 'rails', '4.1.7'
+gem 'rails'
 gem 'fastercsv'
 gem 'rails_admin'
-gem 'pg', '0.12.0'
+gem 'pg'
 gem 'json'
 gem 'ckeditor'
 gem 'execjs'
 gem 'therubyracer'
 gem 'paperclip'
-gem 'devise', '3.2.4'
+gem 'devise'
 gem 'acts-as-taggable-on'
 gem 'cancan'
 gem 'exception_notification'
@@ -21,7 +21,7 @@ group :assets do
 end
 
 gem 'jquery-rails'
-gem "piggybak", "0.7.5"
+gem "piggybak", "0.7.6"
 gem "piggybak_taxonomy", "0.2.1"
 gem "piggybak_variants", "0.1.3"
 gem "piggybak_coupons", "0.1.2"
@@ -29,3 +29,8 @@ gem "piggybak_bundle_discounts", "0.1.1"
 gem "piggybak_giftcerts", "0.1.0"
 
 gem "unicorn"
+
+#gem 'open-uri'
+gem 'rubysl-rexml'
+gem 'garb'
+
