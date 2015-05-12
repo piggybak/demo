@@ -2283,8 +2283,8 @@ SELECT pg_catalog.setval('piggybak_order_notes_id_seq', 1, true);
 --
 
 COPY piggybak_orders (id, billing_address_id, shipping_address_id, user_id, email, phone, total, total_due, status, created_at, updated_at, ip_address, user_agent, to_be_cancelled, confirmation_sent) FROM stdin;
-16	41	42	10	test@endpoint.com	6304844834	29.00	0.00	paid	2012-01-10 16:16:12.691295	2012-01-10 16:16:13.081443	174.111.11.143	\N	f	f
-17	43	44	\N	steph@endpoint.com	6304844834	39.00	0.00	paid	2012-01-10 16:19:25.541916	2012-01-10 16:19:25.745341	174.111.11.143	\N	f	f
+16	41	42	10	test@endpoint.com	6304844834	29.00	0.00	new	2012-01-10 16:16:12.691295	2012-01-10 16:16:13.081443	174.111.11.143	\N	f	f
+17	43	44	\N	steph@endpoint.com	6304844834	39.00	0.00	new	2012-01-10 16:19:25.541916	2012-01-10 16:19:25.745341	174.111.11.143	\N	f	f
 18	45	46	10	test@endpoint.com	6304844834	21.33	0.00	new	2014-03-31 22:01:33.238556	2014-03-31 22:01:33.32807	75.183.100.168	Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:28.0) Gecko/20100101 Firefox/28.0	f	t
 \.
 
