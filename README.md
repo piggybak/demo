@@ -13,6 +13,6 @@ Other Resources
 
 * Refer to the <a href="https://github.com/piggybak/piggybak">Piggybak repository</a> for documentation.
 
-* Refer to the <a href="https://github.com/piggybak">Piggybak Github account</a> for a full list of supported plugins.
+* Refer to the <a href="https://github.com/piggybak">Piggybak GitHub account</a> for a full list of supported plugins.
 
-Copyright (c) 2013 End Point & Steph Skardal. See LICENSE.txt for further details.
+Copyright (c) 2016 End Point & Steph Skardal. See LICENSE.txt for further details.
