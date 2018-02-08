@@ -1,6 +1,8 @@
 Piggybak Demo
 ========
 
+Piggybak is no longer maintained.
+
 * The Piggybak demo is a Rails application that uses Piggybak, and the supported Piggybak plugins (taxonomy, variants, coupons, bundle_discounts, giftcerts).
 
 * The Piggybak demo includes a PostgreSQL database dump (sample.psql) that can be loaded in place of fixtures / seed data. Note that the demo does not include seed data for other database types.
